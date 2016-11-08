@@ -1,0 +1,60 @@
+.unitActionUI {
+    position: absolute;
+    width: 64px; 
+    height: 64px; 
+    z-index: 20;
+    cursor: pointer;
+}
+
+.unitInfo {
+    position: absolute;
+    width: 100px; 
+    height: 140px; 
+    z-index: 20;
+    border: 1px black solid;
+    background-color: white;
+}
+
+.unitAvatar {
+    background-color: #ddd;
+    height: 110px;
+    top: 0px;
+    text-align: center;
+}
+
+.unitPanel {
+    width: 100px;
+    height: 15px;
+    position: absolute;
+    z-index: 10;
+    border: 1px black solid;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    text-align: center;
+    font-size: 10px;
+}
+
+.unitPanelBonus {
+    width: 100px;
+    text-align: center;
+    position: absolute;
+    z-index: 10;
+    font-size: 10px;
+}
+
+.squadCCount {
+    background-color: yellow;
+}
+
+.squadCount {
+    background-color: #fefb8c;
+}
+
+.squadCHp {
+    background-color: red;
+}
+
+.squadHp {
+    background-color: #fd5c5e;
+}

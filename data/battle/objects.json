@@ -1,0 +1,28 @@
+{
+    "road": {
+        "isPassable": true,
+        "moveMod": 0.5
+    },
+    "forest": {
+        "isPassable": true,
+        "dafenceBonus": 10,
+        "moveMod": 1.5,
+        "sprite": "forest.png"
+    },
+    "hills": {
+        "isPassable": true,
+        "moveMod": 2
+    },
+    "mountain": {
+        "isPassable": false,
+        "moveMod": 1
+    },
+    "water": {
+        "isPassable": false,
+        "moveMod": 1
+    },
+    "shallow": {
+        "isPassable": true,
+        "moveMod": 2
+    }
+}

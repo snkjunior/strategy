@@ -1,0 +1,16 @@
+{
+    "trackingAnimals": {
+        "type": "passive",
+        "effect": {
+            "type": "bonus",
+            "target": "self",
+            "to": "accuracy",
+            "value": 10
+        },
+        "condition": {
+            "type": "vs",
+            "param": "race",
+            "value": "beast"
+        }
+    }
+}

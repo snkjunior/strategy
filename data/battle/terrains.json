@@ -1,0 +1,14 @@
+{
+    "grass": {
+        "sprite": "grass.png",
+        "moves": 1
+    },
+    "snow": {
+        "sprite": "snow.png",
+        "moves": 2
+    },
+    "sand": {
+        "sprite": "sand.png",
+        "moves": 2
+    }
+}

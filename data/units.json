@@ -1,0 +1,63 @@
+{
+    "human_hunter": {
+        "sprite": "human_hunter",
+        "name": "Hunter",
+        "race": "human",
+        "unitsInSquad": 10,
+        "leadership": 60,
+        "speed": 4,
+        "unit": {
+            "hp": 120,
+            "protection": 0,
+            "resist": 0
+        },
+        "weapons": [
+            {
+                "name": "bow",
+                "isDefault": true,
+                "minDamage": 20,
+                "maxDamage": 40,
+                "minDistance": 2,
+                "maxDistance": 3,
+                "accuracy": 50
+            },
+            {
+                "name": "knife",
+                "isDefault": false,
+                "minDamage": 10,
+                "maxDamage": 25,
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 40
+            }
+        ],
+        "skills": [
+            "trackingAnimals"
+        ]
+    },
+    "animal_wolf": {
+        "sprite": "animal_wolf",
+        "name": "Wolf",
+        "race": "animal",
+        "unitsInSquad": 8,
+        "leadership": 50,
+        "speed": 5,
+        "unit": {
+            "hp": 90,
+            "protection": 0,
+            "resist": 0
+        },
+        "weapons": [
+            {
+                "name": "bite",
+                "isDefault": true,
+                "minDamage": 15,
+                "maxDamage": 30,
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 50
+            }
+        ],
+        "skills": []
+    }
+}
