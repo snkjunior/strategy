@@ -9,7 +9,7 @@ game.interfaces.battle = {
     
     // Settings    
     isShowBorder: ko.observable(true),
-    isShowCoordinates: ko.observable(false),
+    isShowCoordinates: ko.observable(true),
     
     //Dynamic data
     units: {},
@@ -57,8 +57,8 @@ game.interfaces.battle = {
                 id: 1,
                 ownerId: 1,
                 unitTypeId: 'human_hunter',
-                x: ko.observable(0),
-                y: ko.observable(0),
+                x: ko.observable(1),
+                y: ko.observable(5),
                 cHp: ko.observable(120),
                 cCount: ko.observable(10),
                 lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),

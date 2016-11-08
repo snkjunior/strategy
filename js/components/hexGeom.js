@@ -163,14 +163,14 @@ game.components.hexGeom = {
                         hex: curHex,
                         vector: {
                             x: curHex.prevHex.x - curHex.x,
-                            y: curHex.prevHex.y - curHex.y == 0 ? (curHex.x > curHex.prevHex.x && curHex.x % 2 == 1 ? 1 : -1) : curHex.prevHex.y - curHex.y
+                            y: curHex.prevHex.y - curHex.y == 0 ? (curHex.x % 2 == 1 ? 1 : -1) : curHex.prevHex.y - curHex.y
                         }
                     });
                     movePass.push({
                         hex: curHex.prevHex,
                         vector: {
                             x: curHex.x - curHex.prevHex.x,
-                            y: curHex.y - curHex.prevHex.y == 0 ? (curHex.x > curHex.prevHex.x && curHex.prevHex.x % 2 == 1 ? 1 : -1) : curHex.y - curHex.prevHex.y
+                            y: curHex.y - curHex.prevHex.y == 0 ? (curHex.prevHex.x % 2 == 1 ? 1 : -1) : curHex.y - curHex.prevHex.y
                         }
                     });
                     curHex = curHex.prevHex;
@@ -178,7 +178,6 @@ game.components.hexGeom = {
                 break;
             }
         }
-        
         return movePass;
     },
     
