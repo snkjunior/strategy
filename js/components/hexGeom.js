@@ -192,6 +192,10 @@ game.components.hexGeom = {
         }
         return false;
     },
+    
+    getUnitFullAttackZone: function(unit, map) {
+        
+    }
 };
 
 
