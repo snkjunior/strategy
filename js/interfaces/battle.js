@@ -390,14 +390,14 @@ game.interfaces.battle = {
     processActionToUnit: function(actionUnit, action, targetUnit) {
         var self = game.interfaces.battle;
         
-        var result = self.processDamageToUnit(actionUnit, action, targetUnit);
-        self.template_showSquadDamage(targetUnit, result.damage, result.killed);
+        var damageToTarget = self.processDamageToUnit(actionUnit, action, targetUnit);
+        self.template_showSquadDamage(targetUnit, damageToTarget.damage, damageToTarget.killed);
         
         var targetUnitActionUnits = self.getUnitsInActionRadius(targetUnit, targetUnit.lastAction());
         for (var i = 0; i < targetUnitActionUnits.length; i++) {
             if (targetUnitActionUnits[i] == actionUnit.id) {
-                var result = self.processDamageToUnit(targetUnit, targetUnit.lastAction(), actionUnit);
-                self.template_showSquadDamage(actionUnit, result.damage, result.killed);
+                var damageToActionUnit = self.processDamageToUnit(targetUnit, targetUnit.lastAction(), actionUnit);
+                self.template_showSquadDamage(actionUnit, damageToActionUnit.damage, damageToActionUnit.killed);
             }
         }
         
@@ -488,12 +488,13 @@ game.interfaces.battle = {
         }
     },
     
-    template_showSquadDamage: function(unit, damage, killes) {
+    template_showSquadDamage: function(unit, damage, killed) {
         var self = game.interfaces.battle;
         var template = $('#damagePattern').clone();
+        template.attr('id', '');
         template.find('.textRed')[0].innerHTML = -damage;
-        if (killes !== 0) {
-            template.find('.textYellow')[0].innerHTML = -killes;
+        if (killed !== 0) {
+            template.find('.textYellow')[0].innerHTML = -killed;
         }
         
         var coord = game.components.hexGeom.getHexCentralCoordinates(self.map[unit.y()][unit.x()]);
