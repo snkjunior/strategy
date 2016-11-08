@@ -61,7 +61,7 @@ game.interfaces.battle = {
                 y: ko.observable(0),
                 cHp: ko.observable(120),
                 cCount: ko.observable(10),
-                lastAction: ko.observable('bow'),
+                lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             },
@@ -73,7 +73,7 @@ game.interfaces.battle = {
                 y: ko.observable(1),
                 cHp: ko.observable(90),
                 cCount: ko.observable(8),
-                lastAction: ko.observable('bite'),
+                lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             },
@@ -85,7 +85,7 @@ game.interfaces.battle = {
                 y: ko.observable(3),
                 cHp: ko.observable(90),
                 cCount: ko.observable(8),
-                lastAction: ko.observable('bite'),
+                lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             },
@@ -97,7 +97,7 @@ game.interfaces.battle = {
                 y: ko.observable(1),
                 cHp: ko.observable(120),
                 cCount: ko.observable(10),
-                lastAction: ko.observable('bow'),
+                lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             },
@@ -109,7 +109,7 @@ game.interfaces.battle = {
                 y: ko.observable(2),
                 cHp: ko.observable(120),
                 cCount: ko.observable(10),
-                lastAction: ko.observable('bow'),
+                lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             },
@@ -121,7 +121,7 @@ game.interfaces.battle = {
                 y: ko.observable(2),
                 cHp: ko.observable(90),
                 cCount: ko.observable(8),
-                lastAction: ko.observable('bite'),
+                lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             },
@@ -133,7 +133,7 @@ game.interfaces.battle = {
                 y: ko.observable(0),
                 cHp: ko.observable(90),
                 cCount: ko.observable(8),
-                lastAction: ko.observable('bite'),
+                lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             }
@@ -269,12 +269,12 @@ game.interfaces.battle = {
             if (unit != self.selectedUnit()) {
                 if (unit.ownerId == 1) {
                     self.selectedUnit(unit);
-                    self.selectedAction(self.getUnitLastAction(unit));
+                    self.selectedAction(unit.lastAction());
                     if (unit.canMove()) {
                         self.moveZone(game.components.hexGeom.getUnitMoveZone(unit, self));
                     }
                     if (unit.canAction()) {
-                        self.unitsToAction(self.getUnitsInActionRadius(unit.x(), unit.y(), self.selectedAction()));
+                        self.unitsToAction(self.getUnitsInActionRadius(unit, self.selectedAction()));
                     }
                 } else {
                     if (self.selectedUnit() != null && self.selectedUnit().canAction()) {
@@ -293,7 +293,7 @@ game.interfaces.battle = {
                 self.selectedUnit().y(currentHex.y);
                 self.selectedUnit().canMove(false);
                 if (self.selectedUnit().canAction()) {
-                    self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit().x(), self.selectedUnit().y(), self.selectedAction()));
+                    self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit(), self.selectedAction()));
                 }
                 self.moveZone([]);
                 self.movePass([]);
@@ -313,7 +313,7 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
         if (self.selectedUnit().canAction()) {
             self.selectedAction(action);
-            self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit().x(), self.selectedUnit().y(), self.selectedAction()));
+            self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit(), self.selectedAction()));
         }
     },
     
@@ -367,17 +367,17 @@ game.interfaces.battle = {
         return false;
     },
     
-    getUnitsInActionRadius: function(x, y, action) {
+    getUnitsInActionRadius: function(unit, action) {
         var self = game.interfaces.battle;
 
-        var hexesInRadius = game.components.hexGeom.getHexesBetweenRadiuses(x, y, action.minDistance, action.maxDistance, self.map);
+        var hexesInRadius = game.components.hexGeom.getHexesBetweenRadiuses(unit.x(), unit.y(), action.minDistance, action.maxDistance, self.map);
         
         var unitsToAction = [];
         for (var i = 0; i < hexesInRadius.length; i++) {
             for (var unitId in self.units) {
-                var unit = self.units[unitId];
-                if (unit.ownerId !== 1) {
-                    if (unit.x() == hexesInRadius[i].x && unit.y() == hexesInRadius[i].y) {
+                var cUnit = self.units[unitId];
+                if (cUnit.ownerId !== unit.ownerId) {
+                    if (cUnit.x() == hexesInRadius[i].x && cUnit.y() == hexesInRadius[i].y) {
                         unitsToAction.push(parseInt(unitId));
                     }
                 }
@@ -387,19 +387,24 @@ game.interfaces.battle = {
         return unitsToAction;
     },
             
-    getUnitLastAction: function(unit) {
-        var weapons = game.data.units[unit.unitTypeId].weapons;
-        for (var i = 0; i < weapons.length; i++) {
-            if (weapons[i].name == unit.lastAction()) {
-                return weapons[i];
-            }
-        }
-        return null;
-    },
-    
     processActionToUnit: function(actionUnit, action, targetUnit) {
         var self = game.interfaces.battle;
         
+        var result = self.processDamageToUnit(actionUnit, action, targetUnit);
+        self.showSquadDamage(targetUnit, result.damage, result.killed);
+        var targetUnitActionUnits = self.getUnitsInActionRadius(targetUnit, targetUnit.lastAction());
+        for (var i = 0; i < targetUnitActionUnits.length; i++) {
+            if (targetUnitActionUnits[i] == actionUnit.id) {
+                var result = self.processDamageToUnit(targetUnit, targetUnit.lastAction(), actionUnit);
+                self.showSquadDamage(actionUnit, result.damage, result.killed);
+            }
+        }
+        
+        actionUnit.canAction(false);
+        actionUnit.lastAction(action);
+    },
+    
+    processDamageToUnit: function(actionUnit, action, targetUnit) {
         var damage = 0;
         var killed = 0;
         for (var i = 0; i < actionUnit.cCount(); i++) {
@@ -419,16 +424,12 @@ game.interfaces.battle = {
             targetUnit.cHp(game.data.units[targetUnit.unitTypeId].unit.hp - (-targetUnit.cHp()));
         }
         
-        actionUnit.canAction(false);
-        actionUnit.lastAction(action.name);
-        
-        self.showSquadDamage(targetUnit, damage, killed);
+        return {
+            damage: damage,
+            killed: killed
+        };
     },
-    
-//    getUnitsInMoveAndAttackRadius: function(unit, action) {
-//        
-//    },
-//    
+
     processEnemyTurn: function() {
         var self = game.interfaces.battle;
         while (self.currentPlayerTurn() !== game.playerId) {
@@ -495,7 +496,6 @@ game.interfaces.battle = {
         }
         
         var coord = game.components.hexGeom.getHexCentralCoordinates(self.map[unit.y()][unit.x()]);
-        console.log(coord);
         template.css('top', coord.y - 32);
         template.css('left', coord.x - 32);
         $('#battleInterface').append(template);
@@ -503,7 +503,7 @@ game.interfaces.battle = {
         template.animate({
                 top: coord.y - 50
             }, 
-            1000,
+            2000,
             function() {
                 template.remove();
             }
