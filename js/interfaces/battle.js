@@ -401,6 +401,7 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
         
         var damage = 0;
+        var killed = 0;
         for (var i = 0; i < actionUnit.cCount(); i++) {
             var cAccuracy = Math.random() * 100;
             if (cAccuracy <= action.accuracy) {
@@ -409,15 +410,19 @@ game.interfaces.battle = {
             }
         }
         
+        killed = Math.floor(damage / game.data.units[targetUnit.unitTypeId].unit.hp);
         targetUnit.cCount(targetUnit.cCount() - Math.floor(damage / game.data.units[targetUnit.unitTypeId].unit.hp));
         targetUnit.cHp(targetUnit.cHp() - damage % game.data.units[targetUnit.unitTypeId].unit.hp);
         if (targetUnit.cHp() < 0) {
+            killed++;
             targetUnit.cCount(targetUnit.cCount() - 1);
             targetUnit.cHp(game.data.units[targetUnit.unitTypeId].unit.hp - (-targetUnit.cHp()));
         }
         
         actionUnit.canAction(false);
         actionUnit.lastAction(action.name);
+        
+        self.showSquadDamage(targetUnit, damage, killed);
     },
     
 //    getUnitsInMoveAndAttackRadius: function(unit, action) {
@@ -479,5 +484,29 @@ game.interfaces.battle = {
                 self.units[unitId].canAction(true);
             }
         }
+    },
+    
+    showSquadDamage: function(unit, damage, killes) {
+        var self = game.interfaces.battle;
+        var template = $('#damagePattern').clone();
+        template.find('.textRed')[0].innerHTML = -damage;
+        if (killes !== 0) {
+            template.find('.textYellow')[0].innerHTML = -killes;
+        }
+        
+        var coord = game.components.hexGeom.getHexCentralCoordinates(self.map[unit.y()][unit.x()]);
+        console.log(coord);
+        template.css('top', coord.y - 32);
+        template.css('left', coord.x - 32);
+        $('#battleInterface').append(template);
+        template.show();
+        template.animate({
+                top: coord.y - 50
+            }, 
+            1000,
+            function() {
+                template.remove();
+            }
+        );
     }
 };
