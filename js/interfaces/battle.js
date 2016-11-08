@@ -391,12 +391,13 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
         
         var result = self.processDamageToUnit(actionUnit, action, targetUnit);
-        self.showSquadDamage(targetUnit, result.damage, result.killed);
+        self.template_showSquadDamage(targetUnit, result.damage, result.killed);
+        
         var targetUnitActionUnits = self.getUnitsInActionRadius(targetUnit, targetUnit.lastAction());
         for (var i = 0; i < targetUnitActionUnits.length; i++) {
             if (targetUnitActionUnits[i] == actionUnit.id) {
                 var result = self.processDamageToUnit(targetUnit, targetUnit.lastAction(), actionUnit);
-                self.showSquadDamage(actionUnit, result.damage, result.killed);
+                self.template_showSquadDamage(actionUnit, result.damage, result.killed);
             }
         }
         
@@ -487,7 +488,7 @@ game.interfaces.battle = {
         }
     },
     
-    showSquadDamage: function(unit, damage, killes) {
+    template_showSquadDamage: function(unit, damage, killes) {
         var self = game.interfaces.battle;
         var template = $('#damagePattern').clone();
         template.find('.textRed')[0].innerHTML = -damage;
