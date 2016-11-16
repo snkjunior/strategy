@@ -1,0 +1,41 @@
+{
+    "width": 1200,
+    "height": 600,
+    "locations": {
+        "1": {
+            "locationId": 1,
+            "x": 100, 
+            "y": 200,
+            "type": "empty",
+            "locations": ["forest", "forest"]
+        },
+        "2": {
+            "locationId": 2,
+            "x": 350,
+            "y": 150,
+            "type": "village",
+            "locations": ["plain", "plain", "plain"]
+        },
+        "3": {
+            "locationId": 3,
+            "x": 550,
+            "y": 100,
+            "type": "empty",
+            "locations": ["plain", "plain", "forest"]
+        },
+        "4": {
+            "locationId": 4,
+            "x": 500,
+            "y": 350,
+            "type": "empty",
+            "locations": ["plain", "plain", "forest"]
+        }
+    },
+    "roads": [
+        [1,2],
+        [2,3],
+        [2,4]
+    ]
+}
+
+

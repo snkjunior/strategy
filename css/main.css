@@ -1,3 +1,18 @@
+.interface {
+    position: absolute; 
+    top: 0px; 
+    left: 0px; 
+    overflow: hidden; 
+    border: 2px gray solid; 
+    background-color: #eee;
+}
+
+.borderBox {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
 .textRed {
     color: red;
 }

@@ -70,7 +70,29 @@ game.components.hexGeom = {
         };
     },
     
-    getUnitMoveZone: function(unit, battle) {
+    getUnitsInHexZone: function(hexes, units) {
+        var unitsInZone = [];
+        for (var i = 0; i < hexes.length; i++) {
+            for (var unitId in units) {
+                if (hexes[i].x === units[unitId].x() && hexes[i].y === units[unitId].y()) {
+                    unitsInZone.push(units[unitId]);
+                }
+            }
+        }
+        return unitsInZone;
+    },
+    
+    getEnemyUnitsInHexZone: function(hexes, units, playerId) {
+        var unitsInZone = this.getUnitsInHexZone(hexes, units);
+        for (var i = unitsInZone.length - 1; i >= 0; i--) {
+            if (unitsInZone[i].ownerId === playerId) {
+                unitsInZone.splice(i, 1);
+            }
+        }
+        return unitsInZone;
+    },
+    
+    getUnitMoveZone: function(unit, unitsOnMap, map) {
         var checkedHexes = {};
         var hexesToCheck = {};
         hexesToCheck[unit.x() + 'x' + unit.y()] = {
@@ -104,11 +126,11 @@ game.components.hexGeom = {
             var recheckHexesList = {};
             for (var hexId in hexesToCheck) {
                 var currentHex = hexesToCheck[hexId];
-                var neighborHexes = this.getNeighborHexes(currentHex.x, currentHex.y, battle.map);
+                var neighborHexes = this.getNeighborHexes(currentHex.x, currentHex.y, map);
                 
                 for (var i = 0; i < neighborHexes.length; i++) {
-                    var unitId = battle.getUnitIdInHex(neighborHexes[i].x, neighborHexes[i].y);
-                    if (unitId !== null && battle.units[unitId].ownerId !== unit.ownerId) {
+                    var unitId = game.interfaces.battle.getUnitIdInHex(neighborHexes[i].x, neighborHexes[i].y);
+                    if (unitId !== null && unitsOnMap[unitId].ownerId !== unit.ownerId) {
                         if (currentHex.x != unit.x() || currentHex.y != unit.y()) {
                             currentHex.distance = game.data.units[unit.unitTypeId].speed;
                             currentHex.isNearEnemy = true;
@@ -119,7 +141,7 @@ game.components.hexGeom = {
                 for (var i = 0; i < neighborHexes.length; i++) {
                     var distanceToNeighborHex = currentHex.distance + game.data.battle.terrains[neighborHexes[i].terrain].moves * (neighborHexes[i].object != null ? game.data.battle.objects[neighborHexes[i].object].moveMod : 1);
                     if (distanceToNeighborHex <= game.data.units[unit.unitTypeId].speed) {
-                        if (battle.getUnitIdInHex(neighborHexes[i].x, neighborHexes[i].y) === null) {
+                        if (game.interfaces.battle.getUnitIdInHex(neighborHexes[i].x, neighborHexes[i].y) === null) {
                             if (checkedHexes[neighborHexes[i].x + 'x' + neighborHexes[i].y] != null) {
                                 if (checkedHexes[neighborHexes[i].x + 'x' + neighborHexes[i].y].distance > distanceToNeighborHex && !checkedHexes[neighborHexes[i].x + 'x' + neighborHexes[i].y].isNearEnemy) {
                                     addToRecheckList(recheckHexesList, neighborHexes, distanceToNeighborHex, currentHex);
@@ -192,8 +214,46 @@ game.components.hexGeom = {
         return false;
     },
     
-    getUnitFullAttackZone: function(unit, map) {
+    getMoveZoneOutsideHexes: function(moveZoneHexes, map) {
+        var outsideHexes = [];
         
+        var moveZoneHexesObj = {};
+        for (var i = 0; i < moveZoneHexes.length; i++) {
+            moveZoneHexesObj[moveZoneHexes[i].x + 'x' + moveZoneHexes[i].y] = moveZoneHexes[i];
+        }
+        
+        for (var i = 0; i < moveZoneHexes.length; i++) {
+            var neighborHexes = this.getNeighborHexes(moveZoneHexes[i].x, moveZoneHexes[i].y, map);
+            for (var j = 0; j < neighborHexes.length; j++) {
+                if (moveZoneHexesObj[neighborHexes[j].x + 'x' + neighborHexes[j].y] == null) {
+                    outsideHexes.push(moveZoneHexes[i]);
+                    break;
+                }
+            }
+        }
+        
+        return outsideHexes;
+    },
+    
+    getUnitFullAttackZone: function(unit, action, unitsOnMap, hexMap) {
+        var fullAttackZone = [];
+        
+        var unitMoveZone = this.getUnitMoveZone(unit, unitsOnMap, hexMap);
+        for (var i = 0; i < unitMoveZone.length; i++) {
+            fullAttackZone.push(hexMap[unitMoveZone[i].y][unitMoveZone[i].x]);
+        }
+        
+        var outsideHexes = this.getMoveZoneOutsideHexes(unitMoveZone, hexMap);
+        for (var i = 0; i < outsideHexes.length; i++) {
+            var hexesInRadius = this.getHexesInRadius(outsideHexes[i].x, outsideHexes[i].y, action.maxDistance, hexMap);
+            for (var j = 0; j < hexesInRadius.length; j++) {
+                if (fullAttackZone.indexOf(hexesInRadius[j]) === -1) {
+                    fullAttackZone.push(hexesInRadius[j]);
+                }
+            }
+        }
+        
+        return fullAttackZone;
     }
 };
 

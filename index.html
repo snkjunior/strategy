@@ -10,8 +10,6 @@
         
         <script src="js/libs/knockout-3.2.0.min.js"></script>
 
-        <script src="js/libs/socket.io/socket.io.js"></script>
-        
         <script src="js/libs/jquery-1.10.2.js"></script>
         <script src="js/libs/jquery-ui-1.11.2.js"></script>
         <script src="js/libs/jquery.jscrollpane.min.js"></script>
@@ -23,12 +21,14 @@
         <script type="text/javascript" src="js/server.js"></script>
         
         <script type="text/javascript" src="js/interfaces/battle.js"></script>
+        <script type="text/javascript" src="js/interfaces/map.js"></script>
         
+        <script type="text/javascript" src="js/components/geom.js"></script>
         <script type="text/javascript" src="js/components/hexGeom.js"></script>
         <script type="text/javascript" src="js/components/botVI.js"></script>
+        <script type="text/javascript" src="js/components/other.js"></script>
     </head>
     <body onload="main()">
-        <div id="interface" style="position: absolute; top: 0px; left: 0px; overflow: hidden; border: 1px gray solid; background-color: #eee;">   
-        </div>
+        <div id="interface" class="interface borderBox"/>   
     </body>
 </html>

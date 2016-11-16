@@ -1,0 +1,19 @@
+<link href="css/interfaces/map.css" rel="stylesheet">
+
+<div id="mapInterface" style="position: absolute; left: 0; top: 0;">
+    <div id="map" class="map borderBox" data-bind="style: {width: width, height: height}">
+        <!--ko foreach: roads-->
+        <!--ko with: $parent.getRoadCsvInfo($data)-->
+        <svg data-bind='style: {left: left, top: top, width: width, height: height}' style='position: absolute;'>
+            <line data-bind="attr: {x1: x1, x2: x2, y1: y1, y2: y2}" style="stroke:rgb(50,50,50); stroke-width: 2"/>
+        </svg>
+        <!--/ko-->
+        <!--/ko-->
+        
+        <!--ko foreach: game.components.other.objectToArray(locations)-->
+        <div class="location borderBox" data-bind="style: {left: x - $parent.locationRadius, top: y - $parent.locationRadius, width: $parent.locationRadius * 2, height: $parent.locationRadius * 2}, attr: {locationId: locationId}, css: {mouseOverLocation: $data == $parent.mouseOverLocation()}"/>
+        <!--/ko-->
+        
+    </div>
+</div>
+    

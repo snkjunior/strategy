@@ -1,0 +1,21 @@
+.map {
+    background-color: #fff; 
+    position: absolute;
+    border: 2px #999 solid;
+}
+
+.location {
+    border: 2px rgb(50,50,50) solid;
+    border-radius: 32px;
+    position: absolute;
+    z-index: 2;
+    background-color: #ccc;
+}
+
+.mouseOverLocation {
+    background-color: #eea53e;
+}
+
+body {
+    font-size: 0px;
+}

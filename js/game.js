@@ -7,6 +7,9 @@ var game = {
     },
 
     data: {},
+    maps: {
+        "map1": ''
+    },
 
     currentInterface: null,
     interfaces: {},
@@ -21,6 +24,7 @@ game.init = function() {
     
     this.initTemplates();
     this.showInterface('battle', {});
+    //this.showInterface('map', game.maps.map1);
 };
 
 game.loadData = function() {
@@ -37,7 +41,11 @@ game.loadData = function() {
         units: loadData('data/units.json'),
         skills: loadData('data/skills.json')
     };
-}
+    
+    for (var mapName in game.maps) {
+        game.maps[mapName] = loadData('data/maps/' + mapName + '.json');
+    }
+};
 
 game.initTemplates = function() {
     for (var name in this.interfaces) {

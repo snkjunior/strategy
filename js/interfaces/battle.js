@@ -26,6 +26,8 @@ game.interfaces.battle = {
     movePass: ko.observableArray([]),
     unitsToAction: ko.observableArray([]),
     
+    enemyMoveZone: ko.observableArray([]),
+    
     init: function(callback, params) {
         var self = game.interfaces.battle;
         params.width = 13;
@@ -59,8 +61,8 @@ game.interfaces.battle = {
                 unitTypeId: 'human_hunter',
                 x: ko.observable(1),
                 y: ko.observable(5),
-                cHp: ko.observable(120),
-                cCount: ko.observable(10),
+                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
+                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
@@ -71,8 +73,8 @@ game.interfaces.battle = {
                 unitTypeId: 'animal_wolf',
                 x: ko.observable(3),
                 y: ko.observable(1),
-                cHp: ko.observable(90),
-                cCount: ko.observable(8),
+                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
@@ -83,8 +85,8 @@ game.interfaces.battle = {
                 unitTypeId: 'animal_wolf',
                 x: ko.observable(4),
                 y: ko.observable(3),
-                cHp: ko.observable(90),
-                cCount: ko.observable(8),
+                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
@@ -95,8 +97,8 @@ game.interfaces.battle = {
                 unitTypeId: 'human_hunter',
                 x: ko.observable(0),
                 y: ko.observable(1),
-                cHp: ko.observable(120),
-                cCount: ko.observable(10),
+                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
+                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
@@ -107,8 +109,8 @@ game.interfaces.battle = {
                 unitTypeId: 'human_hunter',
                 x: ko.observable(0),
                 y: ko.observable(2),
-                cHp: ko.observable(120),
-                cCount: ko.observable(10),
+                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
+                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
@@ -119,8 +121,8 @@ game.interfaces.battle = {
                 unitTypeId: 'animal_wolf',
                 x: ko.observable(7),
                 y: ko.observable(2),
-                cHp: ko.observable(90),
-                cCount: ko.observable(8),
+                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
@@ -131,8 +133,8 @@ game.interfaces.battle = {
                 unitTypeId: 'animal_wolf',
                 x: ko.observable(3),
                 y: ko.observable(0),
-                cHp: ko.observable(90),
-                cCount: ko.observable(8),
+                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
@@ -216,8 +218,9 @@ game.interfaces.battle = {
     onMouseMove: function(e) {
         var self = game.interfaces.battle;
             
-        var mx = e.clientX;
-        var my = e.clientY;
+        var borderWidth = parseInt($('#interface').css('border-width'));    
+        var mx = e.clientX - borderWidth;
+        var my = e.clientY - borderWidth;
         var minHex = null;
 
         var targetElement = $(e.target);
@@ -252,6 +255,16 @@ game.interfaces.battle = {
 
         if (minHex != self.mouseOverHex()) {
             self.mouseOverHex(minHex);
+            if (minHex != null) {
+                var unitId = self.getUnitIdInHex(minHex.x, minHex.y);
+                if (unitId) {
+                    if (self.units[unitId].ownerId != 1) {
+                        self.enemyMoveZone(game.components.hexGeom.getUnitMoveZone(self.units[unitId], self.units, self.map));
+                    }
+                } else {
+                    self.enemyMoveZone([]);
+                }
+            }
         }
     },
     
@@ -271,14 +284,14 @@ game.interfaces.battle = {
                     self.selectedUnit(unit);
                     self.selectedAction(unit.lastAction());
                     if (unit.canMove()) {
-                        self.moveZone(game.components.hexGeom.getUnitMoveZone(unit, self));
+                        self.moveZone(game.components.hexGeom.getUnitMoveZone(unit, self.units, self.map));
                     }
                     if (unit.canAction()) {
                         self.unitsToAction(self.getUnitsInActionRadius(unit, self.selectedAction()));
                     }
                 } else {
                     if (self.selectedUnit() != null && self.selectedUnit().canAction()) {
-                        if (self.unitsToAction().indexOf(unitId)) {
+                        if (self.unitsToAction().indexOf(unitId) != -1) {
                             self.processActionToUnit(self.selectedUnit(), self.selectedAction(), unit);
                             self.unitsToAction([]);
                         }
@@ -328,7 +341,7 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
         for (var unitId in self.units) {
             if (self.units[unitId].x() === x && self.units[unitId].y() === y && self.units[unitId].cCount() > 0) {
-                return unitId;
+                return parseInt(unitId);
             }
         }
         return null;
