@@ -138,7 +138,19 @@ game.interfaces.battle = {
                 lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
-            }
+            }, 
+            8: {
+                id: 8,
+                ownerId: 1,
+                unitTypeId: 'human_militiaman',
+                x: ko.observable(1),
+                y: ko.observable(2),
+                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
+                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
+                lastAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
+                canMove: ko.observable(true),
+                canAction: ko.observable(true)
+            },
         };
         
         self.units = units;
@@ -419,11 +431,19 @@ game.interfaces.battle = {
     },
     
     processDamageToUnit: function(actionUnit, action, targetUnit) {
+        var self = game.interfaces.battle;
+        
         var damage = 0;
         var killed = 0;
+        var locationDefenceBonus = 0;
+        if (self.map[targetUnit.y()][targetUnit.x()].object != null) {
+            locationDefenceBonus = game.data.battle.objects[self.map[targetUnit.y()][targetUnit.x()].object].defenceBonus;
+        }
+        
+        var accuracy = action.accuracy - locationDefenceBonus;
         for (var i = 0; i < actionUnit.cCount(); i++) {
             var cAccuracy = Math.random() * 100;
-            if (cAccuracy <= action.accuracy) {
+            if (cAccuracy <= accuracy) {
                 var cDamage = Math.round(Math.random() * (action.maxDamage - action.minDamage)) + action.minDamage;
                 damage += cDamage;
             }
@@ -436,6 +456,10 @@ game.interfaces.battle = {
             killed++;
             targetUnit.cCount(targetUnit.cCount() - 1);
             targetUnit.cHp(game.data.units[targetUnit.unitTypeId].unit.hp - (-targetUnit.cHp()));
+        }
+        
+        if (targetUnit.ownerId === 1 && targetUnit == self.selectedUnit() && targetUnit.cCount() <= 0) {
+            self.unselectUnit();
         }
         
         return {

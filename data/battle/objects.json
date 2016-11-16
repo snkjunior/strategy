@@ -1,28 +1,33 @@
 {
     "road": {
         "isPassable": true,
+        "defenceBonus": 0,
         "moveMod": 0.5
     },
     "forest": {
         "isPassable": true,
-        "dafenceBonus": 10,
+        "defenceBonus": 5,
         "moveMod": 1.5,
         "sprite": "forest.png"
     },
     "hills": {
         "isPassable": true,
+        "defenceBonus": 10,
         "moveMod": 2
     },
     "mountain": {
         "isPassable": false,
+        "defenceBonus": 0,
         "moveMod": 1
     },
     "water": {
         "isPassable": false,
+        "defenceBonus": 0,
         "moveMod": 1
     },
     "shallow": {
         "isPassable": true,
+        "defenceBonus": 0,
         "moveMod": 2
     }
 }

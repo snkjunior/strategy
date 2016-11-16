@@ -15,8 +15,8 @@
             {
                 "name": "bow",
                 "isDefault": true,
-                "minDamage": 2,
-                "maxDamage": 4,
+                "minDamage": 3,
+                "maxDamage": 5,
                 "minDistance": 2,
                 "maxDistance": 3,
                 "accuracy": 40
@@ -25,7 +25,7 @@
                 "name": "knife",
                 "isDefault": false,
                 "minDamage": 1,
-                "maxDamage": 2,
+                "maxDamage": 3,
                 "minDistance": 1,
                 "maxDistance": 1,
                 "accuracy": 30
@@ -35,11 +35,36 @@
             "trackingAnimals"
         ]
     },
+    "human_militiaman": {
+        "sprite": "human_militiaman",
+        "name": "Militiaman",
+        "race": "human",
+        "unitsInSquad": 30,
+        "leadership": 45,
+        "speed": 3,
+        "unit": {
+            "hp": 5,
+            "protection": 0,
+            "resist": 0
+        },
+        "weapons": [
+            {
+                "name": "pitchfork",
+                "isDefault": true,
+                "minDamage": 1,
+                "maxDamage": 3,
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 40
+            }
+        ],
+        "skills": []
+    },
     "animal_wolf": {
         "sprite": "animal_wolf",
         "name": "Wolf",
         "race": "animal",
-        "unitsInSquad": 20,
+        "unitsInSquad": 25,
         "leadership": 50,
         "speed": 4,
         "unit": {
@@ -51,8 +76,8 @@
             {
                 "name": "bite",
                 "isDefault": true,
-                "minDamage": 1,
-                "maxDamage": 3,
+                "minDamage": 2,
+                "maxDamage": 5,
                 "minDistance": 1,
                 "maxDistance": 1,
                 "accuracy": 50
