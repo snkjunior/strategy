@@ -5,7 +5,7 @@
         "race": "human",
         "unitsInSquad": 30,
         "leadership": 60,
-        "speed": 1,
+        "speed": 3,
         "unit": {
             "hp": 5,
             "protection": 0,
