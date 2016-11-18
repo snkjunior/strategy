@@ -1,9 +1,4 @@
 game.components.botVI = {
-    processUnit: function(unit, units, hexMap) {
-        var targets = this.getUnitAttackTargets(unit, units, hexMap);
-        var target = this.getTargetToAttack(unit, targets);
-    },
-    
     getUnitActionAttackTargets: function(unit, action, units, hexMap) {
         var targets = [];
         var attackZone = game.components.hexGeom.getUnitFullAttackZone(unit, action, units, hexMap);
@@ -23,7 +18,7 @@ game.components.botVI = {
                 }
             }
             targets.push({
-                target: enemies[i],
+                unit: enemies[i],
                 hexesToAttack: targetAttackHexes
             });
         }
@@ -44,9 +39,71 @@ game.components.botVI = {
         return targets;
     },
     
-    getTargetToAttack: function(unit, targets) {
-        console.log(targets);
-    }
+    getTargetToAttack: function(unit, units, hexMap) {
+        var actionsTargets = this.getUnitAttackTargets(unit, units, hexMap);
+        var targetsPriority = [];
+        for (var i = 0; i < actionsTargets.length; i++) {
+            var action = actionsTargets[i].action;
+            var targets = actionsTargets[i].targets;
+            for (var j = 0; j < targets.length; j++) {
+                var target = targets[j];
+                var targetLocationDefenceBonus = 0;
+                if (hexMap[target.unit.y()][target.unit.x()].object !== null) {
+                    targetLocationDefenceBonus = game.data.battle.objects[hexMap[target.unit.y()][target.unit.x()].object].defenceBonus;
+                }
+                var averageDmgToTarget = (action.minDamage + action.maxDamage) / 2 * unit.cCount() * (action.accuracy - targetLocationDefenceBonus) / 100;
+                var targetActionHexes = game.components.hexGeom.getHexesBetweenRadiuses(target.unit.x(), target.unit.y(), target.unit.lastAction().minDistance, target.unit.lastAction().maxDistance, hexMap);
+                for (var k = 0; k < target.hexesToAttack.length; k++) {
+                    var averageDmgToUnit = 0;
+                    var hex = target.hexesToAttack[k];
+                    if (targetActionHexes.indexOf(hex) !== -1) {
+                        var unitLocationDefenceBonus = 0;
+                        if (hexMap[hex.y][hex.x].object !== null) {
+                            unitLocationDefenceBonus = game.data.battle.objects[hexMap[hex.y][hex.x].object].defenceBonus;
+                        }
+                        averageDmgToUnit = (target.unit.lastAction().minDamage + target.unit.lastAction().maxDamage) / 2 * target.unit.cCount() * (target.unit.lastAction().accuracy - unitLocationDefenceBonus) / 100;
+                    }
+                    targetsPriority.push({
+                        target: target.unit,
+                        action: action,
+                        hexToMove: hex,
+                        avgDmgToUnit: averageDmgToUnit,
+                        avgDmgToTarget: averageDmgToTarget
+                    });
+                }
+            }
+        }
+        
+        var target = targetsPriority[0] != null ? targetsPriority[0] : null;
+        for (var i = 1; i < targetsPriority.length; i++) {
+            if (target.avgDmgToTarget - target.avgDmgToUnit < targetsPriority[i].avgDmgToTarget - targetsPriority[i].avgDmgToUnit) {
+                target = targetsPriority[i];
+            }
+            
+            if (target.avgDmgToTarget - target.avgDmgToUnit === targetsPriority[i].avgDmgToTarget - targetsPriority[i].avgDmgToUnit) {
+                var tDefenceBonus = 0;
+                if (target.hexToMove.object != null) {
+                    tDefenceBonus = game.data.battle.objects[target.hexToMove.object].defenceBonus;
+                }
+                
+                var checkedTDefenceBonus = 0;
+                if (targetsPriority[i].hexToMove.object != null) {
+                    checkedTDefenceBonus = game.data.battle.objects[targetsPriority[i].hexToMove.object].defenceBonus;
+                }
+                
+                if (checkedTDefenceBonus > tDefenceBonus) {
+                    target = targetsPriority[i];
+                }
+                
+                if (checkedTDefenceBonus === tDefenceBonus) {
+                    if (Math.floor(Math.random() * 2) == 1) {
+                        target = targetsPriority[i];
+                    }
+                }
+            }
+        }
+        return target;
+    },
 };
 
 

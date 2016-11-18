@@ -6,7 +6,7 @@ game.components.hexGeom = {
     },
     
     // Calculated in cartesian coordinate system
-    getHexesInRadius: function(x, y, radius, hexMap) {
+    getHexesInRadius: function(x, y, radius, hexMap) {        
         var cHexCoord = hexMap[y][x].cCoord;
         var hexesInRadius = [];
         
@@ -74,7 +74,7 @@ game.components.hexGeom = {
         var unitsInZone = [];
         for (var i = 0; i < hexes.length; i++) {
             for (var unitId in units) {
-                if (hexes[i].x === units[unitId].x() && hexes[i].y === units[unitId].y()) {
+                if (units[unitId].cCount() >0 && hexes[i].x === units[unitId].x() && hexes[i].y === units[unitId].y()) {
                     unitsInZone.push(units[unitId]);
                 }
             }
@@ -254,7 +254,7 @@ game.components.hexGeom = {
         }
         
         return fullAttackZone;
-    }
+    },
 };
 
 

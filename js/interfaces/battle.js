@@ -59,8 +59,8 @@ game.interfaces.battle = {
                 id: 1,
                 ownerId: 1,
                 unitTypeId: 'human_hunter',
-                x: ko.observable(1),
-                y: ko.observable(5),
+                x: ko.observable(0),
+                y: ko.observable(0),
                 cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
                 cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
                 lastAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
@@ -119,7 +119,7 @@ game.interfaces.battle = {
                 id: 6,
                 ownerId: 2,
                 unitTypeId: 'animal_wolf',
-                x: ko.observable(7),
+                x: ko.observable(4),
                 y: ko.observable(2),
                 cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
                 cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
@@ -151,6 +151,30 @@ game.interfaces.battle = {
                 canMove: ko.observable(true),
                 canAction: ko.observable(true)
             },
+            9: {
+                id: 9,
+                ownerId: 1,
+                unitTypeId: 'human_militiaman',
+                x: ko.observable(1),
+                y: ko.observable(1),
+                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
+                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
+                lastAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
+                canMove: ko.observable(true),
+                canAction: ko.observable(true)
+            },
+            10: {
+                id: 10,
+                ownerId: 2,
+                unitTypeId: 'animal_wolf',
+                x: ko.observable(2),
+                y: ko.observable(4),
+                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
+                lastAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
+                canMove: ko.observable(true),
+                canAction: ko.observable(true)
+            }, 
         };
         
         self.units = units;
@@ -452,7 +476,7 @@ game.interfaces.battle = {
         killed = Math.floor(damage / game.data.units[targetUnit.unitTypeId].unit.hp);
         targetUnit.cCount(targetUnit.cCount() - Math.floor(damage / game.data.units[targetUnit.unitTypeId].unit.hp));
         targetUnit.cHp(targetUnit.cHp() - damage % game.data.units[targetUnit.unitTypeId].unit.hp);
-        if (targetUnit.cHp() < 0) {
+        if (targetUnit.cHp() <= 0) {
             killed++;
             targetUnit.cCount(targetUnit.cCount() - 1);
             targetUnit.cHp(game.data.units[targetUnit.unitTypeId].unit.hp - (-targetUnit.cHp()));
@@ -469,47 +493,28 @@ game.interfaces.battle = {
     },
 
     processEnemyTurn: function() {
+        function sleep(miliseconds) {
+            var currentTime = new Date().getTime();
+            while (currentTime + miliseconds >= new Date().getTime()) {
+            }
+        }
+        
         var self = game.interfaces.battle;
         while (self.currentPlayerTurn() !== game.playerId) {
             self.updatePlayerUnitsActions(self.currentPlayerTurn());
-//            for (var unitId in self.units) {
-//                var unit = self.units[unitId]();
-//                if (unit.ownerId === self.currentPlayerTurn()) {
-//                    var locationsToMove = [];
-//                    var unitMoveZone = game.components.hexGeom.getUnitMoveZone(unit, self);
-//                    
-//                    // Radius 1
-//                    for (var i = 0; i < unitMoveZone.length; i++) {
-//                        var hex = unitMoveZone[i];
-//                        if (hex.distance === game.data.units[unit.unitTypeId].speed) {
-//                            var neighborHexes = game.components.hexGeom.getNeighborHexes(hex.x, hex.y, self.map);
-//                            for (var j = 0; j < neighborHexes.length; j++) {
-//                                var unitIdInLocation = self.getUnitIdInHex(neighborHexes[j].x, neighborHexes[j].y);
-//                                if (unitIdInLocation) {
-//                                    if (self.units[unitIdInLocation]().ownerId !== self.currentPlayerTurn()) {
-//                                        if (locationsToMove.indexOf(self.map[hex.y][hex.x]) === -1) {
-//                                            locationsToMove.push(self.map[hex.y][hex.x]);
-//                                        }
-//                                        break;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                    
-//                    // If no enemies in move radius - set move vector to nearest enemies
-//                    if (locationsToMove.length === 0) {
-//                        
-//                    }
-//                    
-//                    var locationToMove = locationsToMove[Math.floor(Math.random() * locationsToMove.length)];
-//                    if (locationToMove) {
-//                        unit.x = locationToMove.x;
-//                        unit.y = locationToMove.y;
-//                        self.units[unitId](unit);
-//                    }
-//                }
-//            }
+            for (var unitId in self.units) {
+                var unit = self.units[unitId];
+                if (unit.ownerId === self.currentPlayerTurn()) {
+                    var target = game.components.botVI.getTargetToAttack(unit, self.units, self.map);
+                    if (target == null) {
+                        // No targets found, find location to move;
+                        continue;
+                    }
+                    unit.x(target.hexToMove.x);
+                    unit.y(target.hexToMove.y);
+                    self.processActionToUnit(unit, target.action, target.target);
+                }
+            }
             self.currentPlayerTurn(self.players[self.currentPlayerTurn()].nextPlayerTurn);
         }
         self.updatePlayerUnitsActions(self.currentPlayerTurn());

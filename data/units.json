@@ -7,7 +7,7 @@
         "leadership": 60,
         "speed": 3,
         "unit": {
-            "hp": 5,
+            "hp": 10,
             "protection": 0,
             "resist": 0
         },
@@ -15,11 +15,11 @@
             {
                 "name": "bow",
                 "isDefault": true,
-                "minDamage": 3,
+                "minDamage": 2,
                 "maxDamage": 5,
                 "minDistance": 2,
                 "maxDistance": 3,
-                "accuracy": 40
+                "accuracy": 70
             },
             {
                 "name": "knife",
@@ -28,7 +28,7 @@
                 "maxDamage": 3,
                 "minDistance": 1,
                 "maxDistance": 1,
-                "accuracy": 30
+                "accuracy": 60
             }
         ],
         "skills": [
@@ -43,7 +43,7 @@
         "leadership": 45,
         "speed": 3,
         "unit": {
-            "hp": 5,
+            "hp": 10,
             "protection": 0,
             "resist": 0
         },
@@ -55,7 +55,7 @@
                 "maxDamage": 3,
                 "minDistance": 1,
                 "maxDistance": 1,
-                "accuracy": 40
+                "accuracy": 70
             }
         ],
         "skills": []
@@ -68,7 +68,7 @@
         "leadership": 50,
         "speed": 4,
         "unit": {
-            "hp": 8,
+            "hp": 15,
             "protection": 0,
             "resist": 0
         },
@@ -77,10 +77,10 @@
                 "name": "bite",
                 "isDefault": true,
                 "minDamage": 2,
-                "maxDamage": 5,
+                "maxDamage": 4,
                 "minDistance": 1,
                 "maxDistance": 1,
-                "accuracy": 50
+                "accuracy": 80
             }
         ],
         "skills": []
