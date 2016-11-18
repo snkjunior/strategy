@@ -9,7 +9,7 @@ game.interfaces.battle = {
     
     // Settings    
     isShowBorder: ko.observable(true),
-    isShowCoordinates: ko.observable(true),
+    isShowCoordinates: ko.observable(false),
     
     //Dynamic data
     units: {},

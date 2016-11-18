@@ -111,6 +111,7 @@
         </div>
         <!--/ko-->
         
+        <!--ko if: game.interfaces.battle.selectedUnit().canAction()-->
         <!--ko foreach: game.data.units[game.interfaces.battle.selectedUnit().unitTypeId].weapons -->
         <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, click: $parent.clickOnAction">
             <img data-bind="attr: {src: 'img/battle/action_' + ($data == game.interfaces.battle.selectedAction() ? 'selected' : 'unselected') + '.png'}">
@@ -124,6 +125,7 @@
             <img src="img/battle/accuracy.png" style="position: absolute; top: 45px; left: 10px; width: 14px; height: 14px">
             <span style="position: absolute; top: 46px; left: 30px; font-size: 10px;" data-bind="text: accuracy + '%'"></span>
         </div>
+        <!--/ko-->
         <!--/ko-->
     <!--/ko-->
     
