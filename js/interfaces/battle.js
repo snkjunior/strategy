@@ -504,7 +504,7 @@ game.interfaces.battle = {
             self.updatePlayerUnitsActions(self.currentPlayerTurn());
             for (var unitId in self.units) {
                 var unit = self.units[unitId];
-                if (unit.ownerId === self.currentPlayerTurn()) {
+                if (unit.cCount() > 0 && unit.ownerId === self.currentPlayerTurn()) {
                     var target = game.components.botVI.getTargetToAttack(unit, self.units, self.map);
                     if (target == null) {
                         // No targets found, find location to move;
