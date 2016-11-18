@@ -52,7 +52,7 @@ game.components.botVI = {
                     targetLocationDefenceBonus = game.data.battle.objects[hexMap[target.unit.y()][target.unit.x()].object].defenceBonus;
                 }
                 var averageDmgToTarget = (action.minDamage + action.maxDamage) / 2 * unit.cCount() * (action.accuracy - targetLocationDefenceBonus) / 100;
-                var targetActionHexes = game.components.hexGeom.getHexesBetweenRadiuses(target.unit.x(), target.unit.y(), target.unit.lastAction().minDistance, target.unit.lastAction().maxDistance, hexMap);
+                var targetActionHexes = game.components.hexGeom.getHexesBetweenRadiuses(target.unit.x(), target.unit.y(), target.unit.cAction().minDistance, target.unit.cAction().maxDistance, hexMap);
                 for (var k = 0; k < target.hexesToAttack.length; k++) {
                     var averageDmgToUnit = 0;
                     var hex = target.hexesToAttack[k];
@@ -61,7 +61,7 @@ game.components.botVI = {
                         if (hexMap[hex.y][hex.x].object !== null) {
                             unitLocationDefenceBonus = game.data.battle.objects[hexMap[hex.y][hex.x].object].defenceBonus;
                         }
-                        averageDmgToUnit = (target.unit.lastAction().minDamage + target.unit.lastAction().maxDamage) / 2 * target.unit.cCount() * (target.unit.lastAction().accuracy - unitLocationDefenceBonus) / 100;
+                        averageDmgToUnit = (target.unit.cAction().minDamage + target.unit.cAction().maxDamage) / 2 * target.unit.cCount() * (target.unit.cAction().accuracy - unitLocationDefenceBonus) / 100;
                     }
                     targetsPriority.push({
                         target: target.unit,
