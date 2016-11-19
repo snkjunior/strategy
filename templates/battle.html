@@ -100,7 +100,7 @@
                 <!--ko if: object != null -->
                 <div class='unitPanelBonus' style='top: 90px;'>
                     <img src='img/battle/protection.png' style='width: 14px; height: 14px; position: absolute; left: 30px;'/>
-                    <span style='position: absolute; left: 45px; top: 1px;'>+10%</span>
+                    <span style='position: absolute; left: 45px; top: 1px;' data-bind='text: "+" + game.data.battle.objects[object].defenceBonus + "%"'></span>
                 </div>
                 <!--/ko-->
             <!--/ko-->
@@ -153,7 +153,7 @@
                 <!--ko if: object != null -->
                 <div class='unitPanelBonus' style='top: 90px;'>
                     <img src='img/battle/protection.png' style='width: 14px; height: 14px; position: absolute; left: 30px;'/>
-                    <span style='position: absolute; left: 45px; top: 1px;'>+10%</span>
+                    <span style='position: absolute; left: 45px; top: 1px;' data-bind='text: "+" + game.data.battle.objects[object].defenceBonus + "%"'></span>
                 </div>
                 <!--/ko-->
                 <!--/ko-->

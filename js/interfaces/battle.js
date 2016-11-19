@@ -574,7 +574,10 @@ game.interfaces.battle = {
         var chance = 0;
         if (game.components.hexGeom.isCanAttackUnit(unit, unit.cAction(), target, self.map)) {
             chance =  unit.cAction().accuracy - self.getLocationDefenceBonus(target.x(), target.y());
+            console.log(chance);
+            console.log(self.getUnitSkillBonuses(unit, target, 'offence', 'accuracy'));
             chance += self.getUnitSkillBonuses(unit, target, 'offence', 'accuracy');
+            console.log(self.getUnitSkillBonuses(target, unit, 'defence', 'accuracy'));
             chance += self.getUnitSkillBonuses(target, unit, 'defence', 'accuracy');
         }
         return chance;
