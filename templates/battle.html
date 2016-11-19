@@ -72,6 +72,14 @@
                 <!--ko if: game.interfaces.battle.isShowCoordinates()-->
                 <span style="position: absolute; z-index: 20; top: 50; left: 20; font-size: 10px; color: #dddddd;" data-bind="html: x + '-' + y"></span>
                 <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.mouseOverHex() == $data && game.interfaces.battle.actionAttackInfo() != null-->
+                <!--ko with: game.interfaces.battle.actionAttackInfo()-->
+                <span style="position: absolute; z-index: 20; top: -10; left: 0; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: unitAccuracy + '%'"></span>
+                <span style="position: absolute; z-index: 20; top: -10; left: 30; width: 4px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;">|</span>
+                <span style="position: absolute; z-index: 20; top: -10; left: 34; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: targetAccuracy == '-' ? 'no' : targetAccuracy + '%'"></span>
+                <!--/ko-->
+                <!--/ko-->
             </div>
             <!--/ko-->
             <!--/ko-->

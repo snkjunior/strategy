@@ -20,6 +20,8 @@ game.interfaces.battle = {
     selectedUnit: ko.observable(null),
     selectedAction: ko.observable(null),
     
+    actionAttackInfo: ko.observable(null),
+    
     mouseOverHex: ko.observable(null),
     
     moveZone: ko.observableArray([]),
@@ -27,6 +29,8 @@ game.interfaces.battle = {
     unitsToAction: ko.observableArray([]),
     
     enemyMoveZone: ko.observableArray([]),
+    
+    
     
     init: function(callback, params) {
         var self = game.interfaces.battle;
@@ -290,12 +294,17 @@ game.interfaces.battle = {
         }
 
         if (minHex != self.mouseOverHex()) {
+            self.actionAttackInfo(null);
+            
             self.mouseOverHex(minHex);
             if (minHex != null) {
                 var unitId = self.getUnitIdInHex(minHex.x, minHex.y);
                 if (unitId) {
                     if (self.units[unitId].ownerId != 1) {
                         self.enemyMoveZone(game.components.hexGeom.getUnitMoveZone(self.units[unitId], self.units, self.map));
+                        if (self.selectedUnit() != null && self.selectedUnit().canAction() && self.unitsToAction().indexOf(unitId) !== -1) {
+                            self.actionAttackInfo(self.getChancesToAttack(self.selectedUnit(), self.units[unitId]));
+                        }
                     }
                 } else {
                     self.enemyMoveZone([]);
@@ -553,5 +562,28 @@ game.interfaces.battle = {
                 template.remove();
             }
         );
+    },
+    
+    getLocationDefenceBonus: function(x, y) {
+        var self = game.interfaces.battle;
+        var bonus = 0;
+        if (self.map[y][x].object != null) {
+            bonus = game.data.battle.objects[self.map[y][x].object].defenceBonus;
+        }
+        return bonus;
+    },
+    
+    getChancesToAttack: function(unit, targetUnit) {
+        var self = game.interfaces.battle;
+        var unitAccuracy = unit.cAction().accuracy - self.getLocationDefenceBonus(targetUnit.x(), targetUnit.y());
+        var targetAccuracy = '-';
+        if (game.components.hexGeom.isCanAttackUnit(targetUnit, targetUnit.cAction(), unit, self.map)) {
+            targetAccuracy = targetUnit.cAction().accuracy - self.getLocationDefenceBonus(unit.x(), unit.y());
+        }
+        
+        return {
+            unitAccuracy: unitAccuracy,
+            targetAccuracy: targetAccuracy
+        };
     }
 };

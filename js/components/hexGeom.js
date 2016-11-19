@@ -92,6 +92,16 @@ game.components.hexGeom = {
         return unitsInZone;
     },
     
+    isCanAttackUnit: function(unit, action, target, hexMap) {
+        var actionHexes = this.getHexesBetweenRadiuses(unit.x(), unit.y(), action.minDistance, action.maxDistance, hexMap);
+        for (var i = 0; i < actionHexes.length; i++) {
+            if (actionHexes[i].x == target.x() && actionHexes[i].y == target.y()) {
+                return true;
+            }
+        }
+        return false;
+    },
+    
     getUnitMoveZone: function(unit, unitsOnMap, map) {
         var checkedHexes = {};
         var hexesToCheck = {};
