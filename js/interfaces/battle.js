@@ -469,12 +469,8 @@ game.interfaces.battle = {
         
         var damage = 0;
         var killed = 0;
-        var locationDefenceBonus = 0;
-        if (self.map[targetUnit.y()][targetUnit.x()].object != null) {
-            locationDefenceBonus = game.data.battle.objects[self.map[targetUnit.y()][targetUnit.x()].object].defenceBonus;
-        }
         
-        var accuracy = action.accuracy - locationDefenceBonus;
+        var accuracy = self.getChanceToAttack(actionUnit, targetUnit);
         for (var i = 0; i < actionUnit.cCount(); i++) {
             var cAccuracy = Math.random() * 100;
             if (cAccuracy <= accuracy) {
@@ -573,17 +569,51 @@ game.interfaces.battle = {
         return bonus;
     },
     
+    getChanceToAttack: function(unit, target) {
+        var self = game.interfaces.battle;
+        var chance = 0;
+        if (game.components.hexGeom.isCanAttackUnit(unit, unit.cAction(), target, self.map)) {
+            chance =  unit.cAction().accuracy - self.getLocationDefenceBonus(target.x(), target.y());
+            chance += self.getUnitSkillBonuses(unit, target, 'offence', 'accuracy');
+            chance += self.getUnitSkillBonuses(target, unit, 'defence', 'accuracy');
+        }
+        return chance;
+    },
+    
     getChancesToAttack: function(unit, targetUnit) {
         var self = game.interfaces.battle;
-        var unitAccuracy = unit.cAction().accuracy - self.getLocationDefenceBonus(targetUnit.x(), targetUnit.y());
-        var targetAccuracy = '-';
-        if (game.components.hexGeom.isCanAttackUnit(targetUnit, targetUnit.cAction(), unit, self.map)) {
-            targetAccuracy = targetUnit.cAction().accuracy - self.getLocationDefenceBonus(unit.x(), unit.y());
-        }
         
         return {
-            unitAccuracy: unitAccuracy,
-            targetAccuracy: targetAccuracy
+            unitAccuracy: self.getChanceToAttack(unit, targetUnit),
+            targetAccuracy: self.getChanceToAttack(targetUnit, unit)
         };
+    },
+    
+    getUnitSkillBonuses: function(unit, target, type, param) {
+        var bonuses = {};
+        for (var i = 0; i < game.data.units[unit.unitTypeId].skills.length; i++) {
+            var skill = game.data.skills[game.data.units[unit.unitTypeId].skills[i]];
+            if (skill.type == type) {
+                if (skill.condition(unit, target)) {
+                    for (var bonusName in skill.bonuses) {
+                        if (bonuses[bonusName] != null) {
+                            bonuses[bonusName] += skill.bonuses[bonusName];
+                        } 
+                        else {
+                            bonuses[bonusName] = skill.bonuses[bonusName];
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (param != null) {
+            if (bonuses[param] != null) {
+                return bonuses[param];
+            }
+            return 0;
+        }
+        
+        return bonuses;
     }
 };

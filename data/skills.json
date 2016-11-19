@@ -1,16 +1,18 @@
 {
     "trackingAnimals": {
-        "type": "passive",
-        "effect": {
-            "type": "bonus",
-            "target": "self",
-            "to": "accuracy",
-            "value": 10
-        },
-        "condition": {
-            "type": "vs",
-            "param": "race",
-            "value": "beast"
+        "type": "offence",
+        "params": ["accuracy"],
+        "condition": "return game.data.units[target.unitTypeId].race == 'animal'",
+        "bonuses": {
+            "accuracy": 5
+        }
+    },
+    "forestInhabitant": {
+        "type": "defence",
+        "params": ["accuracy"],
+        "condition": "return game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest'",
+        "bonuses": {
+            "accuracy": -5
         }
     }
 }

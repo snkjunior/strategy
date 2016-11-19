@@ -83,6 +83,8 @@
                 "accuracy": 80
             }
         ],
-        "skills": []
+        "skills": [
+            "forestInhabitant"
+        ]
     }
 }

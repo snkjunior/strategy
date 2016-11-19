@@ -45,6 +45,10 @@ game.loadData = function() {
     for (var mapName in game.maps) {
         game.maps[mapName] = loadData('data/maps/' + mapName + '.json');
     }
+    
+    for (var skillId in game.data.skills) {
+        game.data.skills[skillId].condition = new Function('unit, target', game.data.skills[skillId].condition);
+    }
 };
 
 game.initTemplates = function() {
