@@ -103,7 +103,7 @@ game.components.botVI = {
             }
         }
         return target;
-    },
+    }
 };
 
 
