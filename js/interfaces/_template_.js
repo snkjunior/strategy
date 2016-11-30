@@ -7,5 +7,9 @@ game.interfaces._interfaceName_ = {
     
     onReady: function() {
      
+    },
+    
+    onEnd: function() {
+        
     }
 };

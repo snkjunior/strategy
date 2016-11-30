@@ -255,6 +255,10 @@ game.interfaces.battle = {
         $('#map').click(game.interfaces.battle.clickOnHex);
     },
     
+    onEnd: function() {
+        
+    },
+    
     onMouseMove: function(e) {
         var self = game.interfaces.battle;
             

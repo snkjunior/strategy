@@ -1,40 +1,51 @@
 {
     "width": 1200,
     "height": 600,
-    "locations": {
+    "startLocation": "region2_abandodedHuntersCamp",
+    "regions": {
         "1": {
-            "locationId": 1,
+            "regionId": 1,
             "x": 100, 
             "y": 200,
-            "type": "empty",
-            "locations": ["forest", "forest"]
+            "resourceLocations": ["forest", "forest"],
+            "locations": []
         },
         "2": {
-            "locationId": 2,
+            "regionId": 2,
             "x": 350,
             "y": 150,
-            "type": "village",
-            "locations": ["plain", "plain", "plain"]
+            "resourceLocations": ["plain", "plain", "plain"],
+            "locations": [
+                "region2_sawmill",
+                "region2_abandodedHuntersCamp"
+            ]
         },
         "3": {
-            "locationId": 3,
+            "regionId": 3,
             "x": 550,
             "y": 100,
-            "type": "empty",
-            "locations": ["plain", "plain", "forest"]
+            "resourceLocations": ["plain", "plain", "forest"]
         },
         "4": {
-            "locationId": 4,
+            "regionId": 4,
             "x": 500,
             "y": 350,
-            "type": "empty",
-            "locations": ["plain", "plain", "forest"]
+            "resourceLocations": ["plain", "plain", "forest"]
         }
     },
     "roads": [
-        [1,2],
-        [2,3],
-        [2,4]
+        {   
+            "regions": [1,2],
+            "travelTime": 2
+        },
+        {
+            "regions": [2,3],
+            "travelTime": 3
+        },
+        {
+            "regions" : [2,4],
+            "travelTime": 3
+        }
     ]
 }
 

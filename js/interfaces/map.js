@@ -6,17 +6,19 @@ game.interfaces.map = {
     width: null,
     height: null,
     
-    locations: {},
+    regions: {},
     roads: [],
     
-    mouseOverLocation: ko.observable(null),
+    mouseOverRegion: ko.observable(null),
     
     init: function(callback, params) {
         var self = game.interfaces.map;
-        self.width = params.width;
-        self.height = params.height;        
-        self.locations = params.locations;
-        self.roads = params.roads;
+        if (params != null) {
+            self.width = params.width;
+            self.height = params.height;        
+            self.regions = params.regions;
+            self.roads = params.roads;
+        }
         
         callback();
     },
@@ -71,9 +73,12 @@ game.interfaces.map = {
         });
     },
     
+    onEnd: function() {
+        $("#interface").unbind('mousemove');
+    },
+    
     onMouseMove: function(e) {
         var self = game.interfaces.map;
-        
         if ($(e.target).prop('tagName') == 'DIV' && $(e.target).hasClass('location')) {
             var borderWidth = parseInt($('#map').css('border-width')) + parseInt($('#interface').css('border-width'));
             var mx = e.clientX - borderWidth;
@@ -81,32 +86,39 @@ game.interfaces.map = {
             var cameraDx = $('#map').css('left') === 'auto' ? 0 : parseInt($('#map').css('left'));
             var cameraDy = $('#map').css('top') === 'auto' ? 0 : parseInt($('#map').css('top'));
             
-            var location = self.locations[$(e.target).attr('locationId')];
+            var region = self.regions[$(e.target).attr('regionId')];
 
-            var distance = game.components.geom.getDistanceBetweenPoints(mx, my, location.x + cameraDx, location.y + cameraDy);
+            var distance = game.components.geom.getDistanceBetweenPoints(mx, my, region.x + cameraDx, region.y + cameraDy);
             if (distance <= self.locationRadius) {
-                self.mouseOverLocation(location);
+                self.mouseOverRegion(region);
                 return;
             }
         }
-        self.mouseOverLocation(null);
+        self.mouseOverRegion(null);
+    },
+    
+    clickRegion: function() {
+        var self = game.interfaces.map;
+        if (self.mouseOverRegion() != null) {
+            game.showInterface('region', self.mouseOverRegion());
+        }
     },
     
     getRoadCsvInfo: function(roads) {
         var self = game.interfaces.map;
         
-        var left = self.locations[roads[0]].x < self.locations[roads[1]].x ? self.locations[roads[0]].x : self.locations[roads[1]].x; 
-        var top = self.locations[roads[0]].y < self.locations[roads[1]].y ? self.locations[roads[0]].y : self.locations[roads[1]].y; 
+        var left = self.regions[roads.regions[0]].x < self.regions[roads.regions[1]].x ? self.regions[roads.regions[0]].x : self.regions[roads.regions[1]].x; 
+        var top = self.regions[roads.regions[0]].y < self.regions[roads.regions[1]].y ? self.regions[roads.regions[0]].y : self.regions[roads.regions[1]].y; 
         
         return {
             left: left,
             top: top,
-            width: Math.abs(self.locations[roads[0]].x - self.locations[roads[1]].x),
-            height: Math.abs(self.locations[roads[0]].y - self.locations[roads[1]].y),
-            x1: self.locations[roads[0]].x - left,
-            x2: self.locations[roads[1]].x - left,
-            y1: self.locations[roads[0]].y - top,
-            y2: self.locations[roads[1]].y - top
+            width: Math.abs(self.regions[roads.regions[0]].x - self.regions[roads.regions[1]].x),
+            height: Math.abs(self.regions[roads.regions[0]].y - self.regions[roads.regions[1]].y),
+            x1: self.regions[roads.regions[0]].x - left,
+            x2: self.regions[roads.regions[1]].x - left,
+            y1: self.regions[roads.regions[0]].y - top,
+            y2: self.regions[roads.regions[1]].y - top
         };
-    },
+    }
 };

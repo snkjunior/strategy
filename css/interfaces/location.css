@@ -1,0 +1,96 @@
+.locationInfo {
+    position: absolute;
+    width: 550px;
+    height: 450px;
+    top: 25px;
+    left: 25px;
+    background-color: #eee;
+    border: 1px black solid;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.locationDescription {
+    font-size: 12px;
+    margin: 10px;
+    text-indent: 10px;
+    text-align: justify;
+    white-space: pre-wrap;
+}
+
+.locationActions {
+    position: absolute;
+    width: 400px;
+    height: 450px;
+    top: 25px;
+    right: 25px;
+    background-color: #eee;
+    border: 1px black solid;
+}
+
+.header {
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.childLocations {
+    width: 350px;
+    height: 70px;
+    background-color: #eee;
+    border: 1px black solid;
+    margin: auto;
+}
+
+.arrow {
+    width: 35px;
+    height: 70px;
+    border: 1px black solid;
+    display: inline-block;
+}
+
+.childLocation {
+    width: 70px;
+    height: 70px;
+    border: 1px black solid;
+    display: inline-block;
+}
+
+.locationObjects {
+    width: 300px;
+    height: 250px;
+    border: 0px black solid;
+    margin: auto;
+    margin-top: 25px;
+}
+
+.locationObject {
+    width: 125px;
+    height: 100px;
+    display: inline-block;
+    border: 1px solid black;
+    background-color: #ddd;
+    text-align: center;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.objectPicture {
+    width: 64px;
+    height: 64px;
+    border: 1px black solid;
+    background-color: red;
+    vertical-align: top;
+    margin: auto;
+    margin-top: 5px;
+}
+
+.objectName {
+    vertical-align: top;
+    font-size: 15px;
+    margin: auto;
+    margin-top: 5px;
+}
+

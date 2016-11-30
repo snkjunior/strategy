@@ -1,0 +1,182 @@
+{
+    "sawmill_warehouse": {
+        "id": "sawmill_warehouse",
+        "name": "Склад",
+        "description": "Тут находится описание склада",
+        "visibleConditions": [],
+        "actions": [
+            {
+                "name": "Обыскать склад",
+                "apToAction": 1,
+                "visibleConditions": [
+                    {
+                        "type": "hasNotQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [3]
+                    }
+                ],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "description": "Обыскав склад вы нашли дерево, необходимое для восстановления лагеря.",
+                        "type": "changeResource",
+                        "resource": "wood",
+                        "count": 20
+                    },
+                    {
+                        "description": "[Добавлена запись в журнал]",
+                        "type": "addQuestNote",
+                        "questId": "restoreCamp",
+                        "note": 3                                
+                    }
+                ]
+            },
+            {
+                "name": "[Разведчик]Обыскать склад",
+                "apToAction": 1,
+                "visibleConditions": [
+                    {
+                        "type": "hasNotQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [3]
+                    }
+                ],
+                "activeConditions": [
+                    {
+                        "type": "heroClass",
+                        "class": "scout"
+                    }
+                ],
+                "result": [
+                    {
+                        "description": "Обыскав склад вы нашли дерево, необходимое для восстановления лагеря.",
+                        "type": "changeResource",
+                        "resource": "wood",
+                        "count": 20
+                    },
+                    {
+                        "description": "Собираясь уходить, вы случайно замечаете, что часть стены склада немного выступает. Решив внимательнее осмотреть место, вы нашли дверь с тайником, в котором обнаружили запас военных луков. На сколько вы помните, раньше это место использовалось как гарнизон для солдат - скорее всего в мирное время его переделали под лесопилку и про оружейную забыли. Несмотря на то, что луки долго хранились, были в неплохо качестве и намного эффективнее охотничьих луков.",
+                        "type": "addEquipment",
+                        "equipmentId": "weapon_longBow"
+                    },
+                    {
+                        "description": "[Добавлено новое снаряжение]",
+                        "type": "msg"
+                    },
+                    {
+                        "description": "[Добавлена запись в журнал]",
+                        "type": "addQuestNote",
+                        "questId": "restoreCamp",
+                        "note": 3                               
+                    }                            
+                ]
+            }
+        ]
+    },
+    "dan-lumberman": {
+        "id": "Dan-lumberman",
+        "name": "Дэн-лесоруб",
+        "description": "Тут будет описание Дэна-лесоруба",
+        "visibleConditions": [],
+        "actions": [
+            {
+                "name": "Узнать на счет дерева",
+                "description": "",
+                "visibleConditions": [
+                    {
+                        "type": "hasQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [1]  
+                    }
+                ],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "description": "Да, на складе нашей лесорубки должны были остаться запасы дерева. Давай карту, я укажу, где находится лесорубка.",
+                        "type": "msg"
+                    },
+                    {
+                        "description": "[Открыта новая локация]\n\n\r[Добавлена запись в журнал]",
+                        "type": "addQuestNote",
+                        "questId": "restoreCamp",
+                        "note": 2
+                    }
+                ]
+            }
+        ]
+    },
+    "craftsman": {
+        "id": "craftsman",
+        "name": "Ремесленник",
+        "description": "Тут будет описание ремесленника",
+        "visibleConditions": [],
+        "actions": [
+            {
+                "name": "Восстановление лагеря",
+                "visibleConditions": [
+                    {
+                        "type": "!isQuestFinished",
+                        "questId": "restoreCamp"
+                    }
+                ],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "description": "У нас очень много беженцов и им негде жить. Нам нужно восстановить лагерь и построить дома, для этого нам нужно дерево. Неподалеку есть лесопилка, возможно там еще остались запасы дерева. Узнай у наших лесорубов, которые там работали, где она.",
+                        "type": "msg"
+                    },
+                    {
+                        "description": "[Начато новое задание]",
+                        "type": "startQuest",
+                        "questId": "restoreCamp"
+                    },
+                    {
+                        "description": "[Добавлена запись в журнал]",
+                        "type": "addQuestNote",
+                        "questId": "restoreCamp",
+                        "note": 1
+                    }
+                ]
+            },
+            {
+                "name": "[10 дерева]Восстановить лагерь",
+                "apToAction": 0,
+                "visibleConditions": [
+                    {
+                        "type": "isQuestActive",
+                        "questId": "restoreCamp"
+                    },
+                    {
+                        "type": "!isQuestFinished",
+                        "questId": "restoreCamp"
+                    }
+                ],
+                "activeConditions": [
+                    {
+                        "type": "hasResource",
+                        "resource": "wood",
+                        "count": 10
+                    }
+                ],
+                "result": [
+                    {
+                        "description": "Лагерь восстановлен и беженцам теперь есть, где укрыться. Теперь пора обдумать ваши следующие действия.",
+                        "type": "changeResource",
+                        "resource": "wood",
+                        "count": -10
+                    },
+                    {
+                        "description": "",
+                        "type": "finishQuest",
+                        "questId": "restoreCamp"
+                    },
+                    {
+                        "description": "",
+                        "type": "setHeroLocation",
+                        "locationId": "region2_huntersCamp"
+                    }
+                ]
+            }
+        ]
+    }
+}

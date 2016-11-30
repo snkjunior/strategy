@@ -1,0 +1,69 @@
+.dialog {
+    width: 500px;
+    height: 100%;
+    margin: auto;
+    border: 1px black solid;
+    background-color: #ddd;
+}
+
+.objectPicture {
+    width: 300px;
+    height: 150px;
+    margin: auto;
+    background-color: red;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.objectDialogText {
+    max-width: 450px;
+    height: 150px;
+    border: 1px black solid;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin: auto;
+}
+
+.objectDialogText p {
+    font-size: 12px;
+    text-indent: 0px;
+    text-align: justify;
+    white-space: pre-wrap;
+    margin: 5px;
+}
+
+.objectDialogTextTextarea {
+    width: 100%;
+    height: 100%;
+    font-size: 12px;
+    resize: none;
+    background-color: #ddd;
+    text-indent: 10px;
+    text-align: justify;
+    white-space: pre-wrap;
+}
+
+.objectActions {
+    width: 450px;
+    height: 150px;
+    margin: auto;
+    border: 1px black solid;
+    margin-top: 10px;
+    font-size: 13px;
+}
+
+.objectAction {
+    margin: 5px;
+    cursor: pointer
+}
+
+.objectActionNotActive {
+    cursor: default;
+    color: #555;
+}
+
+.backButton {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}

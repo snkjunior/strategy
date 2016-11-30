@@ -1,0 +1,36 @@
+<link href="css/interfaces/location.css" rel="stylesheet">
+
+<!--ko with: location-->
+<div class='location'>
+    <div class='locationInfo'>
+        <div class='header' data-bind='text: name'></div>
+        <div class='locationDescription' data-bind='text: description'></div>
+    </div>
+    <div class='locationActions'>
+        <!--ko if: locations.length-->
+        <div class='header'>Локации</div>
+        <div class='childLocations'>
+            <div class='arrow borderBox'></div>
+            <div class='childLocation borderBox'></div>
+            <div class='childLocation borderBox'></div>
+            <div class='childLocation borderBox'></div>
+            <div class='childLocation borderBox'></div>
+            <div class='arrow borderBox'></div>
+        </div>
+        <!--/ko-->
+        <div class='locationObjects'>
+            <!--ko foreach: objects-->
+            <!--ko with: game.cMap.objects[$data]-->
+            <div class='locationObject borderBox' data-bind="click: game.interfaces.location.clickObject">
+                <div class='objectPicture borderBox'></div>
+                <div class='objectName' data-bind='text: name'></div>
+            </div>
+            <!--/ko-->
+            <!--/ko-->
+        </div>
+        <div style='margin: auto; margin-top: 25px; width: 100%; text-align: center; position: absolute; bottom: 20px;'>
+            <button data-bind="click: $parent.clickBack">Назад</button>
+        </div>
+    </div>
+</div>
+<!--/ko-->

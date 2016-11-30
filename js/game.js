@@ -1,14 +1,30 @@
 var game = {
     playerId: 1,
-    
     screen: {
         width: 1024,
         height: 500
     },
-
+    
+    hero: {
+        class: 'scout',
+        locationId: 'region2_abandodedHuntersCamp'        
+    },
+    
+    cMap: null,
+    
+    resources: {
+        wood: 20
+    },
+    
+    equipment: [],
+    
+    quests: {
+        
+    },
+    
     data: {},
     maps: {
-        "map1": ''
+        map1: ''
     },
 
     currentInterface: null,
@@ -23,8 +39,13 @@ game.init = function() {
     this.loadData();
     
     this.initTemplates();
-    this.showInterface('battle', {});
-    //this.showInterface('map', game.maps.map1);
+    //this.showInterface('battle', {});
+    this.cMap = game.maps.map1;
+    this.showInterface('map', game.maps.map1);
+    
+    //this.showInterface('region', this.cMap.regions[2]);
+    //this.showInterface('location', {locationId: this.hero.locationId});
+    //this.showInterface('dialog', game.cMap.objects["craftsman"]);
 };
 
 game.loadData = function() {
@@ -44,6 +65,9 @@ game.loadData = function() {
     
     for (var mapName in game.maps) {
         game.maps[mapName] = loadData('data/maps/' + mapName + '.json');
+        game.maps[mapName].locations = loadData('data/maps/' + mapName + '/locations.json');
+        game.maps[mapName].quests = loadData('data/maps/' + mapName + '/quests.json');
+        game.maps[mapName].objects = loadData('data/maps/' + mapName + '/objects.json');
     }
     
     for (var skillId in game.data.skills) {
@@ -65,6 +89,10 @@ game.initTemplates = function() {
 };
 
 game.showInterface = function(interfaceName, params) {    
+    if (game.currentInterface != null) {
+        game.currentInterface.onEnd();
+    }
+    
     game.currentInterface = game.interfaces[interfaceName];
     $("#interface").html(game.currentInterface.template);
     game.currentInterface.init(function() {

@@ -10,8 +10,8 @@
         <!--/ko-->
         <!--/ko-->
         
-        <!--ko foreach: game.components.other.objectToArray(locations)-->
-        <div class="location borderBox" data-bind="style: {left: x - $parent.locationRadius, top: y - $parent.locationRadius, width: $parent.locationRadius * 2, height: $parent.locationRadius * 2}, attr: {locationId: locationId}, css: {mouseOverLocation: $data == $parent.mouseOverLocation()}"/>
+        <!--ko foreach: game.components.other.objectToArray(regions)-->
+        <div class="location borderBox" data-bind="style: {left: x - $parent.locationRadius, top: y - $parent.locationRadius, width: $parent.locationRadius * 2, height: $parent.locationRadius * 2}, attr: {regionId: regionId}, css: {mouseOverLocation: $data == $parent.mouseOverRegion()}, click: $parent.clickRegion"/>
         <!--/ko-->
         
     </div>

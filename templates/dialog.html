@@ -1,0 +1,26 @@
+<link href="css/interfaces/dialog.css" rel="stylesheet">
+
+<div class='dialog'>
+    <div class='objectPicture'>
+        
+    </div>
+    
+    <div class='objectDialogText'>
+        <p data-bind='text: descriptionText'></p>
+    </div>
+            
+    <div class='objectActions'>
+        <!--ko foreach: visibleActions-->
+        <!--ko if: isActive-->
+        <div class='objectAction' data-bind='text: action.name, click: $parent.clickAction'></div>
+        <!--/ko-->
+        <!--ko if: !isActive-->
+        <div class='objectAction objectActionNotActive' data-bind='text: action.name'></div>
+        <!--/ko-->
+        <!--/ko-->
+    </div>
+</div>
+
+<div class='backButton'>
+    <button data-bind="click: clickBack">Назад</button>
+</div>
