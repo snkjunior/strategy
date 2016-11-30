@@ -18,7 +18,7 @@ game.interfaces.location = {
     },
     
     clickObject: function(object) {
-        game.showInterface('dialog', object);
+        game.showInterface('dialog', {object: object});
     },
     
     clickBack: function() {

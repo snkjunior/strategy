@@ -6,11 +6,19 @@ game.interfaces.dialog = {
     descriptionText: ko.observable(''),
     visibleActions: ko.observableArray([]),
     
-    init: function(callback, object) {
+    init: function(callback, params) {
         var self = game.interfaces.dialog;
         
-        self.object = object;
-        self.descriptionText(object.description);
+        if (params.object != null) {
+            self.object = params.object;
+        }
+        
+        if (params.msg != null) {
+            self.descriptionText(params.msg);
+        }
+        else {
+            self.descriptionText(self.object.description);
+        }
         
         callback();
     },

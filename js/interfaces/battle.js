@@ -2,9 +2,24 @@ game.interfaces.battle = {
     template: "",
     
     // Map static info
-    players: {},
-    width: null,
-    height: null,
+    players: {
+        1: {
+            isPlayer: true,
+            isAlive: true,
+            side: 1,
+            turn: 1,
+            nextPlayerTurn: 2
+        },
+        2: {
+            isPlayer: false,
+            isAlive: true,
+            side: 2,
+            turn: 2,
+            nextPlayerTurn: 1
+        }
+    },
+    width: 13,
+    height: 7,
     map: [],
     
     // Settings    
@@ -30,20 +45,152 @@ game.interfaces.battle = {
     
     enemyMoveZone: ko.observableArray([]),
     
-    
+    result: null,
     
     init: function(callback, params) {
         var self = game.interfaces.battle;
-        params.width = 13;
-        params.height = 7;
 
+        
+        
+//        units = {
+//            1: {
+//                id: 1,
+//                ownerId: 1,
+//                unitTypeId: 'human_hunter',
+//                x: ko.observable(0),
+//                y: ko.observable(0),
+//                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
+//                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            2: {
+//                id: 2,
+//                ownerId: 2,
+//                unitTypeId: 'animal_wolf',
+//                x: ko.observable(3),
+//                y: ko.observable(1),
+//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            3: {
+//                id: 3,
+//                ownerId: 2,
+//                unitTypeId: 'animal_wolf',
+//                x: ko.observable(4),
+//                y: ko.observable(3),
+//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            4: {
+//                id: 4,
+//                ownerId: 1,
+//                unitTypeId: 'human_hunter',
+//                x: ko.observable(0),
+//                y: ko.observable(1),
+//                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
+//                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            5: {
+//                id: 5,
+//                ownerId: 1,
+//                unitTypeId: 'human_hunter',
+//                x: ko.observable(0),
+//                y: ko.observable(2),
+//                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
+//                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            6: {
+//                id: 6,
+//                ownerId: 2,
+//                unitTypeId: 'animal_wolf',
+//                x: ko.observable(4),
+//                y: ko.observable(2),
+//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            7: {
+//                id: 7,
+//                ownerId: 2,
+//                unitTypeId: 'animal_wolf',
+//                x: ko.observable(3),
+//                y: ko.observable(0),
+//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            }, 
+//            8: {
+//                id: 8,
+//                ownerId: 1,
+//                unitTypeId: 'human_militiaman',
+//                x: ko.observable(1),
+//                y: ko.observable(2),
+//                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
+//                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            9: {
+//                id: 9,
+//                ownerId: 1,
+//                unitTypeId: 'human_militiaman',
+//                x: ko.observable(1),
+//                y: ko.observable(1),
+//                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
+//                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            },
+//            10: {
+//                id: 10,
+//                ownerId: 2,
+//                unitTypeId: 'animal_wolf',
+//                x: ko.observable(2),
+//                y: ko.observable(4),
+//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
+//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
+//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
+//                canMove: ko.observable(true),
+//                canAction: ko.observable(true)
+//            }, 
+//        };
+        
+        self.map = self.generateMap(self.width, self.height);
+        self.generateSquadsFromUnits(params.units, 1);
+        self.generateSquadsFromUnits(params.enemies, 2);
+        self.result = params.result;
+        
+        callback();
+    },
+    
+    generateMap: function(width, height) {
         var map = [];
-        for (var y = 0; y < params.height; y++) {
+        for (var y = 0; y < height; y++) {
             if (map[y] == null) {
                 map[y] = [];
             }
             
-            for (var x = 0; x < params.width; x++) {
+            for (var x = 0; x < width; x++) {
                 map[y][x] = {
                     x: x,
                     y: y,
@@ -53,158 +200,40 @@ game.interfaces.battle = {
                 };
             }
         }
+        return map;
+    },
+    
+    generateSquadsFromUnits: function(units, ownerId) {
+        var self = game.interfaces.battle;
         
-        map[1][3].object = 'forest';
-        map[3][2].object = 'forest';
-        //map[2][2].object = 'forest';
-        
-        units = {
-            1: {
-                id: 1,
-                ownerId: 1,
-                unitTypeId: 'human_hunter',
-                x: ko.observable(0),
-                y: ko.observable(0),
-                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
-                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
-                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            2: {
-                id: 2,
-                ownerId: 2,
-                unitTypeId: 'animal_wolf',
-                x: ko.observable(3),
-                y: ko.observable(1),
-                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            3: {
-                id: 3,
-                ownerId: 2,
-                unitTypeId: 'animal_wolf',
-                x: ko.observable(4),
-                y: ko.observable(3),
-                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            4: {
-                id: 4,
-                ownerId: 1,
-                unitTypeId: 'human_hunter',
-                x: ko.observable(0),
-                y: ko.observable(1),
-                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
-                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
-                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            5: {
-                id: 5,
-                ownerId: 1,
-                unitTypeId: 'human_hunter',
-                x: ko.observable(0),
-                y: ko.observable(2),
-                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
-                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
-                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            6: {
-                id: 6,
-                ownerId: 2,
-                unitTypeId: 'animal_wolf',
-                x: ko.observable(4),
-                y: ko.observable(2),
-                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            7: {
-                id: 7,
-                ownerId: 2,
-                unitTypeId: 'animal_wolf',
-                x: ko.observable(3),
-                y: ko.observable(0),
-                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            }, 
-            8: {
-                id: 8,
-                ownerId: 1,
-                unitTypeId: 'human_militiaman',
-                x: ko.observable(1),
-                y: ko.observable(2),
-                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
-                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
-                cAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            9: {
-                id: 9,
-                ownerId: 1,
-                unitTypeId: 'human_militiaman',
-                x: ko.observable(1),
-                y: ko.observable(1),
-                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
-                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
-                cAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            },
-            10: {
-                id: 10,
-                ownerId: 2,
-                unitTypeId: 'animal_wolf',
-                x: ko.observable(2),
-                y: ko.observable(4),
-                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-                canMove: ko.observable(true),
-                canAction: ko.observable(true)
-            }, 
-        };
-        
-        self.units = units;
-        
-        self.width = params.width;
-        self.height = params.height;
-        self.map = map;
-        
-        self.players = {
-            1: {
-                isPlayer: true,
-                isAlive: true,
-                side: 1,
-                turn: 1,
-                nextPlayerTurn: 2
-            },
-            2: {
-                isPlayer: false,
-                isAlive: true,
-                side: 2,
-                turn: 2,
-                nextPlayerTurn: 1
+        var squadNum = 1;
+        for (var unitTypeId in units) {
+            var unitType = game.data.units[unitTypeId];
+            var cCount = units[unitTypeId];
+            while (cCount > 0) {
+                var squadCount = unitType.unitsInSquad;
+                if (cCount < unitType.unitsInSquad) {
+                    squadCount = cCount;
+                }
+                
+                var squad = {
+                    id: Object.keys(self.units).length,
+                    ownerId: ownerId,
+                    unitTypeId: unitTypeId,
+                    x: ko.observable(ownerId === 1 ? 1 : 4),
+                    y: ko.observable(squadNum),
+                    cHp: ko.observable(unitType.unit.hp),
+                    cCount: ko.observable(squadCount),
+                    cAction: ko.observable(unitType.weapons[0]),
+                    canMove: ko.observable(true),
+                    canAction: ko.observable(true)
+                };
+                self.units[squad.id] = squad;
+                
+                cCount -= squadCount;
+                squadNum++;
             }
-        };
-        
-        callback();
+        }
     },
     
     onReady: function() {
@@ -466,6 +495,8 @@ game.interfaces.battle = {
         
         actionUnit.canAction(false);
         actionUnit.cAction(action);
+        
+        self.isBattleEnd();
     },
     
     processDamageToUnit: function(actionUnit, action, targetUnit) {
@@ -619,5 +650,29 @@ game.interfaces.battle = {
         }
         
         return bonuses;
+    },
+    
+    isBattleEnd: function() {
+        var self = game.interfaces.battle;
+        
+        var players = {
+            1: false,
+            2: false
+        };
+        
+        for (var unitId in self.units) {
+            if (self.units[unitId].cCount() > 0) {
+                players[self.units[unitId].ownerId] = true;
+            }
+        }
+        
+        if (!players[1]) {
+            game.showInterface('dialog', {msg: "Вы проиграли сражение."});
+        }
+        
+        if (!players[2]) {
+            var resultDescription = game.components.actions.processActions(self.result);
+            game.showInterface('dialog', {msg: resultDescription});
+        }
     }
 };

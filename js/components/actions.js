@@ -9,6 +9,10 @@ game.components.actions = {
         return description.join("\n\n\r");
     },
     
+    startBattle: function(action) {
+        game.startBattle(action.enemies, action.result);
+    },
+    
     msg: function(action) {
         return true;
     },
@@ -30,6 +34,11 @@ game.components.actions = {
             return true;
         }
         return false;
+    },
+    
+    addExp: function(action) {
+        game.hero.exp += action.exp;
+        return true;
     },
     
     setHeroLocation: function(action) {

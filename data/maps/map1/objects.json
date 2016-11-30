@@ -1,18 +1,118 @@
 {
+    "wolfes_near_warehouse": {
+        "id": "wolfes_near_warehouse",
+        "name": "Группа волков",
+        "description": "Возле склада вертится небольшая стая волков, которые не дают вам пройти.",
+        "visibleConditions": [
+            {
+                "type": "hasQuestNotes",
+                "questId": "restoreCamp",
+                "notes": [2]
+            }, 
+            {
+                "type": "hasNotQuestNotes",
+                "questId": "restoreCamp",
+                "notes": [3]
+            }
+        ],
+        "actions": [
+            {
+                "name": "Напасть",
+                "apToAction": 0,
+                "visibleConditions": [
+                    {
+                        "type": "hasQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [2]
+                    }, 
+                    {
+                        "type": "hasNotQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [3]
+                    }
+                ],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "type": "startBattle",
+                        "enemies": {
+                            "animal_wolf": 25
+                        },
+                        "result": [
+                            {
+                                "type": "msg",
+                                "description": "Вы прогнали волков и теперь путь к складу свободен."
+                            },
+                            {
+                                "type": "addExp",
+                                "exp": 50,
+                                "description": "[+50 опыта]"
+                            },
+                            {
+                                "description": "[Добавлена запись в журнал]",
+                                "type": "addQuestNote",
+                                "questId": "restoreCamp",
+                                "note": 3 
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
     "sawmill_warehouse": {
         "id": "sawmill_warehouse",
         "name": "Склад",
         "description": "Тут находится описание склада",
-        "visibleConditions": [],
+        "visibleConditions": [
+            {
+                "type": "hasQuestNotes",
+                "questId": "restoreCamp",
+                "notes": [2, 3]
+            }, 
+            {
+                "type": "hasNotQuestNotes",
+                "questId": "restoreCamp",
+                "notes": [4]
+            }
+        ],
         "actions": [
+            {
+                "name": "Обыскать склад",
+                "apToAction": 0,
+                "visibleConditions": [
+                    {
+                        "type": "hasQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [2]
+                    }, 
+                    {
+                        "type": "hasNotQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [3]
+                    }
+                ],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "type": "msg",
+                        "description": "Нужно избавиться от волков"
+                    }
+                ]
+            },
             {
                 "name": "Обыскать склад",
                 "apToAction": 1,
                 "visibleConditions": [
                     {
-                        "type": "hasNotQuestNotes",
+                        "type": "hasQuestNotes",
                         "questId": "restoreCamp",
                         "notes": [3]
+                    },
+                    {
+                        "type": "hasNotQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [4]
                     }
                 ],
                 "activeConditions": [],
@@ -31,7 +131,7 @@
                         "description": "[Добавлена запись в журнал]",
                         "type": "addQuestNote",
                         "questId": "restoreCamp",
-                        "note": 3                                
+                        "note": 4                                
                     }
                 ]
             },
@@ -40,9 +140,14 @@
                 "apToAction": 1,
                 "visibleConditions": [
                     {
-                        "type": "hasNotQuestNotes",
+                        "type": "hasQuestNotes",
                         "questId": "restoreCamp",
                         "notes": [3]
+                    },
+                    {
+                        "type": "hasNotQuestNotes",
+                        "questId": "restoreCamp",
+                        "notes": [4]
                     }
                 ],
                 "activeConditions": [
@@ -75,7 +180,7 @@
                         "description": "[Добавлена запись в журнал]",
                         "type": "addQuestNote",
                         "questId": "restoreCamp",
-                        "note": 3                               
+                        "note": 4                               
                     }                            
                 ]
             }

@@ -8,18 +8,23 @@ var game = {
     cMap: null,
     
     hero: {
+        exp: 0,
         class: 'scout',
-        locationId: 'region2_abandodedHuntersCamp'        
+        locationId: 'region2_abandodedHuntersCamp',
+        units: {
+            human_hunter: 60
+        }
     },
     resources: {
         wood: 0
     },
     equipment: [],
-    quests: {},
-    
-    
-    
-    
+    quests: {
+//        restoreCamp: {
+//            isFinished: false,
+//            notes: [1, 2, 3]
+//        }
+    },
     
     data: {},
     maps: {
@@ -38,7 +43,17 @@ game.init = function() {
     this.loadData();
     
     this.initTemplates();
-    //this.showInterface('battle', {});
+//    this.showInterface('battle', {
+//        units: {
+//            human_hunter: 65
+//        },
+//        enemies: {
+//            animal_wolf: 30
+//        },
+//        result: [
+//            'result'
+//        ]
+//    });
     this.cMap = game.maps.map1;
     this.showInterface('map', game.maps.map1);
     
@@ -113,4 +128,13 @@ game.hideInterface = function() {
 game.animateFrame = function() {
     requestAnimFrame(game.animateFrame);
     game.pixi.renderer.render(game.pixi.stage);
+};
+
+game.startBattle = function(enemies, result) {
+    var battleData = {
+        units: this.hero.units,
+        enemies: enemies,
+        result: result
+    };
+    this.showInterface("battle", battleData);
 };
