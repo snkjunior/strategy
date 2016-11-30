@@ -10,6 +10,7 @@ game.interfaces.region = {
     init: function(callback, region) {
         var self = game.interfaces.region;
         if (region != null) {
+            self.locations = {};
             for (var i = 0; i < region.locations.length; i++) {
                 self.locations[region.locations[i]] = game.cMap.locations[region.locations[i]];
             }

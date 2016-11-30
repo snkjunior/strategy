@@ -34,6 +34,7 @@ game.components.actions = {
     
     setHeroLocation: function(action) {
         game.hero.locationId = action.locationId;
+        return true;
     },
     
     addQuestNote: function(action) {

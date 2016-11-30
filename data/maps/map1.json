@@ -17,20 +17,23 @@
             "resourceLocations": ["plain", "plain", "plain"],
             "locations": [
                 "region2_sawmill",
-                "region2_abandodedHuntersCamp"
+                "region2_abandodedHuntersCamp",
+                "region2_huntersCamp"
             ]
         },
         "3": {
             "regionId": 3,
             "x": 550,
             "y": 100,
-            "resourceLocations": ["plain", "plain", "forest"]
+            "resourceLocations": ["plain", "plain", "forest"],
+            "locations": []
         },
         "4": {
             "regionId": 4,
             "x": 500,
             "y": 350,
-            "resourceLocations": ["plain", "plain", "forest"]
+            "resourceLocations": ["plain", "plain", "forest"],
+            "locations": []
         }
     },
     "roads": [

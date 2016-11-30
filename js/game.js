@@ -5,22 +5,21 @@ var game = {
         height: 500
     },
     
+    cMap: null,
+    
     hero: {
         class: 'scout',
         locationId: 'region2_abandodedHuntersCamp'        
     },
-    
-    cMap: null,
-    
     resources: {
-        wood: 20
+        wood: 0
     },
-    
     equipment: [],
+    quests: {},
     
-    quests: {
-        
-    },
+    
+    
+    
     
     data: {},
     maps: {
