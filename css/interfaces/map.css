@@ -12,6 +12,13 @@
     background-color: #ccc;
 }
 
+.locationName {
+    width: 100px;
+    font-size: 10px;
+    position: absolute;
+    text-align: center;
+}
+
 .mouseOverLocation {
     background-color: #eea53e;
 }
