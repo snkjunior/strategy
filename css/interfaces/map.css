@@ -20,7 +20,7 @@
 }
 
 .mouseOverLocation {
-    background-color: #eea53e;
+    background-color: #eea53e !important;
 }
 
 body {

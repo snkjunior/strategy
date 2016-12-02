@@ -7,6 +7,8 @@ var game = {
     
     cMap: null,
     
+    mapTime: 8,
+    
     hero: {
         exp: 0,
         class: 'scout',
