@@ -41,6 +41,12 @@ game.components.actions = {
         return true;
     },
     
+    changeMap: function(action) {
+        game.hero.locationId = action.locationId;
+        game.cMap = game.cMission.maps[action.mapId];
+        game.showInterface('map', game.cMap);
+    },
+    
     setHeroLocation: function(action) {
         game.hero.locationId = action.locationId;
         return true;
@@ -65,5 +71,16 @@ game.components.actions = {
             return true;
         }
         return false;
+    },
+    
+    addKnownLocation: function(action) {
+        console.log(action);
+        if (!game.hero.knownLocations[action.mapId]) {
+            game.hero.knownLocations[action.mapId] = [];
+        }
+        if (game.hero.knownLocations[action.mapId].indexOf(action.locationId) === -1) {
+            game.hero.knownLocations[action.mapId].push(action.locationId);
+        }
+        return true;
     }
 };

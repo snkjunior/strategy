@@ -213,15 +213,15 @@ game.components.hexGeom = {
         return movePass;
     },
     
-    isHexInMoveZone: function(moveZone, x, y) {
+    getHexInMoveZone: function(moveZone, x, y) {
         if (moveZone.length) {
             for (var i = 0; i < moveZone.length; i++) {
                 if (moveZone[i].x == x && moveZone[i].y == y) {
-                    return true;
+                    return moveZone[i];
                 }
             }
         }
-        return false;
+        return null;
     },
     
     getMoveZoneOutsideHexes: function(moveZoneHexes, map) {
@@ -265,6 +265,14 @@ game.components.hexGeom = {
         
         return fullAttackZone;
     },
+    
+    moveZoneHexesToMapHexes: function(moveZoneHexes, hexMap) {
+        var mapHexes = [];
+        for (var i = 0; i < moveZoneHexes.length; i++) {
+            mapHexes.push(hexMap[moveZoneHexes[i].y][moveZoneHexes[i].x]);
+        }
+        return mapHexes;
+    }
 };
 
 

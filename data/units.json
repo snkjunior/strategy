@@ -3,11 +3,10 @@
         "sprite": "human_hunter",
         "name": "Hunter",
         "race": "human",
-        "unitsInSquad": 30,
-        "leadership": 60,
+        "unitsInSquad": 10,
         "speed": 3,
         "unit": {
-            "hp": 10,
+            "hp": 15,
             "protection": 0,
             "resist": 0
         },
@@ -15,8 +14,8 @@
             {
                 "name": "bow",
                 "isDefault": true,
-                "minDamage": 2,
-                "maxDamage": 5,
+                "minDamage": 4,
+                "maxDamage": 8,
                 "minDistance": 2,
                 "maxDistance": 3,
                 "accuracy": 70
@@ -24,8 +23,8 @@
             {
                 "name": "knife",
                 "isDefault": false,
-                "minDamage": 1,
-                "maxDamage": 3,
+                "minDamage": 2,
+                "maxDamage": 5,
                 "minDistance": 1,
                 "maxDistance": 1,
                 "accuracy": 60
@@ -39,8 +38,7 @@
         "sprite": "human_militiaman",
         "name": "Militiaman",
         "race": "human",
-        "unitsInSquad": 30,
-        "leadership": 45,
+        "unitsInSquad": 10,
         "speed": 3,
         "unit": {
             "hp": 10,
@@ -51,8 +49,8 @@
             {
                 "name": "pitchfork",
                 "isDefault": true,
-                "minDamage": 1,
-                "maxDamage": 3,
+                "minDamage": 2,
+                "maxDamage": 5,
                 "minDistance": 1,
                 "maxDistance": 1,
                 "accuracy": 70
@@ -64,11 +62,10 @@
         "sprite": "animal_wolf",
         "name": "Wolf",
         "race": "animal",
-        "unitsInSquad": 25,
-        "leadership": 50,
+        "unitsInSquad": 10,
         "speed": 4,
         "unit": {
-            "hp": 15,
+            "hp": 25,
             "protection": 0,
             "resist": 0
         },
@@ -76,8 +73,8 @@
             {
                 "name": "bite",
                 "isDefault": true,
-                "minDamage": 2,
-                "maxDamage": 4,
+                "minDamage": 6,
+                "maxDamage": 9,
                 "minDistance": 1,
                 "maxDistance": 1,
                 "accuracy": 80

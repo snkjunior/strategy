@@ -1,0 +1,8 @@
+{
+    "id": "villageGreyshow",
+    "name": "Деревня Грейшоу",
+    "width": 700,
+    "height": 400,
+    "useRoads": false,
+    "roads": []
+}

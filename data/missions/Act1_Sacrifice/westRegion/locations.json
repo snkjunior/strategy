@@ -1,0 +1,45 @@
+{
+    "roadToKingdom": {
+        "id": "roadToKingdom",
+        "x": 150,
+        "y": 700,
+        "sprite": null,
+        "name": "Дорога на королевство",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "objects": [],
+        "triggers": []
+    },
+    "forestTrail": {
+        "id": "forestTrail",
+        "x": 300,
+        "y": 400,
+        "sprite": null,
+        "name": "Лесная тропа",
+        "description": "",
+        "isVisible": false,
+        "visibleConditions": [],
+        "objects": [
+            "woundedPeasant",
+            "caravan"
+        ],
+        "triggers": []
+    },
+    "villageGreyshow": {
+        "id": "villageGreyshow",
+        "x": 500,
+        "y": 500,
+        "sprite": "village.png",
+        "name": "Деревня Грейшоу",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "objects": [
+            "enterGreyshow"
+        ],
+        "triggers": [
+            "showLocation_forestTrail"
+        ]
+    }
+}

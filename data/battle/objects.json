@@ -6,13 +6,13 @@
     },
     "forest": {
         "isPassable": true,
-        "defenceBonus": 5,
+        "defenceBonus": 10,
         "moveMod": 1.5,
         "sprite": "forest.png"
     },
     "hills": {
         "isPassable": true,
-        "defenceBonus": 10,
+        "defenceBonus": 15,
         "moveMod": 2
     },
     "mountain": {

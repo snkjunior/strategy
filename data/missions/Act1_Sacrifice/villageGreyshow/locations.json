@@ -1,0 +1,16 @@
+{
+    "villageGate": {
+        "id": "villageGate",
+        "x": 300,
+        "y": 300,
+        "sprite": null,
+        "name": "Врата деревни",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "objects": [
+            "leaveGreyshow"
+        ],
+        "triggers": []
+    }
+}

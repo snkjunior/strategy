@@ -1,0 +1,187 @@
+<link href="css/interfaces/battle.css" rel="stylesheet">
+
+<div id="battleInterface">
+    <div id="map" data-bind="style: {width: 48 * width + (width % 2 == 0 ? 0 : 16) + 'px', height: 64 * height + 32 + 'px', position: 'absolute'}">
+        <div id="terrain">
+            <!--ko foreach: map-->
+            <!--ko foreach: $data-->
+            <div class="hex" data-bind="style: {position: 'absolute', left: x * 48 + 'px', top: (x % 2 == 0 ? 32 : 0) + y * 64 + 'px'}, attr: {x: x, y: y}">
+                <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[terrain].sprite}">
+                
+                <!--ko if: object != null-->
+                <img data-bind="attr: {src: 'img/battle/objects/' + game.data.battle.objects[object].sprite}" style="position: absolute; top: -5px; left: 0px; z-index: 5;"/>
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.getUnitIdInHex(x, y) != null-->
+                <!--ko with: game.interfaces.battle.units[game.interfaces.battle.getUnitIdInHex(x, y)]-->
+                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '_' + (ownerId == 1 ? 'player' : 'enemy') + '.png', unitId: id}" style="position: absolute; top: -15px; left: 0px; z-index: 10;"/>
+                <!--ko if: game.interfaces.battle.unitsToAction().indexOf(id) != -1 -->
+                <img data-bind="attr: {src: 'img/battle/hex_attack.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 4; opacity: 0.5;">
+                <!--/ko-->
+                <!--/ko-->
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.isShowBorder()-->
+                <img src="img/battle/hex_border.png" style="position: absolute; top: 0px; left: 0px;"/>
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.mouseOverHex() == $data--> 
+                <img data-bind="attr: {src: 'img/battle/hex_over.png'}"  style="position: absolute; top: 0px; left: 0px; z-index: 4;">
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.selectedUnit() != null && game.interfaces.battle.selectedUnit().x() == $data.x && game.interfaces.battle.selectedUnit().y() == $data.y--> 
+                <img data-bind="attr: {src: 'img/battle/hex_selected.png'}"  style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.5;">
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.moveZone().length-->
+                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.moveZone(), x, y) -->
+                <img data-bind="attr: {src: 'img/battle/hex_selected.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.5;">
+                <!--/ko-->
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.enemyMoveZone().length-->
+                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.enemyMoveZone(), x, y) -->
+                <img data-bind="attr: {src: 'img/battle/hex_attack.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.3;">
+                <!--/ko-->
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.movePass().length-->
+                <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y) -->
+                <img data-bind="attr: {src: 'img/battle/hex_moveDot.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3;">
+                <!--/ko-->
+                <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y, '0-1') -->
+                <img data-bind="attr: {src: 'img/battle/hex_move0-1.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3;">
+                <!--/ko-->
+                <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y, '+1-1') -->
+                <img data-bind="attr: {src: 'img/battle/hex_move+1-1.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3;">
+                <!--/ko-->
+                <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y, '+1+1') -->
+                <img data-bind="attr: {src: 'img/battle/hex_move+1+1.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3;">
+                <!--/ko-->
+                <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y, '0+1') -->
+                <img data-bind="attr: {src: 'img/battle/hex_move0+1.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3;">
+                <!--/ko-->
+                <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y, '-1+1') -->
+                <img data-bind="attr: {src: 'img/battle/hex_move-1+1.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3;">
+                <!--/ko-->
+                <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y, '-1-1') -->
+                <img data-bind="attr: {src: 'img/battle/hex_move-1-1.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3;">
+                <!--/ko-->
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.isShowCoordinates()-->
+                <span style="position: absolute; z-index: 20; top: 50; left: 20; font-size: 10px; color: #dddddd;" data-bind="html: x + '-' + y"></span>
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.mouseOverHex() == $data && game.interfaces.battle.actionAttackInfo() != null-->
+                <!--ko with: game.interfaces.battle.actionAttackInfo()-->
+                <span style="position: absolute; z-index: 20; top: -10; left: 0; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: unitAccuracy + '%'"></span>
+                <span style="position: absolute; z-index: 20; top: -10; left: 30; width: 4px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;">|</span>
+                <span style="position: absolute; z-index: 20; top: -10; left: 34; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: targetAccuracy == '0' ? 'no' : targetAccuracy + '%'"></span>
+                <!--/ko-->
+                <!--/ko-->
+            </div>
+            <!--/ko-->
+            <!--/ko-->
+        </div>
+    </div>
+    <!--ko if: game.interfaces.battle.selectedUnit() -->
+        <!--ko with: game.interfaces.battle.selectedUnit()-->
+        <div class="unitInfo" data-bind="style: {left: 10, top: (game.screen.height - 150)}">
+            <div class="unitAvatar">
+                <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[game.interfaces.battle.map[y()][x()].terrain].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;">
+                <img src="img/battle/hex_border.png" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
+                <!--ko if: game.interfaces.battle.map[y()][x()].object != null -->
+                <img data-bind="attr: {src: 'img/battle/objects/' + game.data.battle.objects[game.interfaces.battle.map[y()][x()].object].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
+                <!--/ko-->
+                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '_' + (ownerId == 1 ? 'player' : 'enemy') + '.png'}" style="position: absolute; top: 5px; left: 18px; z-index: 5;"/>
+            </div>
+            <!--ko with: game.interfaces.battle.map[y()][x()]-->
+                <!--ko if: object != null -->
+                <div class='unitPanelBonus' style='top: 90px;'>
+                    <img src='img/battle/protection.png' style='width: 14px; height: 14px; position: absolute; left: 30px;'/>
+                    <span style='position: absolute; left: 45px; top: 1px;' data-bind='text: "+" + game.data.battle.objects[object].defenceBonus + "%"'></span>
+                </div>
+                <!--/ko-->
+            <!--/ko-->
+            <div class='unitPanel squadHp' style='top: 110px;'>
+            </div>
+            <div class='unitPanel squadCHp' style='top: 110px;' data-bind='style: {width: 100 * cHp() / game.data.units[unitTypeId].unit.hp}'>
+            </div>
+            <div class='unitPanel' style='top: 110px;' data-bind="text: cHp() + '/' + game.data.units[unitTypeId].unit.hp">
+            </div>
+            <div class='unitPanel squadCount' style='top: 125px;'>
+            </div>
+            <div class='unitPanel squadHp' style='top: 125px;' data-bind='style: {width: 100 * (cCount() + lightWounded()) / game.data.units[unitTypeId].unitsInSquad}'>
+            </div>
+            <div class='unitPanel squadCCount' style='top: 125px;' data-bind='style: {width: 100 * cCount() / game.data.units[unitTypeId].unitsInSquad}'>
+            </div>
+            <div class='unitPanel' style='top: 125px;' data-bind="text: cCount() + '/' + game.data.units[unitTypeId].unitsInSquad">
+            </div>
+        </div>
+        <!--/ko-->
+        
+        <!--ko if: game.interfaces.battle.selectedUnit().canAction()-->
+        <!--ko foreach: game.data.units[game.interfaces.battle.selectedUnit().unitTypeId].weapons -->
+        <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, click: $parent.clickOnAction">
+            <img data-bind="attr: {src: 'img/battle/action_' + ($data == game.interfaces.battle.selectedAction() ? 'selected' : 'unselected') + '.png'}">
+            <span style="position: absolute; top: 5px; left: 5px; font-size: 12px;" data-bind="text: name"></span>
+            <img src="img/battle/range.png" style="position: absolute; top: 19px; left: 10px; width: 14px; height: 14px">
+            <span style="position: absolute; top: 20px; left: 30px; font-size: 10px;" data-bind="text: minDistance + '-' + maxDistance"></span>
+            
+            <img src="img/battle/damage.png" style="position: absolute; top: 32px; left: 10px; width: 14px; height: 14px">
+            <span style="position: absolute; top: 33px; left: 30px; font-size: 10px;" data-bind="text: minDamage + '-' + maxDamage"></span>
+            
+            <img src="img/battle/accuracy.png" style="position: absolute; top: 45px; left: 10px; width: 14px; height: 14px">
+            <span style="position: absolute; top: 46px; left: 30px; font-size: 10px;" data-bind="text: accuracy + '%'"></span>
+        </div>
+        <!--/ko-->
+        <!--/ko-->
+    <!--/ko-->
+    
+    <!--ko with: game.interfaces.battle.mouseOverHex() -->
+        <!--ko if: game.interfaces.battle.getUnitIdInHex(x, y) != null -->
+            <!--ko with: game.interfaces.battle.units[game.interfaces.battle.getUnitIdInHex(x, y)]-->
+            <div class="unitInfo" data-bind="style: {left: game.screen.width - 100 - 10, top: (game.screen.height - 150)}">
+                <div class="unitAvatar">
+                <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[game.interfaces.battle.map[y()][x()].terrain].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;">
+                <img src="img/battle/hex_border.png" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
+                <!--ko if: game.interfaces.battle.map[y()][x()].object != null -->
+                <img data-bind="attr: {src: 'img/battle/objects/' + game.data.battle.objects[game.interfaces.battle.map[y()][x()].object].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
+                <!--/ko-->
+                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '_' + (ownerId == 1 ? 'player' : 'enemy') + '.png'}" style="position: absolute; top: 5px; left: 18px; z-index: 5;"/>
+            </div>
+                <!--ko with: game.interfaces.battle.map[y()][x()]-->
+                <!--ko if: object != null -->
+                <div class='unitPanelBonus' style='top: 90px;'>
+                    <img src='img/battle/protection.png' style='width: 14px; height: 14px; position: absolute; left: 30px;'/>
+                    <span style='position: absolute; left: 45px; top: 1px;' data-bind='text: "+" + game.data.battle.objects[object].defenceBonus + "%"'></span>
+                </div>
+                <!--/ko-->
+                <!--/ko-->
+                <div class='unitPanel squadHp' style='top: 110px;'>
+                </div>
+                <div class='unitPanel squadCHp' style='top: 110px;' data-bind='style: {width: 100 * cHp() / game.data.units[unitTypeId].unit.hp}'>
+                </div>
+                <div class='unitPanel' style='top: 110px;' data-bind="text: cHp() + '/' + game.data.units[unitTypeId].unit.hp">
+                </div>
+                <div class='unitPanel squadCount' style='top: 125px;'>
+                </div>
+                <div class='unitPanel squadHp' style='top: 125px;' data-bind='style: {width: 100 * (cCount() + lightWounded()) / game.data.units[unitTypeId].unitsInSquad}'>
+                </div>
+                <div class='unitPanel squadCCount' style='top: 125px;' data-bind='style: {width: 100 * cCount() / game.data.units[unitTypeId].unitsInSquad}'>
+                </div>
+                <div class='unitPanel' style='top: 125px;' data-bind="text: cCount() + '/' + game.data.units[unitTypeId].unitsInSquad">
+                </div>
+                </div>
+            <!--/ko-->
+        <!--/ko-->
+    <!--/ko-->
+    
+    <div style='position: absolute; top: 20px; left:20px; z-index: 10;'><button data-bind="click: clickEndTurnButton">Next turn</button></div>
+</div>
+
+<div id='damagePattern' style='width: 64px; position: absolute; display: none; text-align: center; z-index: 10; font-size: 12px;'>
+    <span class='textRed'></span>
+    <span class='textYellow'></span>
+</div>

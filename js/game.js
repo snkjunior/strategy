@@ -5,16 +5,42 @@ var game = {
         height: 500
     },
     
+    cMission: null,
     cMap: null,
     
-    mapTime: 8,
+    time: {
+        minutes: 0,
+        hours: 8,
+        day: 1,
+        addTime: function(min) {
+            var addHours = Math.floor(min / 60);
+            this.minutes += min % 60;
+            if (this.minutes >= 60) {
+                this.minutes -= 60;
+                addHours += 1;
+            }
+            
+            this.hours += addHours;
+            if (this.hours >= 24) {
+                this.day += Math.floor(this.hours / 24);
+                this.hours = this.hours % 24;
+            }
+        },
+        getTime: function() {
+            return {day: this.day, hours: this.hours, minutes: this.minutes};
+        }
+    },
     
     hero: {
         exp: 0,
         class: 'scout',
-        locationId: 'region2_abandodedHuntersCamp',
+        locationId: 'roadToKingdom',
         units: {
-            human_hunter: 60
+            human_hunter: 3,
+            human_militiaman: 1
+        },
+        knownLocations: {
+            //"westRegion": ["forestTrail"]
         }
     },
     resources: {
@@ -29,8 +55,8 @@ var game = {
     },
     
     data: {},
-    maps: {
-        map1: ''
+    missions: {
+        act1_sacrifice: null
     },
 
     currentInterface: null,
@@ -45,19 +71,22 @@ game.init = function() {
     this.loadData();
     
     this.initTemplates();
-//    this.showInterface('battle', {
-//        units: {
-//            human_hunter: 65
-//        },
-//        enemies: {
-//            animal_wolf: 30
-//        },
-//        result: [
-//            'result'
-//        ]
-//    });
-    this.cMap = game.maps.map1;
-    this.showInterface('map', game.maps.map1);
+    this.showInterface('battle', {
+        units: this.hero.units,
+        enemies: {
+            animal_wolf: 4
+        },
+        result: [
+            
+        ]
+    });
+//    this.cMission = game.missions.act1_sacrifice;
+//    this.cMap = game.missions.act1_sacrifice.maps.westRegion;
+//    this.showInterface('map', this.cMap);
+    
+//    this.showInterface('editor');
+    
+    //game.components.actions.changeMap({locationId: 'villageGate', mapId: 'villageGreyshow'});
     
     //this.showInterface('region', this.cMap.regions[2]);
     //this.showInterface('location', {locationId: this.hero.locationId});
@@ -75,16 +104,22 @@ game.loadData = function() {
             objects: loadData('data/battle/objects.json'),
             terrains: loadData('data/battle/terrains.json')
         },
-        units: loadData('data/units.json'),
-        skills: loadData('data/skills.json')
+        units: loadData('data/units_v2.json'),
+        skills: loadData('data/skills_v2.json')
     };
     
-    for (var mapName in game.maps) {
-        game.maps[mapName] = loadData('data/maps/' + mapName + '.json');
-        game.maps[mapName].locations = loadData('data/maps/' + mapName + '/locations.json');
-        game.maps[mapName].quests = loadData('data/maps/' + mapName + '/quests.json');
-        game.maps[mapName].objects = loadData('data/maps/' + mapName + '/objects.json');
+    for (var missionName in game.missions) {
+        game.missions[missionName] = loadData('data/missions/' + missionName + '.mission.json');
+//        game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
+//        for (var mapName in game.missions[missionName].maps) {
+//            game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '.mission');
+//            game.missions[missionName].maps[mapName].locations = loadData('data/missions/' + missionName + '/' + mapName + '/locations.json');
+//            game.missions[missionName].maps[mapName].objects = loadData('data/missions/' + missionName + '/' + mapName + '/objects.json');
+//            game.missions[missionName].maps[mapName].triggers = loadData('data/missions/' + missionName + '/' + mapName + '/triggers.json');
+//        }
     }
+    
+    
     
     for (var skillId in game.data.skills) {
         game.data.skills[skillId].condition = new Function('unit, target', game.data.skills[skillId].condition);

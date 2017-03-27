@@ -7,17 +7,6 @@
         <div class='locationDescription' data-bind='text: description'></div>
     </div>
     <div class='locationActions'>
-        <!--ko if: locations.length-->
-        <div class='header'>Локации</div>
-        <div class='childLocations'>
-            <div class='arrow borderBox'></div>
-            <div class='childLocation borderBox'></div>
-            <div class='childLocation borderBox'></div>
-            <div class='childLocation borderBox'></div>
-            <div class='childLocation borderBox'></div>
-            <div class='arrow borderBox'></div>
-        </div>
-        <!--/ko-->
         <div class='locationObjects'>
             <!--ko foreach: objects-->
             <!--ko with: game.cMap.objects[$data]-->

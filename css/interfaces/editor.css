@@ -1,0 +1,144 @@
+.tabPanel {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 400px;
+    height: 20px;
+    border: 2px #aaa solid;
+}
+
+.tabInset {
+    border-right: 2px #aaa solid;
+    font-size: 12px;
+    min-width: 50px;
+    max-width: 70px;
+    text-align: center;
+    display: inline-block;
+    padding: 2 3 0 3;
+    height: 18px;
+    background-color: #eee;
+    cursor: pointer;
+    color: #444;
+    vertical-align: top;
+}
+
+.tabInsetActive {
+    background-color: #95cbef;
+}
+
+.tabInset:hover {
+    background-color: #e5e576;
+}
+
+.tabContent {
+    position: absolute;
+    top: 25px;
+    left: 0px;
+    width: 400px;
+    font-size: 12px;
+    color: #444;
+    padding: 3px;
+}
+
+.tabContent button {
+    width: 250px;
+    margin-left: 40px;
+    
+}
+
+.tabContent_row {
+    margin: 3px;
+    padding-left: 10px;
+}
+
+.tabContent_title {
+    font-size: 13px;
+    font-weight: bold;
+    padding-top: 20px;
+    padding-left: 0px;
+}
+
+.noTab {
+    padding-left: 0px;
+}
+
+.popupBG {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #666;
+    opacity: 0.5;
+}
+
+.popupDialog {
+    position: absolute;
+    z-index: 20;
+    border: 4px ridge #ddd;
+    background-color: #ddd;
+    top: 25px;
+}
+
+.popupHead {
+    border-bottom: 4px ridge #ddd;
+    font-size: 15px;
+    color: #333;
+    text-align: center;
+    margin: auto;
+    padding-top: 5px;
+}
+
+.popupContent {
+    border: 0px ridge #ddd;
+    padding-top: 15px;
+    margin: auto;
+    font-size: 12px;
+    color: #333;
+}
+
+table {
+    font-size: 12px;
+    color: #333;
+}
+    
+.popupBottom {
+    padding-top: 15px;
+    text-align: center;
+}
+
+.conditionsTable {
+    margin-left: 15px;
+    width: 300px;
+    background-color: #eee;
+    border: 1px solid #333;
+    text-align: center;
+    border-spacing: 0px;
+}
+
+.conditionsTable thead {
+    background-color: #ccc;
+}
+
+.conditionsTable img {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+
+.iconImg {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.buttonDelete {
+    background-color: #dd0f0f;
+    color: #fdf3f3;
+    border: 1px solid #999;
+    font-weight: bold;
+}
+
+.buttonDelete:hover {
+    background-color: #ef1515;
+    border-color: #777;
+}

@@ -47,137 +47,15 @@ game.interfaces.battle = {
     
     result: null,
     
+    isAnimate: false,
+    
     init: function(callback, params) {
         var self = game.interfaces.battle;
-
-        
-        
-//        units = {
-//            1: {
-//                id: 1,
-//                ownerId: 1,
-//                unitTypeId: 'human_hunter',
-//                x: ko.observable(0),
-//                y: ko.observable(0),
-//                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
-//                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            2: {
-//                id: 2,
-//                ownerId: 2,
-//                unitTypeId: 'animal_wolf',
-//                x: ko.observable(3),
-//                y: ko.observable(1),
-//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            3: {
-//                id: 3,
-//                ownerId: 2,
-//                unitTypeId: 'animal_wolf',
-//                x: ko.observable(4),
-//                y: ko.observable(3),
-//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            4: {
-//                id: 4,
-//                ownerId: 1,
-//                unitTypeId: 'human_hunter',
-//                x: ko.observable(0),
-//                y: ko.observable(1),
-//                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
-//                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            5: {
-//                id: 5,
-//                ownerId: 1,
-//                unitTypeId: 'human_hunter',
-//                x: ko.observable(0),
-//                y: ko.observable(2),
-//                cHp: ko.observable(game.data.units['human_hunter'].unit.hp),
-//                cCount: ko.observable(game.data.units['human_hunter'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['human_hunter'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            6: {
-//                id: 6,
-//                ownerId: 2,
-//                unitTypeId: 'animal_wolf',
-//                x: ko.observable(4),
-//                y: ko.observable(2),
-//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            7: {
-//                id: 7,
-//                ownerId: 2,
-//                unitTypeId: 'animal_wolf',
-//                x: ko.observable(3),
-//                y: ko.observable(0),
-//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            }, 
-//            8: {
-//                id: 8,
-//                ownerId: 1,
-//                unitTypeId: 'human_militiaman',
-//                x: ko.observable(1),
-//                y: ko.observable(2),
-//                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
-//                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            9: {
-//                id: 9,
-//                ownerId: 1,
-//                unitTypeId: 'human_militiaman',
-//                x: ko.observable(1),
-//                y: ko.observable(1),
-//                cHp: ko.observable(game.data.units['human_militiaman'].unit.hp),
-//                cCount: ko.observable(game.data.units['human_militiaman'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['human_militiaman'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            },
-//            10: {
-//                id: 10,
-//                ownerId: 2,
-//                unitTypeId: 'animal_wolf',
-//                x: ko.observable(2),
-//                y: ko.observable(4),
-//                cHp: ko.observable(game.data.units['animal_wolf'].unit.hp),
-//                cCount: ko.observable(game.data.units['animal_wolf'].unitsInSquad),
-//                cAction: ko.observable(game.data.units['animal_wolf'].weapons[0]),
-//                canMove: ko.observable(true),
-//                canAction: ko.observable(true)
-//            }, 
-//        };
         
         self.map = self.generateMap(self.width, self.height);
         self.generateSquadsFromUnits(params.units, 1);
         self.generateSquadsFromUnits(params.enemies, 2);
+        
         self.result = params.result;
         
         callback();
@@ -209,32 +87,58 @@ game.interfaces.battle = {
         var squadNum = 1;
         for (var unitTypeId in units) {
             var unitType = game.data.units[unitTypeId];
-            var cCount = units[unitTypeId];
-            while (cCount > 0) {
-                var squadCount = unitType.unitsInSquad;
-                if (cCount < unitType.unitsInSquad) {
-                    squadCount = cCount;
-                }
-                
+            for (var i = 0; i < units[unitTypeId]; i++) {
                 var squad = {
                     id: Object.keys(self.units).length,
                     ownerId: ownerId,
                     unitTypeId: unitTypeId,
                     x: ko.observable(ownerId === 1 ? 1 : 4),
                     y: ko.observable(squadNum),
-                    cHp: ko.observable(unitType.unit.hp),
-                    cCount: ko.observable(squadCount),
+                    cHp: ko.observable(unitType.unitHp),
+                    cCount: ko.observable(unitType.unitsInSquad),
                     cAction: ko.observable(unitType.weapons[0]),
                     canMove: ko.observable(true),
-                    canAction: ko.observable(true)
+                    canAction: ko.observable(true),
+                    lightWounded: ko.observable(0)
                 };
                 self.units[squad.id] = squad;
-                
-                cCount -= squadCount;
                 squadNum++;
             }
         }
     },
+    
+//    generateSquadsFromUnits: function(units, ownerId) {
+//        var self = game.interfaces.battle;
+//        
+//        var squadNum = 1;
+//        for (var unitTypeId in units) {
+//            var unitType = game.data.units[unitTypeId];
+//            var cCount = units[unitTypeId];
+//            while (cCount > 0) {
+//                var squadCount = unitType.unitsInSquad;
+//                if (cCount < unitType.unitsInSquad) {
+//                    squadCount = cCount;
+//                }
+//                
+//                var squad = {
+//                    id: Object.keys(self.units).length,
+//                    ownerId: ownerId,
+//                    unitTypeId: unitTypeId,
+//                    x: ko.observable(ownerId === 1 ? 1 : 4),
+//                    y: ko.observable(squadNum),
+//                    cHp: ko.observable(unitType.unitHp),
+//                    cCount: ko.observable(squadCount),
+//                    cAction: ko.observable(unitType.weapons[0]),
+//                    canMove: ko.observable(true),
+//                    canAction: ko.observable(true)
+//                };
+//                self.units[squad.id] = squad;
+//                
+//                cCount -= squadCount;
+//                squadNum++;
+//            }
+//        }
+//    },
     
     onReady: function() {
         if (game.screen.height >= parseInt($('#map').css('height'))) {
@@ -282,14 +186,33 @@ game.interfaces.battle = {
         });
         
         $('#map').click(game.interfaces.battle.clickOnHex);
+        
+        $('#battleInterface').contextmenu(function() {
+            game.interfaces.battle.onMouseRightClick();
+            return false;
+        });
     },
     
     onEnd: function() {
         
     },
     
-    onMouseMove: function(e) {
+    onMouseRightClick: function(e) {
         var self = game.interfaces.battle;
+        if (self.mouseOverHex() != null) {
+            var unitId = self.getUnitIdInHex(self.mouseOverHex().x, self.mouseOverHex().y);
+            if (unitId != null) {
+                console.log("Show unit info: " + unitId);
+                //self.showUnitInfo(self.units[unitId]);
+            }
+        }
+    },
+    
+    onMouseMove: function(e) {        
+        var self = game.interfaces.battle;
+        
+        if (self.isAnimate)
+            return;
             
         var borderWidth = parseInt($('#interface').css('border-width'));    
         var mx = e.clientX - borderWidth;
@@ -336,7 +259,15 @@ game.interfaces.battle = {
                     if (self.units[unitId].ownerId != 1) {
                         self.enemyMoveZone(game.components.hexGeom.getUnitMoveZone(self.units[unitId], self.units, self.map));
                         if (self.selectedUnit() != null && self.selectedUnit().canAction() && self.unitsToAction().indexOf(unitId) !== -1) {
-                            self.actionAttackInfo(self.getChancesToAttack(self.selectedUnit(), self.units[unitId]));
+                            var damageToTarget = self.getActionDamageToTarget(self.selectedUnit(), self.units[unitId], true);
+                            var damageToUnit = 0;
+                            if (game.components.hexGeom.isCanAttackUnit(self.units[unitId], self.units[unitId].cAction(), self.selectedUnit(), self.map)) {
+                                damageToUnit = self.getActionDamageToTarget(self.units[unitId], self.selectedUnit());
+                            }
+                            self.actionAttackInfo({
+                                unitDamage: damageToTarget,
+                                targetDamage: damageToUnit
+                            });
                         }
                     }
                 } else {
@@ -348,6 +279,9 @@ game.interfaces.battle = {
     
     clickOnHex: function() {
         var self = game.interfaces.battle;
+        
+        if (self.isAnimate)
+            return;
         
         if (self.mouseOverHex() == null || !self.isPlayerTurn) {
             return;
@@ -370,7 +304,7 @@ game.interfaces.battle = {
                 } else {
                     if (self.selectedUnit() != null && self.selectedUnit().canAction()) {
                         if (self.unitsToAction().indexOf(unitId) != -1) {
-                            self.processActionToUnit(self.selectedUnit(), self.selectedAction(), unit);
+                            self.processActionToUnit(self.selectedUnit(), unit);
                             self.unitsToAction([]);
                         }
                     }
@@ -379,15 +313,20 @@ game.interfaces.battle = {
                 self.unselectUnit();
             }
         } else {
-            if (self.moveZone().length && game.components.hexGeom.isHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y)) {
-                self.selectedUnit().x(currentHex.x);
-                self.selectedUnit().y(currentHex.y);
-                self.selectedUnit().canMove(false);
-                if (self.selectedUnit().canAction()) {
-                    self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit(), self.selectedAction()));
-                }
+            if (self.moveZone().length && game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y)) {
+                var unit = self.selectedUnit();   
+                var hexToMove = game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y);
                 self.moveZone([]);
                 self.movePass([]);
+                self.unitsToAction([]);
+                self.selectedUnit(null);
+                self.moveUnit(unit, hexToMove, function(unit) {
+                    self.selectedUnit(unit);
+                    self.selectedUnit().canMove(false);
+                    if (self.selectedUnit().canAction()) {
+                        self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit(), self.selectedAction()));
+                    }
+                });                                                
             }
         }
     },
@@ -478,87 +417,181 @@ game.interfaces.battle = {
 
         return unitsToAction;
     },
-            
-    processActionToUnit: function(actionUnit, action, targetUnit) {
+    
+    animateUnitMove: function(unit, movePass, callback) {
         var self = game.interfaces.battle;
         
-        var damageToTarget = self.processDamageToUnit(actionUnit, action, targetUnit);
-        self.template_showSquadDamage(targetUnit, damageToTarget.damage, damageToTarget.killed);
-        
-        var targetUnitActionUnits = self.getUnitsInActionRadius(targetUnit, targetUnit.cAction());
-        for (var i = 0; i < targetUnitActionUnits.length; i++) {
-            if (targetUnitActionUnits[i] == actionUnit.id) {
-                var damageToActionUnit = self.processDamageToUnit(targetUnit, targetUnit.cAction(), actionUnit);
-                self.template_showSquadDamage(actionUnit, damageToActionUnit.damage, damageToActionUnit.killed);
+        var cHecCC = game.components.hexGeom.getHexCentralCoordinates(self.map[unit.y()][unit.x()]);
+        var newHexCC = game.components.hexGeom.getHexCentralCoordinates(movePass[0]);
+        var dLeft =  newHexCC.x - cHecCC.x;
+        var dTop =  newHexCC.y - cHecCC.y;
+
+        $('img[unitId='+unit.id+']').animate({
+            left: "+=" + dLeft,
+            top: "+=" + dTop
+        }, 500, function() {
+            unit.x(movePass[0].x);
+            unit.y(movePass[0].y);
+            
+            movePass.splice(0, 1);
+            if (movePass.length != 0) {
+                self.animateUnitMove(unit, movePass, callback);
+            } else {
+                self.isAnimate = false;
+                callback(unit);
             }
+        });
+    },
+    
+    moveUnit: function(unit, moveZoneEndHex, callback) {
+        if (moveZoneEndHex.x === unit.x() && moveZoneEndHex.y === unit.y()) {
+            callback();
+            return;
+        }
+        
+        var self = game.interfaces.battle;
+        
+        var movePass = [];
+        while (moveZoneEndHex !== null) {
+            movePass.unshift(moveZoneEndHex);
+            moveZoneEndHex = moveZoneEndHex.prevHex;
+        }
+        movePass.splice(0, 1);
+        
+        self.isAnimate = true;
+        self.animateUnitMove(unit, movePass, callback);
+    },
+            
+    processActionToUnit: function(actionUnit, targetUnit) {
+        var self = game.interfaces.battle;
+        
+        var damageToTarget = self.getActionDamageToTarget(actionUnit, targetUnit);
+        var damageToUnit = 0;
+        if (game.components.hexGeom.isCanAttackUnit(targetUnit, targetUnit.cAction(), actionUnit, self.map)) {
+            damageToUnit = self.getActionDamageToTarget(targetUnit, actionUnit, false);
+        }
+        
+        var targetWounded = self.processDamageToUnit(damageToTarget, targetUnit);
+        self.template_showSquadDamage(targetUnit, damageToTarget, targetWounded.light + targetWounded.heavy);
+        if (damageToUnit != 0) {
+            var unitWounded = self.processDamageToUnit(damageToUnit, actionUnit);
+            self.template_showSquadDamage(actionUnit, damageToUnit, unitWounded.light + unitWounded.heavy);
         }
         
         actionUnit.canAction(false);
-        actionUnit.cAction(action);
         
         self.isBattleEnd();
     },
     
-    processDamageToUnit: function(actionUnit, action, targetUnit) {
+    getActionDamage: function(action) {
+        var damage = 0;
+        for (var type in action.damages) {
+            damage += action.damages[type];
+        }
+        return damage;
+    },
+    
+    getActionDamageToTarget: function(unit, target, checkSkills) {
+        if (checkSkills == null) {
+            checkSkills = true;
+        }
+        
         var self = game.interfaces.battle;
         
         var damage = 0;
-        var killed = 0;
-        
-        var accuracy = self.getChanceToAttack(actionUnit, targetUnit);
-        for (var i = 0; i < actionUnit.cCount(); i++) {
-            var cAccuracy = Math.random() * 100;
-            if (cAccuracy <= accuracy) {
-                var cDamage = Math.round(Math.random() * (action.maxDamage - action.minDamage)) + action.minDamage;
-                damage += cDamage;
-            }
+        for (var type in unit.cAction().damages) {
+            damage += unit.cAction().damages[type] * (1 - game.data.units[target.unitTypeId].protection[type] / 100);
         }
         
-        killed = Math.floor(damage / game.data.units[targetUnit.unitTypeId].unit.hp);
-        targetUnit.cCount(targetUnit.cCount() - Math.floor(damage / game.data.units[targetUnit.unitTypeId].unit.hp));
-        targetUnit.cHp(targetUnit.cHp() - damage % game.data.units[targetUnit.unitTypeId].unit.hp);
+        var bonuses = 0;
+        bonuses -= self.getLocationDefenceBonus(target.x(), target.y());
+        if (checkSkills) {
+            bonuses += self.getUnitSkillBonuses(unit, target, 'offence', 'damage');
+            bonuses += self.getUnitSkillBonuses(target, unit, 'defence', 'damage');
+        }
+        damage *= 1 + bonuses / 100;
+        damage *= unit.cCount() / game.data.units[unit.unitTypeId].unitsInSquad;
+        
+        damage = parseFloat(damage.toFixed(2));
+        
+        return damage;
+    },
+    
+    processDamageToUnit: function(damage, targetUnit) {
+        var self = game.interfaces.battle;
+        
+        var killed = 0;
+        
+        killed = Math.floor(damage / game.data.units[targetUnit.unitTypeId].unitHp);
+        targetUnit.cCount(targetUnit.cCount() - Math.floor(damage / game.data.units[targetUnit.unitTypeId].unitHp));
+        targetUnit.cHp(Math.round(targetUnit.cHp() * 100 - (damage * 100) % (game.data.units[targetUnit.unitTypeId].unitHp * 100)) / 100);
         if (targetUnit.cHp() <= 0) {
             killed++;
             targetUnit.cCount(targetUnit.cCount() - 1);
-            targetUnit.cHp(game.data.units[targetUnit.unitTypeId].unit.hp - (-targetUnit.cHp()));
+            targetUnit.cHp(Math.round(game.data.units[targetUnit.unitTypeId].unitHp * 100 + targetUnit.cHp() * 100) / 100);
         }
         
         if (targetUnit.ownerId === 1 && targetUnit == self.selectedUnit() && targetUnit.cCount() <= 0) {
             self.unselectUnit();
         }
         
-        return {
-            damage: damage,
-            killed: killed
-        };
-    },
-
-    processEnemyTurn: function() {
-        function sleep(miliseconds) {
-            var currentTime = new Date().getTime();
-            while (currentTime + miliseconds >= new Date().getTime()) {
+        var lightWounded = 0;
+        for (var i = 0; i < killed; i++) {
+            if (Math.random() * 100 >= 50) {
+                targetUnit.lightWounded(targetUnit.lightWounded() + 1);
+                lightWounded++;
             }
         }
         
+        return {
+            light: lightWounded,
+            heavy: killed - lightWounded 
+        };
+    },
+    
+    processUnitInLists: function(units) {
         var self = game.interfaces.battle;
-        while (self.currentPlayerTurn() !== game.playerId) {
-            self.updatePlayerUnitsActions(self.currentPlayerTurn());
-            for (var unitId in self.units) {
-                var unit = self.units[unitId];
-                if (unit.cCount() > 0 && unit.ownerId === self.currentPlayerTurn()) {
-                    var target = game.components.botVI.getTargetToAttack(unit, self.units, self.map);
-                    if (target == null) {
-                        // No targets found, find location to move;
-                        continue;
-                    }
-                    unit.x(target.hexToMove.x);
-                    unit.y(target.hexToMove.y);
-                    self.processActionToUnit(unit, target.action, target.target);
-                }
-            }
+        
+        if (units.length === 0) {
             self.currentPlayerTurn(self.players[self.currentPlayerTurn()].nextPlayerTurn);
+            if (self.currentPlayerTurn() !== 1) {
+                self.processEnemyTurn();
+            } else {
+                self.updatePlayerUnitsActions(1);
+            }
+            return;
         }
-        self.updatePlayerUnitsActions(self.currentPlayerTurn());
+        
+        var unit = units[0];
+        var target = game.components.botVI.getTargetToAttack(unit, self.units, self.map);
+        if (target === null) {
+            var hexToMove = game.components.botVI.getUnitMoveHexToNearestEnemy(unit, self.units, self.map);
+            if (hexToMove !== null) {
+                self.moveUnit(unit, hexToMove, function() {
+                    units.splice(0, 1);
+                    self.processUnitInLists(units);
+                });
+            }
+        }
+        else {
+            self.moveUnit(unit, target.hexToMove, function() {
+                self.processActionToUnit(unit, target.target);
+                units.splice(0, 1);
+                self.processUnitInLists(units);
+            });
+        }
+    },
+
+    processEnemyTurn: function() {
+        var self = game.interfaces.battle;
+        var unitsToAction = [];
+        for (var unitId in self.units) {
+            var unit = self.units[unitId];
+            if (unit.cCount() > 0 && unit.ownerId === self.currentPlayerTurn()) {
+                unitsToAction.push(unit);
+            }
+        }
+        self.processUnitInLists(unitsToAction);
     },
     
     updatePlayerUnitsActions: function(playerId) {

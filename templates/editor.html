@@ -1,0 +1,196 @@
+<link href="css/interfaces/map.css" rel="stylesheet">
+<link href="css/interfaces/editor.css" rel="stylesheet">
+
+<div id="mapInterface" style="position: absolute; left: 0; top: 0;" data-bind="style: {width: game.screen.width - 350}">
+    <!--ko if: map() != null-->
+    <div id="map" class="map borderBox" data-bind="style: {width: map().width, height: map().height}">
+        <!--ko foreach: game.components.other.objectToArray(map().locations)-->
+        <img class="location" data-bind="style: {left: x - $parent.locationRadius, top: y - $parent.locationRadius, width: $parent.locationRadius * 2, height: $parent.locationRadius * 2}, attr: {locationId: id, src: 'img/map/locations/' + game.interfaces.map.getLocationSprite($data)}, click: $parent.clickLocationOnMap">
+        <div class="locationName" data-bind="text: name, style: {left: x - 50, top: y + $parent.locationRadius}"></div>
+        <!--/ko-->
+    </div>
+    <!--/ko-->
+</div>
+<div id="controllerInterface" class="borderBox" style="border: 2px #666 solid; position: absolute; top: 0; width: 400px; background-color: #ddd; height: 100%;" data-bind="style: {left: game.screen.width - 350}">
+    <div class="tabPanel">
+        <div style="display: inline-block;">
+            <img src="img/editor/save.png" style="width: 20px; height: 20px; vertical-align: bottom; cursor: pointer; padding-left: 10px; padding-right: 10px;" data-bind="click: clickSaveMissionInterfaceButton;"/>
+        </div>
+        <!--ko foreach: tabs-->
+        <!--ko if: $parent.mission() !== null || $data == 'Mission'-->
+        <div class="tabInset" data-bind="text: $data.name, css: {tabInsetActive: $data.id == $parent.currentTab().id}, click: $parent.clickTabInset"></div>
+        <!--/ko-->
+        <!--/ko-->
+    </div>
+    <div class="tabContent">
+        <!--ko if: mission() === null-->
+        <div class='tabContent_row'>Загрузите или создайте новую миссию для редактирования.</div>
+        <div class='tabContent_row'><button data-bind="click: clickShowNewMissionInterfaceButton">Создать новую миссию</button></div>
+        <div class='tabContent_row'><button data-bind="click: clickShowLoadMissionInterfaceButton">Загрузить миссию</button></div>
+        <!--/ko-->
+        
+        <!--ko if: mission() !== null-->        
+        <!--ko if: map() === null && ['Mission', 'Maps'].indexOf(currentTab().id) === -1 -->
+        <div class='tabContent_row'>Выберите карту для работы с ней.</div>
+        <!--/ko-->
+        
+        <!--ko if: currentTab().id == 'mission'-->
+        <div class='tabContent_row'><b>ID миссии: </b><span data-bind='text: mission().id'></span></div>
+        <div class='tabContent_row'><b>Название миссии: </b><span data-bind='text: mission().name'></span></div>
+        <div class='tabContent_row'><button data-bind="click: clickSaveMissionInterfaceButton">Сохранить данные по миссии</button></div>
+        <div class='tabContent_row' style='padding-top: 350px;'><button data-bind="click: clickShowNewMissionInterfaceButton">Создать новую миссию</button></div>
+        <div class='tabContent_row'><button data-bind="click: clickShowLoadMissionInterfaceButton">Загрузить миссию</button></div>
+        <!--/ko-->       
+        
+        <!--ko if: currentTab().id == 'maps'-->
+        <div class='tabContent_row'>
+            <span>Выберите карту:</span>
+            <select id='mapSelector' style='width: 150px; text-align-last: center;' onchange="game.interfaces.editor.changeMapInSelector()">
+                <!--ko foreach: Object.keys(mission().maps)-->
+                <option data-bind='text: $data, attr: {name: $data}'></option>
+                <!--/ko-->
+            </select>
+            <img class="iconImg" style="padding-left: 50px;" src="img/editor/add.png" data-bind="click: clickShowNewMapInterfaceButton"/>
+        </div>
+        <!--ko with: map()-->
+        <div class='tabContent_row tabContent_title'>
+            Map info <img class="iconImg" src="img/editor/edit.png" data-bind="click: $parent.clickShowEditMapInterfaceButton"/>
+        </div>
+        <div class='tabContent_row'><b>Map ID: </b><span data-bind='text: id'></span></div>
+        <div class='tabContent_row'><b>Map name: </b><span data-bind='text: name'></span></div>
+        <div class='tabContent_row'><b>Map size: </b><span data-bind='text: width + "x" + height'></span></div>
+        <!--/ko-->
+        <div class='tabContent_row'>
+            <button class="buttonDelete" data-bind="click: clickDeleteMapButton">Удалить карту</button>
+        </div>
+        <!--/ko-->
+        
+        <!--ko if: currentTab().id == 'locations'-->
+        <div class='tabContent_row noTab'>
+            <span>Выберите локацию:</span>
+            <select id='locationSelector' style='width: 150px; text-align-last: center;' onchange="game.interfaces.editor.changeLocationInSelector()">
+                <!--ko foreach: Object.keys(map().locations)-->
+                <option data-bind='text: $data, attr: {name: $data}'></option>
+                <!--/ko-->
+            </select>
+            <img class="iconImg" style="padding-left: 50px;" src="img/editor/add.png"  data-bind="click: clickShowNewLocationInterfaceButton"/>
+        </div>
+        <!--ko with: location()-->
+        <div class='tabContent_row tabContent_title'>
+            Локация <img class="iconImg" src="img/editor/edit.png" data-bind="click: $parent.clickShowEditLocationInterfaceButton"/>
+        </div>
+        <div class='tabContent_row'><b>ID: </b><span data-bind='text: id'></span></div>
+        <div class='tabContent_row'><b>Название: </b><span data-bind='text: name'></span></div>
+        <div class='tabContent_row'><b>X: </b><span data-bind='text: x'></span></div>
+        <div class='tabContent_row'><b>Y: </b><span data-bind='text: y'></span></div>
+        <div class='tabContent_row'>
+            <b>Спрайт: </b><span data-bind='text: sprite ? sprite : "-"'></span>
+            <!--ko if: sprite-->
+            <img style="width: 16px; height: 16px; vertical-align: bottom;" data-bind="attr: {src: 'img/map/locations/' + sprite}"/>
+            <!--/ko-->
+        </div>
+        <div class='tabContent_row'><b>Начальная видимость: </b><span data-bind='text: isVisible ? "yes" : "no"'></span></div>
+        <div class='tabContent_row tabContent_title'><b>Условия видимости </b></div>
+        <div class='tabContent_row'>
+            <table class="conditionsTable">
+                <thead>
+                    <tr>
+                        <th style="width: 150px">Условие</th>
+                        <th>1</th>
+                        <th>1</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>isQuestActive</td>
+                        <td><img src="img/editor/edit.png"/></td>
+                        <td><img src="img/editor/trash.png"/></td>
+                    </tr>
+                    <!--ko foreach: visibleConditions-->
+                    <tr>
+                        <td data-bind="text: $data.type"></td>
+                        <td><img src="img/editor/edit.png"/></td>
+                        <td><img src="img/editor/trash.png"/></td>
+                    </tr>
+                    <!--/ko-->
+                </tbody>
+            </table>
+        </div>
+        
+        
+        <!--/ko-->
+        <div class='tabContent_row'><button class="buttonDelete" data-bind="click: clickDeleteLocationButton">Удалить локацию</button></div>
+        <!--/ko-->
+        
+        <!--/ko-->
+    </div>
+</div>
+
+<!--ko with: dialog-->
+<!--ko if: isShow-->
+<div class='popupBG'></div>
+<div class='popupDialog borderBox' data-bind='style: {width: info().width, height: info().height, left: game.screen.width / 2 - info().width / 2}'>
+    <div class='popupHead' data-bind='text: info().name, style: {width: info().width - 100}'></div>
+    <div class='popupContent' data-bind="style: {width: info().width - 50, height: info().height - 100}">
+    <!--ko if: type() == 'loadMission'-->
+    <div>
+        <span>Выберите миссию</span>
+        <select id="missionToLoadSelector" style="width: 150px;">
+            <option></option>
+            <!--ko foreach: data().missions-->
+            <option data-bind="text: $data, attr: {name: $data}"></option>
+            <!--/ko-->
+        </select>
+        <button data-bind="click: $parent.clickLoadMissionButton">Загрузить</button>
+    </div>
+    <!--/ko-->
+    
+    <!--ko if: type() == 'newMission'-->
+    <div>
+        <table>
+            <tr>
+                <td>ID миссии:</td>
+                <td><input type='text' id='newMissionIdInput' style='width: 200px;'/></td>
+            </tr>
+            <tr>
+                <td>Название миссии:</td>
+                <td><input type='text' id='newMissionNameInput' style='width: 200px;'/></td>
+            </tr>
+        </table>
+    </div>
+    <div style="text-align: center;">
+        <button data-bind="click: $parent.clickCreateNewMissionButton">Создать</button>
+    </div>
+    <!--/ko-->
+    
+    <!--ko if: type() == 'addOrEditMap'-->
+    <div>
+        <table>
+            <tr>
+                <td>ID карты:</td>
+                <td><input type='text' id='mapIdInput' style='width: 200px;' data-bind='attr: {value: (data().action === "edit" ? $parent.map().id : "")}'/></td>
+            </tr>
+            <tr>
+                <td>Название карты:</td>
+                <td><input type='text' id='mapNameInput' style='width: 200px;' data-bind='attr: {value: (data().action === "edit" ? $parent.map().name : "")}'/></td>
+            </tr>
+            <tr>
+                <td>Длина карты:</td>
+                <td><input type='text' id='mapWidthInput' style='width: 50px;' data-bind='attr: {value: (data().action === "edit" ? $parent.map().width : "")}'/></td>
+            </tr>
+            <tr>
+                <td>Высота карты:</td>
+                <td><input type='text' id='mapHeightInput' style='width: 50px;' data-bind='attr: {value: (data().action === "edit" ? $parent.map().height : "")}'/></td>
+            </tr>
+        </table>
+    </div>
+    <div style="text-align: center;">
+        <button data-bind='click: $parent.clickCreateUpdateMapButton, text: (data().action === "edit" ? "Редактировать" : "Создать")'></button>
+    </div>
+    <!--/ko-->
+    
+    </div>
+    <div class='popupBottom'><button data-bind="click: hide">Закрыть</button></div>
+</div>
+<!--/ko-->
+<!--/ko-->

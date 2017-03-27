@@ -1,0 +1,18 @@
+{
+    "id": "westRegion",
+    "name": "Восточная область",
+    "width": 1500,
+    "height": 800,
+    "useRoads": true,
+    
+    "roads": [
+        {
+            "locations": ["roadToKingdom", "villageGreyshow"],
+            "moveTime": 40
+        }, 
+        {
+            "locations": ["villageGreyshow", "forestTrail"],
+            "moveTime": 50
+        }
+    ]
+}

@@ -1,0 +1,17 @@
+{
+    "leaveGreyshow": {
+        "id": "leaveGreyshow",
+        "name": "Покинуть деревню",
+        "type": "action",
+        "description": "Перед вами выход из деревни.",
+        "visibleConditions": [],
+        "actions": [],
+        "result": [
+            {
+                "type": "changeMap",
+                "mapId": "westRegion",
+                "locationId": "villageGreyshow"
+            }
+        ]
+    }
+}

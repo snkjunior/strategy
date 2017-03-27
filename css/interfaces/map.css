@@ -5,6 +5,22 @@
 }
 
 .location {
+    position: absolute;
+    z-index: 2;
+    cursor: pointer;
+    width: 64px;
+    height: 64px;
+}
+
+.locationAction {
+    position: absolute; 
+    z-index: 5; 
+    width: 32px; 
+    height: 32px; 
+    cursor: pointer;
+}
+
+.locationOld {
     border: 2px rgb(50,50,50) solid;
     border-radius: 32px;
     position: absolute;
@@ -13,10 +29,22 @@
 }
 
 .locationName {
-    width: 100px;
     font-size: 10px;
     position: absolute;
     text-align: center;
+    border: 2px rgb(50,50,50) solid;
+    background-color: #ddd;
+    padding: 2px;
+    width: 100px;
+    cursor: default;
+}
+
+.selectedLocation {
+    background-color: #e5e576;
+}
+
+.selectedLocationOld {
+    background-color: green !important;
 }
 
 .mouseOverLocation {

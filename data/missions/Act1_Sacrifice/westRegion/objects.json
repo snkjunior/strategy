@@ -1,0 +1,86 @@
+{
+    "enterGreyshow": {
+        "id": "enterGreyshow",
+        "name": "Вход в деревню",
+        "type": "action",
+        "visibleConditions": [],
+        "actions": [],
+        "result": [
+            {
+                "type": "changeMap",
+                "mapId": "villageGreyshow",
+                "locationId": "villageGate"
+            }
+        ]
+    },
+    "caravan": {
+        "id": "caravan",
+        "name": "Обоз",
+        "type": "dialog",
+        "description": "Несколько перевернутых телег и с десяток трупов предстало перед вами.",
+        "visibleConditions": [],
+        "actions": [
+            {
+                "name": "Осмотреть тела",
+                "visibleConditions": [],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "type": "msg",
+                        "description": "Осмотрев тела, вы обнаружили, что один из мужчин еще жив."
+                    },
+                    {
+                        "type": "startQuest",
+                        "questId": "attackOnCaravan"
+                    }
+                ]
+            }
+        ]
+    },
+    
+    "woundedPeasant": {
+        "id": "woundedPeasant",
+        "name": "Раненый",
+        "type": "dialog",
+        "description": "Вы обнаружили, что один из крестьян еще жив. Осмотрев его вы поняли, что ему осталось недолго. На секунде он приоткрыл глаза и, увидев вас, начал что-то шептать.",
+        "visibleConditions": [
+            {
+                "type": "isQuestActive",
+                "questId": "attackOnCaravan"
+            },
+            {
+                "type": "!hasQuestNotes",
+                "questId": "attackOnCaravan",
+                "notes": [1]
+            }
+        ],
+        "actions": [
+            {
+                "name": "Наклониться ближе",
+                "visibleConditions": [
+                    {
+                        "type": "!hasQuestNotes",
+                        "questId": "attackOnCaravan",
+                        "notes": [1]
+                    }
+                ],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "type": "msg",
+                        "description": " - Они забрали ее... Дерри..."
+                    },
+                    {
+                        "type": "msg",
+                        "description": "Больше он ничего не смог сказать. Мужчина был мертв."
+                    },
+                    {
+                        "type": "addQuestNote",
+                        "questId": "attackOnCaravan",
+                        "note": 1
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,103 @@
+{
+    "human_hunter": {
+        "sprite": "human_hunter",
+        "name": "Hunter",
+        "race": "human",
+        "unitsInSquad": 14,
+        "speed": 3,
+        "unitHp": 4,
+        "protection": {
+            "melee": 0,
+            "range": 20,
+            "elemental": 0,
+            "mind": 0,
+            "life": 0,
+            "death": 0
+        },
+        "weapons": [
+            {
+                "name": "bow",
+                "isDefault": true,
+                "damages": {
+                    "range": 18
+                },
+                "minDistance": 2,
+                "maxDistance": 3,
+                "accuracy": 100
+            },
+            {
+                "name": "knife",
+                "isDefault": false,
+                "damages": {
+                    "melee": 12
+                },
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 100
+            }
+        ],
+        "skills": [
+            "trackingAnimals"
+        ]
+    },
+    "human_militiaman": {
+        "sprite": "human_militiaman",
+        "name": "Militiaman",
+        "race": "human",
+        "unitsInSquad": 16,
+        "speed": 3,
+        "unitHp": 4,
+        "protection": {
+            "melee": 20,
+            "range": 0,
+            "elemental": 0,
+            "mind": 0,
+            "life": 0,
+            "death": 0
+        },
+        "weapons": [
+            {
+                "name": "pitchfork",
+                "isDefault": true,
+                "damages": {
+                    "melee": 20
+                },
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 100
+            }
+        ],
+        "skills": []
+    },
+    "animal_wolf": {
+        "sprite": "animal_wolf",
+        "name": "Wolf",
+        "race": "animal",
+        "unitsInSquad": 20,
+        "speed": 4,
+        "unitHp": 3,
+        "protection": {
+            "melee": 0,
+            "range": 0,
+            "elemental": 30,
+            "mind": 0,
+            "life": 0,
+            "death": 0
+        },
+        "weapons": [
+            {
+                "name": "bite",
+                "isDefault": true,
+                "damages": {
+                    "melee": 22
+                },
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 100
+            }
+        ],
+        "skills": [
+            "forestInhabitant"
+        ]
+    }
+}
