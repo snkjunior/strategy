@@ -7,10 +7,10 @@ define("PATH_TO_MISSIONS", "data/missions/");
 header('Content-Type: application/json');
 
 function getMissions() {
-    $missions = [];
+    $missions = array();
     $dirInfo = scandir(PATH_TO_MISSIONS);
     foreach ($dirInfo as $dirElem) {
-        if (!in_array($dirElem, ['.', '..'])) {
+        if (!in_array($dirElem, array('.', '..'))) {
            $missionFile = explode(".", $dirElem);
            if (count($missionFile) == 3 && $missionFile[1] == 'mission' && $missionFile[2] == 'json') {
                $missions[] = $missionFile[0];
@@ -42,9 +42,9 @@ if ($action == 'saveMission') {
     $missionId = $_GET['id'];
     $data = $_POST['data'];
     $result = file_put_contents(PATH_TO_MISSIONS . $missionId . ".mission.json", $data);
-    echo json_encode([
+    echo json_encode(array(
         'success' => $result != false
-    ]);
+    ));
     die;
 }
 
