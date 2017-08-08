@@ -5,7 +5,6 @@
         "type": "action",
         "description": "Перед вами выход из деревни.",
         "visibleConditions": [],
-        "actions": [],
         "result": [
             {
                 "type": "changeMap",
@@ -13,5 +12,108 @@
                 "locationId": "villageGreyshow"
             }
         ]
-    }
+    },
+	"elder": {
+		"id": "elder",
+        "name": "Староста деревни",
+		"type": "dialog",
+		"description": "Староста деревни был мужчина средних лет, крепкого телосложения, короткими темными волосами с редкой сединой и короткой бородой.",
+		"visibleConditions": [],
+        "actions": [
+			{
+                "name": "Дорога в замок",				
+                "visibleConditions": [
+					{
+						"type": "isQuestActive",
+						"questId": "arrival"
+					},
+					{
+						"type": "!hasQuestNotes",
+						"questId": "arrival",
+						"notes": [2]
+					}
+				],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "type": "msg",
+                        "description": "К сожалению, вам придется немного задержаться - мост через реку к замку был разрушен <b>водяными элементалями</b>. Всегда были спокойны, а тут на те - разбушевались, как с ума посходили, да еще и троллей наших мостовых погубили. Так что, пока не уладим проблему с элементалями - через реку никак не пройти, да еще и <b>мост починить</b> нужно. Как будто и без этого у нас тут <b>проблем</b> не хватало."
+                    },
+                    {
+                        "type": "addQuestNote",
+                        "questId": "arrival",
+                        "note": 2
+                    }
+                ]
+            },
+			{
+				"name": "Элементали",				
+                "visibleConditions": [
+					{
+						"type": "isQuestActive",
+						"questId": "arrival"
+					},
+					{
+						"type": "hasQuestNotes",
+						"questId": "arrival",
+						"notes": [2]
+					},
+					{
+						"type": "!isQuestActive",
+						"questId": "source"
+					}
+				],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "type": "msg",
+                        "description": "В последнее время в Долине все не спокойнее - все больше тварей появляется тут и там, некогда мирные из них проявляют агрессию. Многие люди боятся нос высунуть из дому. Последним ударом для нас стало пробуждение элементалей воды в Стремянке, что разрушило мост, мы никогда не видели такого до этого. Но мне мало об этом известно, поболтай лучше со <b>стариком Ворхом</b> - нашим местным колдуном. Колдун он еще тот, но байки травить умеет. Вон его башня на восточном краю деревни."
+                    },
+                    {
+                        "type": "startQuest",
+                        "questId": "source"                        
+                    },
+					{
+                        "type": "addQuestNote",
+                        "questId": "source",
+                        "note": 1
+                    }
+                ]
+			},
+			{
+				"name": "Починка моста",				
+                "visibleConditions": [
+					{
+						"type": "isQuestActive",
+						"questId": "arrival"
+					},
+					{
+						"type": "hasQuestNotes",
+						"questId": "arrival",
+						"notes": [2]
+					},
+					{
+						"type": "!isQuestActive",
+						"questId": "bridgeRepair"
+					}
+				],
+                "activeConditions": [],
+                "result": [
+                    {
+                        "type": "msg",
+                        "description": "Это большая проблема - река погубила наших троллей и теперь нам придется самим заняться починкой, а для этого нужны люди и материалы. Я уже отправил с десяток местных в <b>старую каменоломню</b>, что неподалеку, но что-то вестей от них никаких нет. Завтра надумывал собирать ребят и отправиться узнать, что случилось, чую - неладное что-то."
+                    },
+                    {
+                        "type": "startQuest",
+                        "questId": "bridgeRepair"                        
+                    },
+					{
+                        "type": "addQuestNote",
+                        "questId": "bridgeRepair",
+                        "note": 1
+                    }
+                ]
+			}
+		]
+	}
 }

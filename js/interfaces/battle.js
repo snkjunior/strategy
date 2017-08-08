@@ -43,7 +43,7 @@ game.interfaces.battle = {
     movePass: ko.observableArray([]),
     unitsToAction: ko.observableArray([]),
     
-    enemyMoveZone: ko.observableArray([]),
+    mouseOverMoveZone: ko.observableArray([]),
     
     result: null,
     
@@ -252,12 +252,12 @@ game.interfaces.battle = {
         if (minHex != self.mouseOverHex()) {
             self.actionAttackInfo(null);
             
-            self.mouseOverHex(minHex);
+			self.mouseOverHex(minHex);
             if (minHex != null) {
                 var unitId = self.getUnitIdInHex(minHex.x, minHex.y);
-                if (unitId) {
-                    if (self.units[unitId].ownerId != 1) {
-                        self.enemyMoveZone(game.components.hexGeom.getUnitMoveZone(self.units[unitId], self.units, self.map));
+				if (unitId != null) {
+					self.mouseOverMoveZone(game.components.hexGeom.getUnitMoveZone(self.units[unitId], self.units, self.map));
+				    if (self.units[unitId].ownerId != 1) {
                         if (self.selectedUnit() != null && self.selectedUnit().canAction() && self.unitsToAction().indexOf(unitId) !== -1) {
                             var damageToTarget = self.getActionDamageToTarget(self.selectedUnit(), self.units[unitId], true);
                             var damageToUnit = 0;
@@ -271,7 +271,7 @@ game.interfaces.battle = {
                         }
                     }
                 } else {
-                    self.enemyMoveZone([]);
+                    self.mouseOverMoveZone([]);
                 }
             }
         }
@@ -355,10 +355,10 @@ game.interfaces.battle = {
         self.processEnemyTurn();
     },
     
-    getUnitIdInHex: function(x, y) {
+    getUnitIdInHex: function(x, y) {		
         var self = game.interfaces.battle;
         for (var unitId in self.units) {
-            if (self.units[unitId].x() === x && self.units[unitId].y() === y && self.units[unitId].cCount() > 0) {
+			if (self.units[unitId].x() == x && self.units[unitId].y() == y && self.units[unitId].cCount() > 0) {
                 return parseInt(unitId);
             }
         }

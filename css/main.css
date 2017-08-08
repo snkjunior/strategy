@@ -1,10 +1,10 @@
 .interface {
     position: absolute; 
     top: 0px; 
-    left: 0px; 
+	left: 0px;
     overflow: hidden; 
     border: 2px gray solid; 
-    background-color: #333;
+    background-color: #333;	
 }
 
 .borderBox {
@@ -23,4 +23,5 @@
 
 body {
     font-size: 0px;
+	background-color: black;
 }

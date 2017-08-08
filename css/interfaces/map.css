@@ -34,9 +34,13 @@
     text-align: center;
     border: 2px rgb(50,50,50) solid;
     background-color: #ddd;
-    padding: 2px;
+    padding-top: 3px;
+	padding-bottom: 3px;
     width: 100px;
     cursor: default;
+	box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
 }
 
 .selectedLocation {

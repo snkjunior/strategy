@@ -39,11 +39,11 @@
                 <!--/ko-->
                 <!--/ko-->
                 
-                <!--ko if: game.interfaces.battle.enemyMoveZone().length-->
-                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.enemyMoveZone(), x, y) -->
-                <img data-bind="attr: {src: 'img/battle/hex_attack.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.3;">
+                <!--ko if: game.interfaces.battle.mouseOverMoveZone().length-->
+                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.mouseOverMoveZone(), x, y) -->
+				<img data-bind="attr: {src: 'img/battle/hex_move.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.3;">
                 <!--/ko-->
-                <!--/ko-->
+				<!--/ko-->
                 
                 <!--ko if: game.interfaces.battle.movePass().length-->
                 <!--ko if: game.interfaces.battle.isHexHasMovePass(x, y) -->

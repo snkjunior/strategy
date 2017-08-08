@@ -205,7 +205,7 @@ game.interfaces.editor = {
     },
     
     clickSaveMissionInterfaceButton: function() {
-        var self = game.interfaces.editor;
+		var self = game.interfaces.editor;
         var missionId = self.mission().id;
         var result = self._saveMission(missionId, self.mission());
         if (result.success) {

@@ -24,7 +24,7 @@
     margin: auto;
 }
 
-.objectDialogText p {
+.objectDialogText div {
     font-size: 12px;
     text-indent: 0px;
     text-align: justify;

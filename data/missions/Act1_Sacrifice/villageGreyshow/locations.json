@@ -1,8 +1,8 @@
 {
     "villageGate": {
         "id": "villageGate",
-        "x": 300,
-        "y": 300,
+        "x": 320,
+        "y": 330,
         "sprite": null,
         "name": "Врата деревни",
         "description": "",
@@ -10,6 +10,48 @@
         "visibleConditions": [],
         "objects": [
             "leaveGreyshow"
+        ],
+        "triggers": []
+    },
+	"elderHome": {
+        "id": "elderHome",
+        "x": 400,
+        "y": 220,
+        "sprite": null,
+        "name": "Дом старосты",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "objects": [
+            "elder"
+        ],
+        "triggers": []
+    },
+	"tavern": {
+        "id": "tavern",
+        "x": 250,
+        "y": 170,
+        "sprite": null,
+        "name": "Корчма",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "objects": [
+            
+        ],
+        "triggers": []
+    },
+	"wizardTower": {
+        "id": "wizardTower",
+        "x": 550,
+        "y": 100,
+        "sprite": null,
+        "name": "Башня колдуна",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "objects": [
+            
         ],
         "triggers": []
     }

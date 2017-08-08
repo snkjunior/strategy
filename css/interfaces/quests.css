@@ -1,0 +1,45 @@
+.questsInterface {
+	width: 100%;
+	height: 100%;
+	background-color: #ddd;
+}
+
+.questsInterface .block {
+	margin-top: 10px;
+	height: 90%;
+	border: 2px #666 solid;
+	background-color: #bbb;
+}
+
+.questsInterface .questTitle {
+	padding: 5px;
+	cursor: pointer;
+	text-align: center;
+}
+
+.questsInterface .questTitle:hover {
+	background-color: #aaa;
+}
+
+.questsInterface .questTitle.selected {
+	background-color: #999;
+}
+
+.questsInterface .questDescription {
+	padding: 10px;
+	font-size: 14px;
+}
+
+.questsInterface .questNotes {
+	padding: 10px;
+	font-size: 14px;
+}
+
+.questsInterface .questNotes .note {
+	padding-left: 15px;
+}
+
+.questsInterface .footer {
+	padding: 10px;
+	text-align: center;
+}

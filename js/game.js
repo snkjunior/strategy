@@ -2,7 +2,7 @@ var game = {
     playerId: 1,
     screen: {
         width: 1024,
-        height: 500
+        height: 600
     },
     
     cMission: null,
@@ -48,6 +48,10 @@ var game = {
     },
     equipment: [],
     quests: {
+		arrival: {
+			isFinished: false,
+			notes: [1]
+		}
 //        restoreCamp: {
 //            isFinished: false,
 //            notes: [1, 2, 3]
@@ -68,27 +72,29 @@ game.init = function() {
     $("#interface").css('width', game.screen.width);
     $("#interface").css('height', game.screen.height);    
    
-    this.loadData();
-    
+    this.loadData();    
     this.initTemplates();
-    this.showInterface('battle', {
-        units: this.hero.units,
-        enemies: {
-            animal_wolf: 4
-        },
-        result: [
+	
+    // this.showInterface('battle', {
+        // units: this.hero.units,
+        // enemies: {
+            // animal_wolf: 4
+        // },
+        // result: [
             
-        ]
-    });
-//    this.cMission = game.missions.act1_sacrifice;
-//    this.cMap = game.missions.act1_sacrifice.maps.westRegion;
-//    this.showInterface('map', this.cMap);
+        // ]
+    // });
+	
+   this.cMission = game.missions.act1_sacrifice;
+   this.cMap = game.missions.act1_sacrifice.maps.westRegion;
+   //this.showInterface('map', this.cMap);
     
-//    this.showInterface('editor');
+	
+	 this.showInterface('quests');
+    //this.showInterface('editor');
     
-    //game.components.actions.changeMap({locationId: 'villageGate', mapId: 'villageGreyshow'});
+    //game.components.actions.changeMap({mapId: 'villageGreyshow', locationId: 'elderHome'});
     
-    //this.showInterface('region', this.cMap.regions[2]);
     //this.showInterface('location', {locationId: this.hero.locationId});
     //this.showInterface('dialog', game.cMap.objects["craftsman"]);
 };
@@ -109,14 +115,16 @@ game.loadData = function() {
     };
     
     for (var missionName in game.missions) {
-        game.missions[missionName] = loadData('data/missions/' + missionName + '.mission.json');
-//        game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
-//        for (var mapName in game.missions[missionName].maps) {
-//            game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '.mission');
-//            game.missions[missionName].maps[mapName].locations = loadData('data/missions/' + missionName + '/' + mapName + '/locations.json');
-//            game.missions[missionName].maps[mapName].objects = loadData('data/missions/' + missionName + '/' + mapName + '/objects.json');
-//            game.missions[missionName].maps[mapName].triggers = loadData('data/missions/' + missionName + '/' + mapName + '/triggers.json');
-//        }
+       game.missions[missionName] = loadData('data/missions/' + missionName + '.mission.json');	   
+       game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
+       for (var mapName in game.missions[missionName].maps) {
+			game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '/mapInfo.json');
+			if (game.missions[missionName].maps[mapName]) {
+				game.missions[missionName].maps[mapName].locations = loadData('data/missions/' + missionName + '/' + mapName + '/locations.json');
+				game.missions[missionName].maps[mapName].objects = loadData('data/missions/' + missionName + '/' + mapName + '/objects.json');
+				game.missions[missionName].maps[mapName].triggers = loadData('data/missions/' + missionName + '/' + mapName + '/triggers.json');
+			}
+		}
     }
     
     

@@ -21,7 +21,7 @@
         <!--/ko-->
         
         <!--ko with: currentHeroLocation-->
-        <img id='heroLocationPointer' src='img/map/hero.png' style='position: absolute; width: 48px; height: 48px; z-index: 5;' data-bind='style: {left: x - $parent.locationRadius - 55, top: y + $parent.locationRadius - 15}'/>
+        <img id='heroLocationPointer' src='img/map/hero.png' style='position: absolute; width: 48px; height: 48px; z-index: 5;' data-bind='style: {left: (x - $parent.locationRadius - 55) + "px", top: (y + $parent.locationRadius - 15) + "px"}'/>
         <!--/ko-->
     </div>
 </div>
