@@ -50,11 +50,18 @@ var game = {
     quests: {
 		arrival: {
 			isFinished: false,
-			notes: [1]
-		}
+			notes: [1,2],
+			vars: {}
+		},
+		source: {
+			isFinished: false,
+			notes: [1],
+			vars: {}
+		},
 //        restoreCamp: {
 //            isFinished: false,
 //            notes: [1, 2, 3]
+//			  vars: {}
 //        }
     },
     

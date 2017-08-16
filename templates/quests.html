@@ -4,21 +4,24 @@
 	<div class="row">
 		<div class="col-xs-3">
 			<div class="block">
-				<div class="questTitle selected">Quest 1</div>
-				<div class="questTitle">Quest 2</div>
-				<div class="questTitle">Quest 3</div>
+				<!--ko foreach: quests -->
+				<div data-bind="text: name, click: $parent.clickOnQuest, attr: {class: 'questTitle ' + ($data == $parent.selected() ? 'selected' : '')}"></div>
+				<!--/ko-->
 			</div>
 		</div>
 		<div class="col-xs-9">
 			<div class="block">
-				<div class="questDescription">
-					После долгово путешествия вы прибыли в долину, осталось только добраться до замка Сершеваль и отчитаться о прибытии лорду Бешоу.
-				</div>
+				<!--ko with: selected -->
+				<div class="questDescription" data-bind="text: description"></div>
 				<div class="questNotes">
+					<!--ko if: notes.length > 0-->
 					<div>Заметки:</div>
-					<div class="note">Поговорить со старостой Шадоувиль</div>
-					<div class="note">Мост через реку был разрушен элементалями, пройти невозможно</div>
+					<!--ko foreach: notes-->
+					<div class="note" data-bind="text: '- '+$data"></div>
+					<!--/ko-->
+					<!--/ko-->
 				</div>
+				<!--/ko-->
 			</div>
 		</div>
 	</div>
