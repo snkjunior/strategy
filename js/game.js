@@ -30,15 +30,65 @@ var game = {
             return {day: this.day, hours: this.hours, minutes: this.minutes};
         }
     },
+	
+	officers: {
+		'officer_drayen': {
+			name: 'Drayen',
+			sprite: '',
+			unitsSlots: 3
+		},
+		'officer_sergant': {
+			name: 'Sergant',
+			sprite: '',
+			unitsSlots: 2
+		},
+		'officer_elroy': {
+			name: 'Elroy',
+			sprite: '',
+			unitsSlots: 4
+		}
+	},
     
     hero: {
         exp: 0,
         class: 'scout',
         locationId: 'roadToKingdom',
-        units: {
-            human_hunter: 3,
-            human_militiaman: 1
-        },
+		officers: [
+			'officer_drayen',
+			'officer_sergant',
+			'officer_elroy'			
+		],
+		army: [
+			{
+				officer: 'officer_drayen',
+				units: [
+					{unitType: 'human_hunter'},
+					{unitType: 'human_hunter'}					
+				]
+			},
+			{
+				officer: 'officer_sergant',
+				units: [
+					{unitType: 'human_militiaman'},
+					{unitType: 'human_militiaman'}					
+				]
+			},
+			{
+				officer: 'officer_elroy',
+				units: [
+					{unitType: 'human_militiaman'},
+					{unitType: 'human_militiaman'}					
+				]
+			}
+		],
+        unitsInReserve: [			
+			{unitType: 'human_hunter'},
+            {unitType: 'human_hunter'},
+			{unitType: 'human_militiaman'},
+			{unitType: 'human_militiaman'},
+			{unitType: 'human_militiaman'},
+			{unitType: 'human_militiaman'}
+        ],
         knownLocations: {
             //"westRegion": ["forestTrail"]
         }
@@ -79,7 +129,7 @@ game.init = function() {
     $("#interface").css('width', game.screen.width);
     $("#interface").css('height', game.screen.height);    
    
-    this.loadData();    
+	this.loadData();    
     this.initTemplates();
 	
     // this.showInterface('battle', {
@@ -97,8 +147,9 @@ game.init = function() {
    //this.showInterface('map', this.cMap);
     
 	
-	 this.showInterface('quests');
+	//this.showInterface('quests');
     //this.showInterface('editor');
+	this.showInterface('army');
     
     //game.components.actions.changeMap({mapId: 'villageGreyshow', locationId: 'elderHome'});
     
