@@ -4,7 +4,8 @@ var game = {
         width: 1024,
         height: 600
     },
-    
+	menuHeight: 100,
+	
     cMission: null,
     cMap: null,
     
@@ -63,7 +64,11 @@ var game = {
 				officer: 'officer_drayen',
 				units: [
 					{unitType: 'human_hunter'},
-					{unitType: 'human_hunter'}					
+					{unitType: 'human_hunter'},
+					{unitType: 'human_hunter'},
+					{unitType: 'human_hunter'},					
+					{unitType: 'human_hunter'},
+					{unitType: 'human_hunter'}
 				]
 			},
 			{
@@ -122,12 +127,17 @@ var game = {
 
     currentInterface: null,
     interfaces: {},
-    components: {}
+    components: {},
+	infoBlockTemplates: {
+		'test': '<div id="test"><div data-bind="text: testText"></div></div>'
+	}
 };
 
 game.init = function() {
-    $("#interface").css('width', game.screen.width);
-    $("#interface").css('height', game.screen.height);    
+	$("#interface").css('width', game.screen.width);
+	$("#interface").css('height', game.screen.height);   
+	$("#interfaceContent").css('width', game.screen.width - 4);
+	$("#interfaceContent").css('height', game.screen.height);	
    
 	this.loadData();    
     this.initTemplates();
@@ -144,17 +154,37 @@ game.init = function() {
 	
    this.cMission = game.missions.act1_sacrifice;
    this.cMap = game.missions.act1_sacrifice.maps.westRegion;
-   //this.showInterface('map', this.cMap);
+   this.showInterface('map');
     
 	
 	//this.showInterface('quests');
     //this.showInterface('editor');
-	this.showInterface('army');
+	//this.showInterface('army');
     
     //game.components.actions.changeMap({mapId: 'villageGreyshow', locationId: 'elderHome'});
     
     //this.showInterface('location', {locationId: this.hero.locationId});
     //this.showInterface('dialog', game.cMap.objects["craftsman"]);
+	
+	//this.components.infoBlock.show('test', {testText: 123});
+};
+
+game.getCurrentScreenHeight = function() {
+	if ($("#navMenu").is(':visible')) {
+		return game.screen.height - game.menuHeight;
+	}
+	return game.screen.height;
+}
+
+game.setMenuVisible = function(isShowMenu) {
+	$("#interfaceContent").css('height', (!isShowMenu ? game.screen.height : game.screen.height - game.menuHeight));  	
+	isShowMenu ? $("#navMenu").css('height', '100px') : $("#navMenu").css('height', '0px');
+	$('.navMenuButton').on('click', function() {
+		var interfaceName = $(this).attr('data-interface');
+		$('.navMenuButton').removeClass('active');
+		$(this).addClass('active');
+		game.showInterface(interfaceName);
+	});
 };
 
 game.loadData = function() {
@@ -211,21 +241,21 @@ game.showInterface = function(interfaceName, params) {
     }
     
     game.currentInterface = game.interfaces[interfaceName];
-    $("#interface").html(game.currentInterface.template);
+    $("#interfaceContent").html(game.currentInterface.template);
     game.currentInterface.init(function() {
         ko.renderTemplate('interface', game.currentInterface, {}, document.getElementById('interface'));
         if (game.currentInterface.onReady != null) {
             game.currentInterface.onReady();
         }
-        $("#interface").show();
+        $("#interfaceContent").show();
     }, params);
 };
 
 game.hideInterface = function() {
-    $("#interface_bg").hide();
-    $("#interface").hide();
+    $("#interfaceContent_bg").hide();
+    $("#interfaceContent").hide();
     game.currentInterface = null;
-    $("#interface").html('');
+    $("#interfaceContent").html('');
 };
 
 game.animateFrame = function() {

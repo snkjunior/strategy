@@ -12,11 +12,19 @@ game.interfaces.army = {
 		self.army(game.hero.army);
 		self.unitsInReserve(game.hero.unitsInReserve);
 		
-        callback();
+		callback();
     },
     
     onReady: function() {
-     
+		$('#unitsList').kinetic({
+			cursor: 'normal',
+		});
+		
+		$('#officersList').kinetic({
+			cursor: 'normal',
+		});
+		
+		game.setMenuVisible(true);
     },
     
     onEnd: function() {

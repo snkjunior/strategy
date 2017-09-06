@@ -17,7 +17,7 @@
         <script src="js/libs/jquery.jscrollpane.min.js"></script>
         <script src="js/libs/jquery.mousewheel.min.js"></script>
         <script src="js/libs/jquery.cookie.js"></script>
-		<script src="js/libs/bootstrap.min.js"></script>
+		<script src="js/libs/jquery.kinetic.min.js"></script>
         
         <script type="text/javascript" src="js/main.js"></script>
         <script type="text/javascript" src="js/game.js"></script>
@@ -39,8 +39,22 @@
         <script type="text/javascript" src="js/components/conditions.js"></script>
         <script type="text/javascript" src="js/components/actions.js"></script>
         <script type="text/javascript" src="js/components/triggers.js"></script>
+		<script type="text/javascript" src="js/components/infoBlock.js"></script>
     </head>
     <body onload="main()">
-        <div id="interface" class="interface borderBox"/>   
+        <div id="interface" class="interface">
+			<div id="interfaceContent" class="interfaceContent"></div>
+			<div id="navMenu" class="navMenu borderBox">
+				<div class="navMenuButton active" data-interface="map">
+					<img src='/img/map.png'/>
+				</div>
+				<div class="navMenuButton" data-interface="army">
+					<img src='/img/campfire.png'/>
+				</div>
+				<div class="navMenuButton" data-interface="quests">
+					<img src='/img/notebook.png'/>
+				</div>
+			</div>
+		</div>	
     </body>
 </html>

@@ -1,10 +1,64 @@
+body {
+    font-size: 0px;
+	background-color: black;
+}
+
 .interface {
     position: absolute; 
     top: 0px; 
 	left: 0px;
-    overflow: hidden; 
-    border: 2px gray solid; 
     background-color: #333;	
+	border: 2px black solid; 
+}
+
+.interfaceContent {
+	position: absolute; 
+    top: 0px; 
+	left: 0px;
+    overflow: hidden; 	
+}
+
+.navMenu {
+	font-size: 0px;
+	position: absolute; 
+    bottom: 0px; 
+	border-top: 2px black solid; 
+    background-color: #ddd;
+	height: 100px;
+	width: 100%;	
+	z-index: 1000;
+	text-align: center;
+}
+
+.navMenuButton {
+	cursor: pointer;
+	width: 100px;
+	height: 100px;
+	border-left: 2px black solid;
+	border-right: 2px black solid;
+	border-bottom: 2px black solid;
+	background-color: #bbb;
+	display: inline-block;
+}
+
+.navMenuButton:nth-child(n+2) {
+	margin-left: -2px;
+}
+
+.navMenuButton:hover {
+	background-color: #ddd;
+}
+
+.navMenuButton.active {
+	cursor: default;
+	background-color: green;
+}
+
+.navMenuButton img {
+	margin-top: -2px;
+	margin-left: -2px;
+	width: 100px;
+	height: 100px;
 }
 
 .borderBox {
@@ -21,7 +75,3 @@
     color: yellow;
 }
 
-body {
-    font-size: 0px;
-	background-color: black;
-}

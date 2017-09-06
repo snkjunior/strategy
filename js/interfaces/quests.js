@@ -7,6 +7,9 @@ game.interfaces.quests = {
     init: function(callback, params) {		
 		var quests = game.quests;
 		
+		this.quests([]);
+		this.selected(null);
+		
 		for (var questId in quests) {
 			if (!quests[questId].isFinished) {
 				var quest = {
@@ -21,7 +24,7 @@ game.interfaces.quests = {
 				}
 				
 				if (this.selected() == null) {
-						this.selected(quest);
+					this.selected(quest);
 				}
 				
 				this.quests().push(quest);
@@ -32,7 +35,7 @@ game.interfaces.quests = {
     },
     
     onReady: function() {
-     
+		game.setMenuVisible(true);
     },
     
     onEnd: function() {

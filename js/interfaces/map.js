@@ -16,17 +16,20 @@ game.interfaces.map = {
     
     init: function(callback, params) {
         var self = game.interfaces.map;
-        if (params != null) {
-            self.width = params.width;
-            self.height = params.height;        
-            self.locations = params.locations;
-            self.roads = params.roads;
+		var map = game.cMap;
+        if (map != null) {
+            self.width = map.width;
+            self.height = map.height;        
+            self.locations = map.locations;
+            self.roads = map.roads;
         }
         
         self.currentHeroLocation(self.locations[game.hero.locationId]);
         self.selectedLocation(self.currentHeroLocation());
         
         self.updateVisibleLocations();
+		
+		
         
         callback();
     },
@@ -34,8 +37,8 @@ game.interfaces.map = {
     onReady: function() {
         var self = game.interfaces.map;
         
-        if (game.screen.width < self.width + 100 || game.screen.height < self.height + 100) {
-            if (game.screen.height < self.height + 100) {
+        if (game.screen.width < self.width + 100 || game.getCurrentScreenHeight() < self.height + 100) {
+            if (game.getCurrentScreenHeight() < self.height + 100) {
                 $('#map').css('border-top-width', 0);
                 $('#map').css('border-bottom-width', 0);
                 $('#map').css('left', (game.screen.width - self.width) / 2 + 'px');
@@ -44,7 +47,7 @@ game.interfaces.map = {
             if (game.screen.width < self.width + 100) {
                 $('#map').css('border-left-width', 0);
                 $('#map').css('border-right-width', 0);
-                $('#map').css('top', (game.screen.height - self.height) / 2 + 'px');
+                $('#map').css('top', (game.getCurrentScreenHeight() - self.height) / 2 + 'px');
             }
             
             // Start: Center map on current location //
@@ -56,27 +59,27 @@ game.interfaces.map = {
                 $('#map').css('left', (-self.width + game.screen.width - 50) + 'px');
             }
             
-            $('#map').css('top', (game.screen.height / 2 - self.currentHeroLocation().y ) + 'px');
+            $('#map').css('top', (game.getCurrentScreenHeight() / 2 - self.currentHeroLocation().y ) + 'px');
             if (parseInt($('#map').css('top')) > 50) {
                 $('#map').css('top', '50px');
             }
-            if (parseInt($('#map').css('top')) < -self.height + game.screen.height - 50) {
-                $('#map').css('top', (-self.height + game.screen.height - 50) + 'px');
+            if (parseInt($('#map').css('top')) < -self.height + game.getCurrentScreenHeight() - 50) {
+                $('#map').css('top', (-self.height + game.getCurrentScreenHeight() - 50) + 'px');
             }
             // End //
             
             $('#map').draggable({
                 drag: function(event, ui) {
-                    if (game.screen.height <= self.height + 100) {
+                    if (game.getCurrentScreenHeight() <= self.height + 100) {
                         if (ui.offset.top > 50) {
                             ui.position.top = 50;
                         }
-                        if (ui.offset.top < -self.height + game.screen.height - 50) {
-                            ui.position.top = -self.height + game.screen.height - 50;
+                        if (ui.offset.top < -self.height + game.getCurrentScreenHeight() - 50) {
+                            ui.position.top = -self.height + game.getCurrentScreenHeight() - 50;
                         }
                     }
                     else {
-                        ui.position.top = (game.screen.height - self.height) / 2;
+                        ui.position.top = (game.getCurrentScreenHeight() - self.height) / 2;
                     }
 
                     if (game.screen.width <= self.width + 100) {
@@ -94,22 +97,24 @@ game.interfaces.map = {
             });
         } else {
             $('#map').css('left', (game.screen.width - self.width) / 2 + 'px');
-            $('#map').css('top', (game.screen.height - self.height) / 2 + 'px');
+            $('#map').css('top', (game.getCurrentScreenHeight() - self.height) / 2 + 'px');
         }
         
-        $("#interface").bind('mousemove', function(e) {
+        $("#interfaceContent").bind('mousemove', function(e) {
             game.interfaces.map.onMouseMove(e);
         });
+		
+		game.setMenuVisible(true);
     },
     
     onEnd: function() {
-        $("#interface").unbind('mousemove');
+        $("#interfaceContent").unbind('mousemove');
     },
     
     onMouseMove: function(e) {
         var self = game.interfaces.map;
         if ($(e.target).prop('tagName') == 'IMG' && $(e.target).hasClass('location')) {
-            var borderWidth = parseInt($('#map').css('border-width')) + parseInt($('#interface').css('border-width'));
+            var borderWidth = parseInt($('#map').css('border-width')) + parseInt($('#interfaceContent').css('border-width'));
             var mx = e.clientX - borderWidth;
             var my = e.clientY - borderWidth;
             var cameraDx = $('#map').css('left') === 'auto' ? 0 : parseInt($('#map').css('left'));

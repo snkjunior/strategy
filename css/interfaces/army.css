@@ -7,8 +7,7 @@
 	width: 46%;
 	height: 100%;
 	left: 2%;
-	top: 0px;
-	background-color: #ddd;
+	top: 0px;	
 }
 
 .activeArmy {	
@@ -16,20 +15,30 @@
 	width: 46%;
 	height: 100%;
 	left: 52%;
-	top: 0px;
-	background-color: #ddd;
+	top: 0px;	
 }
 
 .armyImage {
 	position: relative;
 	width: 100%;
 	top: 0px;
-	height: 100px;
+	height: 20%;
 	background-color: #123456;
 	border: 2px solid black;
 	box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
+}
+
+.officersList {
+	overflow: hidden;
+	position: relative;
+	height: 75%;
+	border: 2px solid black;
+	box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+	background-color: #ddd;	
 }
 
 .armyImage img {
@@ -41,12 +50,13 @@
 	position: relative;
 	border: 1px solid black;
 	width: 100%;
-	height: 50px;	
+	height: 10%;	
+	background-color: #ddd;
 }
 
 .unitsTypeButton {	
 	width: 20%;
-	height: 50px;
+	height: 100%;
 	display: inline-block;
 	border: 1px solid black;
 	box-sizing: border-box;
@@ -56,14 +66,16 @@
 }
 
 .allArmy .unitsList {
+	overflow: hidden;
 	position: relative;
 	width: 100%;
-	height: 100%;
+	height: 65%;
 	border: 2px solid black;
 	box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
 	padding-left: 20px;
+	background-color: #ddd;
 }
 
 .unitsList .unit {
@@ -92,9 +104,7 @@
 }
 
 .officerBlock {
-	padding-left: 20px;
-	height: 100px;
-	margin-top: 20px;
+	margin: 20 0 20 20;
 }
 
 .officerBlock .officer{
@@ -111,18 +121,15 @@
 }
 
 .officerBlock .officerUnitsList {
-	margin-left: 0px;	
-	margin-top: 36px;
-	height: 64px;
-	display: inline-block;
-	vertical-align: top;
-	background-color: #eee;
+	width: 320px;
+	display: inline-block;	
+	margin-left: 10px;
 }
 
 .officerBlock .officerUnitsList .officerUnit {
 	margin-left: -1px;	
-	height: 64px;
-	width: 64px;
+	height: 50px;
+	width: 50px;
 	display: inline-block;
 	border: 1px solid black;
 	box-sizing: border-box;
@@ -130,6 +137,11 @@
     -webkit-box-sizing: border-box;	
 	vertical-align: top;
 	position: relative;
+	background-color: #eee;	
+}
+
+.officerBlock .officerUnitsList .officerUnit:nth-child(n+7) {
+	border-top: 0px;
 }
 
 .officerBlock .officerUnitsList .officerUnit.canPlace {
@@ -140,6 +152,8 @@
 .officerBlock .officerUnitsList .officerUnit img {
 	margin-top: -1px;
 	margin-left: -1px;
+	width: 50px;
+    height: 50px;
 }
 
 .officerBlock .officerUnitsList .officerUnit.canPlace img{

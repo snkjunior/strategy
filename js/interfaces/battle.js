@@ -191,6 +191,8 @@ game.interfaces.battle = {
             game.interfaces.battle.onMouseRightClick();
             return false;
         });
+		
+		game.setMenuVisible(false);
     },
     
     onEnd: function() {
