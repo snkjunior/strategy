@@ -118,7 +118,7 @@ var game = {
     
     data: {},
     missions: {
-        act1_sacrifice: null
+		Act1_Sacrifice: null
     },
 
     currentInterface: null,
@@ -148,8 +148,8 @@ game.init = function() {
         // ]
     // });
 	
-   this.cMission = game.missions.act1_sacrifice;
-   this.cMap = game.missions.act1_sacrifice.maps.westRegion;
+   this.cMission = game.missions.Act1_Sacrifice;
+   this.cMap = game.missions.Act1_Sacrifice.maps.westRegion;
    this.showInterface('map');
     
 	
