@@ -101,14 +101,14 @@ var game = {
     quests: {
 		arrival: {
 			isFinished: false,
-			notes: [1,2],
-			vars: {}
-		},
-		source: {
-			isFinished: false,
 			notes: [1],
 			vars: {}
 		},
+		// source: {
+			// isFinished: false,
+			// notes: [1],
+			// vars: {}
+		// },
 //        restoreCamp: {
 //            isFinished: false,
 //            notes: [1, 2, 3]
@@ -174,13 +174,17 @@ game.getCurrentScreenHeight = function() {
 
 game.setMenuVisible = function(isShowMenu) {
 	$("#interfaceContent").css('height', (!isShowMenu ? game.screen.height : game.screen.height - game.menuHeight));  	
-	isShowMenu ? $("#navMenu").css('height', '100px') : $("#navMenu").css('height', '0px');
-	$('.navMenuButton').on('click', function() {
-		var interfaceName = $(this).attr('data-interface');
-		$('.navMenuButton').removeClass('active');
-		$(this).addClass('active');
-		game.showInterface(interfaceName);
-	});
+	if (isShowMenu) {
+		$("#navMenu").show();
+		$('.navMenuButton').on('click', function() {
+			var interfaceName = $(this).attr('data-interface');
+			$('.navMenuButton').removeClass('active');
+			$(this).addClass('active');
+			game.showInterface(interfaceName);
+		});
+	} else {
+		$("#navMenu").hide();
+	}	
 };
 
 game.loadData = function() {

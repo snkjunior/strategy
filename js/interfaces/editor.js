@@ -61,6 +61,7 @@ game.interfaces.editor = {
         }
         
         this.clickTabInset(this.tabs[3]);
+		game.setMenuVisible(false);
     },
     
     onEnd: function() {

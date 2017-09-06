@@ -35,6 +35,8 @@ game.interfaces.map = {
     },
     
     onReady: function() {
+		game.setMenuVisible(true);
+		
         var self = game.interfaces.map;
         
         if (game.screen.width < self.width + 100 || game.getCurrentScreenHeight() < self.height + 100) {
@@ -102,9 +104,7 @@ game.interfaces.map = {
         
         $("#interfaceContent").bind('mousemove', function(e) {
             game.interfaces.map.onMouseMove(e);
-        });
-		
-		game.setMenuVisible(true);
+        });		
     },
     
     onEnd: function() {

@@ -26,11 +26,6 @@
 					{
 						"type": "isQuestActive",
 						"questId": "arrival"
-					},
-					{
-						"type": "!hasQuestNotes",
-						"questId": "arrival",
-						"notes": [2]
 					}
 				],
                 "activeConditions": [],
@@ -57,10 +52,6 @@
 						"type": "hasQuestNotes",
 						"questId": "arrival",
 						"notes": [2]
-					},
-					{
-						"type": "!isQuestActive",
-						"questId": "source"
 					}
 				],
                 "activeConditions": [],
@@ -91,10 +82,6 @@
 						"type": "hasQuestNotes",
 						"questId": "arrival",
 						"notes": [2]
-					},
-					{
-						"type": "!isQuestActive",
-						"questId": "bridgeRepair"
 					}
 				],
                 "activeConditions": [],

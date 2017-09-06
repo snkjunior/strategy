@@ -25,6 +25,7 @@ game.interfaces.dialog = {
     
     onReady: function() {
         this.updateActions();
+		game.setMenuVisible(false);
     },
     
     onEnd: function() {

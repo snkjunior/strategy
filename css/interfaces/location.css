@@ -1,7 +1,7 @@
 .locationInfo {
     position: absolute;
     width: 550px;
-    height: 450px;
+    height: 90%;
     top: 25px;
     left: 25px;
     background-color: #eee;
@@ -22,7 +22,7 @@
 .locationActions {
     position: absolute;
     width: 400px;
-    height: 450px;
+    height: 90%;
     top: 25px;
     right: 25px;
     background-color: #eee;

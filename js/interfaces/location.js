@@ -10,7 +10,7 @@ game.interfaces.location = {
     },
     
     onReady: function() {
-     
+		game.setMenuVisible(false);
     },
     
     onEnd: function() {
@@ -29,6 +29,6 @@ game.interfaces.location = {
     },
     
     clickBack: function() {
-        game.showInterface('map', game.cMap);
+        game.showInterface('map');
     }
 };
