@@ -203,7 +203,7 @@ game.loadData = function() {
     };
     
     for (var missionName in game.missions) {
-       game.missions[missionName] = loadData('data/missions/' + missionName + '.mission.json');	   
+       game.missions[missionName] = loadData('data/missions/' + missionName + '/description.json');	   
        game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
        for (var mapName in game.missions[missionName].maps) {
 			game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '/mapInfo.json');
