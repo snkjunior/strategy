@@ -64,11 +64,7 @@ var game = {
 				officer: 'officer_drayen',
 				units: [
 					{unitType: 'human_hunter'},
-					{unitType: 'human_hunter'},
-					{unitType: 'human_hunter'},
-					{unitType: 'human_hunter'},					
-					{unitType: 'human_hunter'},
-					{unitType: 'human_hunter'}
+					{unitType: 'human_hunter'}					
 				]
 			},
 			{
