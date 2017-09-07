@@ -174,7 +174,11 @@ game.components.botVI = {
             }
         }
         
-        var target = targetsPriority[0] != null ? targetsPriority[0] : null;
+		if (targetsPriority.length == 0) {
+			return null;
+		}
+		
+		var target = targetsPriority[0];
         for (var i = 1; i < targetsPriority.length; i++) {
             if (target.avgDmgToTarget - target.avgDmgToUnit < targetsPriority[i].avgDmgToTarget - targetsPriority[i].avgDmgToUnit) {
                 target = targetsPriority[i];
@@ -203,7 +207,7 @@ game.components.botVI = {
             }
         }
         
-        var moveZone = game.components.hexGeom.getUnitMoveZone(unit, units, hexMap);
+		var moveZone = game.components.hexGeom.getUnitMoveZone(unit, units, hexMap);
         for (var i = 0; i < moveZone.length; i++) {
             if (moveZone[i].x === target.hexToMove.x && moveZone[i].y === target.hexToMove.y) {
                 target.hexToMove = moveZone[i];
