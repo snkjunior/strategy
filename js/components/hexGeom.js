@@ -45,14 +45,14 @@ game.components.hexGeom = {
     getHexCentralCoordinates: function(hex) {
         var screenDX = (game.screen.width - parseInt($('#map').css('width'))) / 2;
         var cameraDX = 0;
-        if (screenDX < 0) {
+        if (screenDX >= 0) {
             screenDX = 0;
             cameraDX = $('#map').css('left') == 'auto' ? 0 : parseInt($('#map').css('left'));
         }
         
         var screenDY = (game.screen.height - parseInt($('#map').css('height'))) / 2;
         var cameraDY = 0;
-        if (screenDY < 0) {
+        if (screenDY >= 0) {
             screenDY = 0;
             cameraDY = $('#map').css('top') == 'auto' ? 0 : parseInt($('#map').css('top'));
         }
