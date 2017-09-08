@@ -29,7 +29,11 @@
                 <img data-bind="attr: {src: 'img/battle/hex_over.png'}"  style="position: absolute; top: 0px; left: 0px; z-index: 4;">
                 <!--/ko-->
                 
-                <!--ko if: game.interfaces.battle.selectedUnit() != null && game.interfaces.battle.selectedUnit().x() == $data.x && game.interfaces.battle.selectedUnit().y() == $data.y--> 
+				<!--ko if: $root.battleStage() == 'placeUnits' && $root.isHexInHexesToPlaceUnits($data)-->
+				<img data-bind="attr: {src: 'img/battle/hex_place.png'}, style: {opacity: $root.selectedUnit() == null ? 0.5 : 0.8}" style="position: absolute; top: 0px; left: 0px; z-index: 3;">                
+				<!--/ko-->
+				
+				<!--ko if: game.interfaces.battle.selectedUnit() != null && game.interfaces.battle.selectedUnit().x() == $data.x && game.interfaces.battle.selectedUnit().y() == $data.y--> 
                 <img data-bind="attr: {src: 'img/battle/hex_selected.png'}"  style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.5;">
                 <!--/ko-->
                 
@@ -178,7 +182,13 @@
         <!--/ko-->
     <!--/ko-->
     
-    <div style='position: absolute; top: 20px; left:20px; z-index: 10;'><button data-bind="click: clickEndTurnButton">Next turn</button></div>
+	
+	<!--ko if: battleStage() == 'placeUnits'-->
+	<div style='position: absolute; top: 20px; left:20px; z-index: 10;'><button data-bind="click: clickStartBattle">Начать сражение</button></div>
+	<!--/ko-->	
+	<!--ko if: battleStage() == 'battle'-->
+    <div style='position: absolute; top: 20px; left:20px; z-index: 10;'><button data-bind="click: clickEndTurnButton">Передать ход</button></div>
+	<!--/ko-->	
 </div>
 
 <div id='damagePattern' style='width: 64px; position: absolute; display: none; text-align: center; z-index: 10; font-size: 12px;'>

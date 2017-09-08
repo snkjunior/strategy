@@ -18,15 +18,19 @@ game.interfaces.battle = {
             nextPlayerTurn: 1
         }
     },
-    width: 13,
-    height: 7,
+    width: 16,
+    height: 8,
+	offset: 200,
     map: [],
+	hexesToPlaceUnits: [],
     
     // Settings    
     isShowBorder: ko.observable(true),
     isShowCoordinates: ko.observable(false),
     
     //Dynamic data
+	battleStage: ko.observable(null),
+	
     units: {},
     
     currentPlayerTurn: ko.observable(1),        
@@ -51,12 +55,28 @@ game.interfaces.battle = {
     
     init: function(callback, params) {
         var self = game.interfaces.battle;
+		self.battleStage('placeUnits');
+		
+		for (var x = 0; x < 3; x++) {
+			for (var y = 0; y < self.height; y++) {
+				self.hexesToPlaceUnits.push({x: x, y:y});
+			}
+		}
         
+		var units = [];
+		for (var i = 0; i < game.hero.army.length; i++) {
+			for (var j = 0; j < game.hero.army[i].units.length; j++) {
+				units.push(game.hero.army[i].units[j]);
+			}
+		}
+		
         self.map = self.generateMap(self.width, self.height);
-        self.generateSquadsFromUnits(params.units, 1);
+        self.generateSquadsFromUnits(units, 1);
         self.generateSquadsFromUnits(params.enemies, 2);
         
         self.result = params.result;
+		
+		
         
         callback();
     },
@@ -85,62 +105,38 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
         
         var squadNum = 1;
-        for (var unitTypeId in units) {
+        for (var i = 0; i < units.length; i++) {
+			unitTypeId = units[i].unitType;
             var unitType = game.data.units[unitTypeId];
-            for (var i = 0; i < units[unitTypeId]; i++) {
-                var squad = {
-                    id: Object.keys(self.units).length,
-                    ownerId: ownerId,
-                    unitTypeId: unitTypeId,
-                    x: ko.observable(ownerId === 1 ? 1 : 4),
-                    y: ko.observable(squadNum),
-                    cHp: ko.observable(unitType.unitHp),
-                    cCount: ko.observable(unitType.unitsInSquad),
-                    cAction: ko.observable(unitType.weapons[0]),
-                    canMove: ko.observable(true),
-                    canAction: ko.observable(true),
-                    lightWounded: ko.observable(0)
-                };
-                self.units[squad.id] = squad;
-                squadNum++;
-            }
+			
+			var x = 14;
+			var y = squadNum;
+			if (ownerId == 1) {
+				var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit();
+				x = emptyHexToPlace.x;
+				y = emptyHexToPlace.y;
+			}
+			
+			var squad = {
+				id: Object.keys(self.units).length,
+				ownerId: ownerId,
+				unitTypeId: unitTypeId,
+				x: ko.observable(x),
+				y: ko.observable(y),
+				cHp: ko.observable(unitType.unitHp),
+				cCount: ko.observable(unitType.unitsInSquad),
+				cAction: ko.observable(unitType.weapons[0]),
+				canMove: ko.observable(true),
+				canAction: ko.observable(true),
+				lightWounded: ko.observable(0)
+			};
+			self.units[squad.id] = squad;
+			squadNum++;            
         }
     },
     
-//    generateSquadsFromUnits: function(units, ownerId) {
-//        var self = game.interfaces.battle;
-//        
-//        var squadNum = 1;
-//        for (var unitTypeId in units) {
-//            var unitType = game.data.units[unitTypeId];
-//            var cCount = units[unitTypeId];
-//            while (cCount > 0) {
-//                var squadCount = unitType.unitsInSquad;
-//                if (cCount < unitType.unitsInSquad) {
-//                    squadCount = cCount;
-//                }
-//                
-//                var squad = {
-//                    id: Object.keys(self.units).length,
-//                    ownerId: ownerId,
-//                    unitTypeId: unitTypeId,
-//                    x: ko.observable(ownerId === 1 ? 1 : 4),
-//                    y: ko.observable(squadNum),
-//                    cHp: ko.observable(unitType.unitHp),
-//                    cCount: ko.observable(squadCount),
-//                    cAction: ko.observable(unitType.weapons[0]),
-//                    canMove: ko.observable(true),
-//                    canAction: ko.observable(true)
-//                };
-//                self.units[squad.id] = squad;
-//                
-//                cCount -= squadCount;
-//                squadNum++;
-//            }
-//        }
-//    },
-    
     onReady: function() {
+		var self = game.interfaces.battle;
         if (game.screen.height >= parseInt($('#map').css('height'))) {
             $('#map').css('top', (game.screen.height - parseInt($('#map').css('height'))) / 2);
         }
@@ -148,27 +144,27 @@ game.interfaces.battle = {
             $('#map').css('left', (game.screen.width - parseInt($('#map').css('width'))) / 2);
         }
         
-        if (game.screen.width <= parseInt($('#map').css('width')) || game.screen.height <= parseInt($('#map').css('height'))) {
+        if (game.screen.width <= parseInt($('#map').css('width')) + self.offset * 2 || game.screen.height <= parseInt($('#map').css('height')) + self.offset * 2) {
             $('#map').draggable({
                 drag: function(event, ui) {
-                    if (game.screen.height <= parseInt($('#map').css('height'))) {
-                        if (ui.offset.top > 0) {
-                            ui.position.top = 0;
+                    if (game.screen.height <= parseInt($('#map').css('height')) + self.offset * 2) {
+                        if (ui.offset.top > self.offset) {
+                            ui.position.top = self.offset;
                         }
-                        if (ui.offset.top < -parseInt($('#map').css('height')) + game.screen.height) {
-                            ui.position.top = -parseInt($('#map').css('height')) + game.screen.height;
+                        if (ui.offset.top < -parseInt($('#map').css('height')) + game.screen.height - self.offset) {
+                            ui.position.top = -parseInt($('#map').css('height')) + game.screen.height - self.offset;
                         }
                     }
                     else {
                         ui.position.top = (game.screen.height - parseInt($('#map').css('height'))) / 2;
                     }
 
-                    if (game.screen.width <= parseInt($('#map').css('width'))) {
-                        if (ui.offset.left > 0) {
-                            ui.position.left = 0;
+                    if (game.screen.width <= parseInt($('#map').css('width')) + self.offset * 2) {
+                        if (ui.offset.left > self.offset) {
+                            ui.position.left = self.offset;
                         }
-                        if (ui.offset.left < -parseInt($('#map').css('width')) + game.screen.width) {
-                            ui.position.left = -parseInt($('#map').css('width')) + game.screen.width;
+                        if (ui.offset.left < -parseInt($('#map').css('width')) + game.screen.width - self.offset) {
+                            ui.position.left = -parseInt($('#map').css('width')) + game.screen.width - self.offset;
                         }
                     } 
                     else {
@@ -247,7 +243,7 @@ game.interfaces.battle = {
 
         if (self.selectedUnit() != null && self.selectedUnit().canMove()) {
             if (minHex != self.mouseOverHex()) {
-                self.movePass(game.components.hexGeom.getMovePass(self.moveZone(), minHex));
+				self.movePass(game.components.hexGeom.getMovePass(self.moveZone(), minHex));
             }
         }
 
@@ -258,20 +254,25 @@ game.interfaces.battle = {
             if (minHex != null) {
                 var unitId = self.getUnitIdInHex(minHex.x, minHex.y);
 				if (unitId != null) {
-					self.mouseOverMoveZone(game.components.hexGeom.getUnitMoveZone(self.units[unitId], self.units, self.map));
-				    if (self.units[unitId].ownerId != 1) {
-                        if (self.selectedUnit() != null && self.selectedUnit().canAction() && self.unitsToAction().indexOf(unitId) !== -1) {
-                            var damageToTarget = self.getActionDamageToTarget(self.selectedUnit(), self.units[unitId], true);
-                            var damageToUnit = 0;
-                            if (game.components.hexGeom.isCanAttackUnit(self.units[unitId], self.units[unitId].cAction(), self.selectedUnit(), self.map)) {
-                                damageToUnit = self.getActionDamageToTarget(self.units[unitId], self.selectedUnit());
-                            }
-                            self.actionAttackInfo({
-                                unitDamage: damageToTarget,
-                                targetDamage: damageToUnit
-                            });
-                        }
-                    }
+					if (self.battleStage() == 'battle') {
+						if (self.selectedUnit() != self.units[unitId]) {
+							self.mouseOverMoveZone(game.components.hexGeom.getUnitMoveZone(self.units[unitId], self.units, self.map));
+						}
+						
+						if (self.units[unitId].ownerId != 1) {
+							if (self.selectedUnit() != null && self.selectedUnit().canAction() && self.unitsToAction().indexOf(unitId) !== -1) {
+								var damageToTarget = self.getActionDamageToTarget(self.selectedUnit(), self.units[unitId], true);
+								var damageToUnit = 0;
+								if (game.components.hexGeom.isCanAttackUnit(self.units[unitId], self.units[unitId].cAction(), self.selectedUnit(), self.map)) {
+									damageToUnit = self.getActionDamageToTarget(self.units[unitId], self.selectedUnit());
+								}
+								self.actionAttackInfo({
+									unitDamage: damageToTarget,
+									targetDamage: damageToUnit
+								});
+							}
+						}
+					}
                 } else {
                     self.mouseOverMoveZone([]);
                 }
@@ -279,6 +280,12 @@ game.interfaces.battle = {
         }
     },
     
+	clickStartBattle: function() {
+		var self = game.interfaces.battle;
+		self.selectedUnit(null);
+		self.battleStage('battle');		
+	},
+	
     clickOnHex: function() {
         var self = game.interfaces.battle;
         
@@ -294,44 +301,94 @@ game.interfaces.battle = {
         if (unitId != null) {
             var unit = self.units[unitId];
             if (unit != self.selectedUnit()) {
-                if (unit.ownerId == 1) {
-                    self.selectedUnit(unit);
-                    self.selectedAction(unit.cAction());
-                    if (unit.canMove()) {
-                        self.moveZone(game.components.hexGeom.getUnitMoveZone(unit, self.units, self.map));
-                    }
-                    if (unit.canAction()) {
-                        self.unitsToAction(self.getUnitsInActionRadius(unit, self.selectedAction()));
-                    }
-                } else {
-                    if (self.selectedUnit() != null && self.selectedUnit().canAction()) {
-                        if (self.unitsToAction().indexOf(unitId) != -1) {
-                            self.processActionToUnit(self.selectedUnit(), unit);
-                            self.unitsToAction([]);
-                        }
-                    }
-                }
+				if (self.battleStage() == 'placeUnits' && unit.ownerId == 1) {
+					if (self.selectedUnit() == null) {
+						self.selectedUnit(unit);
+					} else {
+						unit.x(self.selectedUnit().x());
+						unit.y(self.selectedUnit().y());
+						self.selectedUnit().x(currentHex.x);
+						self.selectedUnit().y(currentHex.y);
+						self.unselectUnit();
+					}
+				}
+				if (self.battleStage() == 'battle') {
+					if (unit.ownerId == 1) {
+						self.selectedUnit(unit);
+						self.mouseOverMoveZone([]);
+						self.selectedAction(unit.cAction());
+						if (unit.canMove()) {
+							self.moveZone(game.components.hexGeom.getUnitMoveZone(unit, self.units, self.map));
+						}
+						if (unit.canAction()) {
+							self.unitsToAction(self.getUnitsInActionRadius(unit, self.selectedAction()));
+						}
+					} else {
+						if (self.selectedUnit() != null && self.selectedUnit().canAction()) {
+							if (self.unitsToAction().indexOf(unitId) != -1) {
+								self.processActionToUnit(self.selectedUnit(), unit);
+								self.unitsToAction([]);
+							}
+						}
+					}
+				}
             } else {
                 self.unselectUnit();
             }
         } else {
-            if (self.moveZone().length && game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y)) {
-                var unit = self.selectedUnit();   
-                var hexToMove = game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y);
-                self.moveZone([]);
-                self.movePass([]);
-                self.unitsToAction([]);
-                self.selectedUnit(null);
-                self.moveUnit(unit, hexToMove, function(unit) {
-                    self.selectedUnit(unit);
-                    self.selectedUnit().canMove(false);
-                    if (self.selectedUnit().canAction()) {
-                        self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit(), self.selectedAction()));
-                    }
-                });                                                
-            }
+			if (self.battleStage() == 'placeUnits' && self.selectedUnit() != null && self.isHexInHexesToPlaceUnits(currentHex)) {
+				self.selectedUnit().x(currentHex.x);
+				self.selectedUnit().y(currentHex.y);
+				self.unselectUnit();
+			}
+			if (self.battleStage() == 'battle') {
+				if (self.moveZone().length && game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y)) {
+					var unit = self.selectedUnit();   
+					var hexToMove = game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y);
+					self.moveZone([]);
+					self.movePass([]);
+					self.unitsToAction([]);
+					self.selectedUnit(null);
+					self.moveUnit(unit, hexToMove, function(unit) {
+						self.selectedUnit(unit);
+						self.selectedUnit().canMove(false);
+						if (self.selectedUnit().canAction()) {
+							self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit(), self.selectedAction()));
+						}
+					});                                                
+				}
+			}
         }
     },
+	
+	isHexInHexesToPlaceUnits: function(hex) {
+		var self = game.interfaces.battle;
+		for (var i = 0; i < self.hexesToPlaceUnits.length; i++) {
+			if (self.hexesToPlaceUnits[i].x == hex.x && self.hexesToPlaceUnits[i].y == hex.y) {
+				return true;
+			}
+		}
+		return false;
+	},
+	
+	getRandomEmptyHexToPlaceUnit: function() {
+		var self = game.interfaces.battle;
+		var emptyHexes = [];
+		for (var i = 0; i < self.hexesToPlaceUnits.length; i++) {
+			var isEmpty = true;
+			for (var unitId in self.units) {
+				if (self.units[unitId].x() == self.hexesToPlaceUnits[i].x && self.units[unitId].y() == self.hexesToPlaceUnits[i].y) {
+					isEmpty = false;
+					break;
+				}
+			}
+			
+			if (isEmpty) {
+				emptyHexes.push(self.hexesToPlaceUnits[i]);
+			}			
+		}
+		return emptyHexes[Math.round(Math.random() * (emptyHexes.length - 1))];
+	},	
     
     unselectUnit: function() {
         var self = game.interfaces.battle;

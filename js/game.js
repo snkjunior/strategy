@@ -33,21 +33,11 @@ var game = {
     },
 	
 	officers: {
-		'officer_drayen': {
-			name: 'Drayen',
-			sprite: '',
-			unitsSlots: 3
-		},
-		'officer_sergant': {
+		'sergant': {
 			name: 'Sergant',
 			sprite: '',
 			unitsSlots: 2
-		},
-		'officer_elroy': {
-			name: 'Elroy',
-			sprite: '',
-			unitsSlots: 4
-		}
+		}		
 	},
     
     hero: {
@@ -55,40 +45,18 @@ var game = {
         class: 'scout',
         locationId: 'roadToKingdom',
 		officers: [
-			'officer_drayen',
-			'officer_sergant',
-			'officer_elroy'			
+			'sergant',
 		],
 		army: [
 			{
-				officer: 'officer_drayen',
-				units: [
-					{unitType: 'human_hunter'},
-					{unitType: 'human_hunter'}					
-				]
-			},
-			{
-				officer: 'officer_sergant',
+				officer: 'sergant',
 				units: [
 					{unitType: 'human_militiaman'},
 					{unitType: 'human_militiaman'}					
 				]
-			},
-			{
-				officer: 'officer_elroy',
-				units: [
-					{unitType: 'human_militiaman'},
-					{unitType: 'human_militiaman'}					
-				]
-			}
+			}			
 		],
         unitsInReserve: [			
-			{unitType: 'human_hunter'},
-            {unitType: 'human_hunter'},
-			{unitType: 'human_militiaman'},
-			{unitType: 'human_militiaman'},
-			{unitType: 'human_militiaman'},
-			{unitType: 'human_militiaman'}
         ],
         knownLocations: {
             //"westRegion": ["forestTrail"]
@@ -150,8 +118,17 @@ game.init = function() {
 	
    this.cMission = game.missions.Act1_Sacrifice;
    this.cMap = game.missions.Act1_Sacrifice.maps.westRegion;
-   this.showInterface('map');
+   //this.showInterface('map');
     
+	
+	this.showInterface('battle', {enemies: [
+		{unitType: 'animal_wolf'},
+		{unitType: 'animal_wolf'},
+		{unitType: 'animal_wolf'},
+		{unitType: 'animal_wolf'},
+		{unitType: 'animal_wolf'},
+		{unitType: 'animal_wolf'}
+	]});
 	
 	//this.showInterface('quests');
     //this.showInterface('editor');
