@@ -52,7 +52,11 @@ var game = {
 				officer: 'sergant',
 				units: [
 					{unitType: 'human_militiaman'},
-					{unitType: 'human_militiaman'}					
+					{unitType: 'human_militiaman'},
+                    {unitType: 'human_militiaman'},
+					{unitType: 'human_hunter'},
+                    {unitType: 'human_hunter'},
+                    {unitType: 'human_hunter'}
 				]
 			}			
 		],
@@ -67,11 +71,15 @@ var game = {
     },
     equipment: [],
     quests: {
-		arrival: {
-			isFinished: false,
+        invasion: {
+            isFinished: false,
 			notes: [1],
-			vars: {}
-		},
+            vars: {}
+        }
+		// arrival: {
+			// 
+			// vars: {}
+		// },
 		// source: {
 			// isFinished: false,
 			// notes: [1],
@@ -86,7 +94,8 @@ var game = {
     
     data: {},
     missions: {
-		Act1_Sacrifice: null
+		Act1_Sacrifice: null,
+        goblin_invasion: null
     },
 
     currentInterface: null,
@@ -116,10 +125,14 @@ game.init = function() {
         // ]
     // });
 	
-   this.cMission = game.missions.Act1_Sacrifice;
-   this.cMap = game.missions.Act1_Sacrifice.maps.westRegion;
-   //this.showInterface('map');
-    
+   // this.cMission = game.missions.Act1_Sacrifice;
+   // this.cMap = game.missions.Act1_Sacrifice.maps.westRegion;
+   // //this.showInterface('map');
+   
+    this.cMission = game.missions.goblin_invasion;
+    this.cMap = game.missions.goblin_invasion.maps.northPartOfKingdom;
+    this.hero.locationId = "woundedPeasant";
+    this.showInterface('map');
 	
 	this.showInterface('battle', {enemies: [
 		{unitType: 'animal_wolf'},
@@ -180,9 +193,9 @@ game.loadData = function() {
     };
     
     for (var missionName in game.missions) {
-       game.missions[missionName] = loadData('data/missions/' + missionName + '/description.json');	   
-       game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
-       for (var mapName in game.missions[missionName].maps) {
+        game.missions[missionName] = loadData('data/missions/' + missionName + '/description.json');	   
+        game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
+        for (var mapName in game.missions[missionName].maps) {
 			game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '/mapInfo.json');
 			if (game.missions[missionName].maps[mapName]) {
 				game.missions[missionName].maps[mapName].locations = loadData('data/missions/' + missionName + '/' + mapName + '/locations.json');
