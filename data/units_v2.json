@@ -62,7 +62,7 @@
         },
         "weapons": [
             {
-                "name": "pitchfork",
+                "name": "pitchfork",                
                 "isDefault": true,
                 "damages": {
                     "melee": 20

@@ -99,7 +99,7 @@
     </div>
     <!--ko if: game.interfaces.battle.selectedUnit() -->
         <!--ko with: game.interfaces.battle.selectedUnit()-->
-        <div class="unitInfo" data-bind="style: {left: '10px', top: (game.screen.height - 150) + 'px'}">
+        <div class="unitInfo" data-bind="style: {left: '10px', top: (game.screen.height - 150) + 'px'}" style="z-index: 25;">
             <div class="unitAvatar">
                 <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatarBg + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5; opacity: 0.7"/>
                 <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatar + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5;"/>
@@ -137,11 +137,12 @@
         </div>
         <!--/ko-->
         
-        <!--ko if: game.interfaces.battle.selectedUnit().canAction()-->
+        <!--ko if: game.interfaces.battle.selectedUnit().canAction() && battleStage() == 'battle' && currentPlayerTurn() == 1 -->
         <!--ko foreach: game.data.units[game.interfaces.battle.selectedUnit().unitTypeId].weapons -->
-        <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, click: $parent.clickOnAction">
-            <img data-bind="attr: {src: 'img/battle/action_' + ($data == game.interfaces.battle.selectedAction() ? 'selected' : 'unselected') + '.png'}">
-            <span style="position: absolute; top: 5px; left: 5px; font-size: 12px;" data-bind="text: name"></span>
+        <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, click: $parent.clickOnAction" style="z-index: 25;">            
+            <img data-bind="attr: {src: 'img/battle/action_' + ($data == game.interfaces.battle.selectedAction() ? 'selected' : 'unselected') + '.png'}" style="top: 0px; left: 0px;">            
+            <img data-bind="attr: {src: 'img/battle/actions/' + name + '.png'}" style="position: absolute; top: 0px; left: 0px;">
+            <!--<span style="position: absolute; top: 5px; left: 5px; font-size: 12px;" data-bind="text: name"></span>
             <img src="img/battle/range.png" style="position: absolute; top: 19px; left: 10px; width: 14px; height: 14px">
             <span style="position: absolute; top: 20px; left: 30px; font-size: 10px;" data-bind="text: minDistance + '-' + maxDistance"></span>
             
@@ -149,7 +150,7 @@
             <span style="position: absolute; top: 33px; left: 30px; font-size: 10px;" data-bind="text: $parent.getActionDamage($data)"></span>
             
             <img src="img/battle/accuracy.png" style="position: absolute; top: 45px; left: 10px; width: 14px; height: 14px">
-            <span style="position: absolute; top: 46px; left: 30px; font-size: 10px;" data-bind="text: accuracy + '%'"></span>
+            <span style="position: absolute; top: 46px; left: 30px; font-size: 10px;" data-bind="text: accuracy + '%'"></span>-->
         </div>
         <!--/ko-->
         <!--/ko-->
@@ -158,7 +159,7 @@
     <!--ko with: game.interfaces.battle.mouseOverHex() -->
         <!--ko if: game.interfaces.battle.getUnitIdInHex(x, y) != null -->
             <!--ko with: game.interfaces.battle.units[game.interfaces.battle.getUnitIdInHex(x, y)]-->
-            <div class="unitInfo" data-bind="style: {left: game.screen.width - 100 - 10, top: (game.screen.height - 150)}">
+            <div class="unitInfo" data-bind="style: {left: game.screen.width - 100 - 10, top: (game.screen.height - 150), 'z-index': 25}">
                 <div class="unitAvatar">
                     <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatarBg + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5; opacity: 0.7"/>
                     <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatar + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5; transform: scale(-1, 1)"/>
@@ -198,13 +199,14 @@
         <!--/ko-->
     <!--/ko-->
     
-	
-	<!--ko if: battleStage() == 'placeUnits'-->
-	<div class="battleButton"><button data-bind="click: clickStartBattle">Start battle</button></div>
-	<!--/ko-->	
-	<!--ko if: battleStage() == 'battle' && currentPlayerTurn() == 1 -->
-    <div class="battleButton"><button data-bind="click: clickEndTurnButton">End turn</button></div>
-	<!--/ko-->	
+	<div class="battleButton" data-bind="style: {top: game.screen.height - 40 + 'px', left: game.screen.width / 2 - 50 + 'px'}">
+        <!--ko if: battleStage() == 'placeUnits'-->
+        <button data-bind="click: clickStartBattle">Start battle</button>
+        <!--/ko-->	
+        <!--ko if: battleStage() == 'battle' && currentPlayerTurn() == 1 -->
+        <button data-bind="click: clickEndTurnButton">End turn</button>
+        <!--/ko-->	
+    </div>
 </div>
 
 <div id='damagePattern' style='width: 64px; position: absolute; display: none; text-align: center; z-index: 10; font-size: 12px;'>

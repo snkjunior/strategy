@@ -65,10 +65,14 @@
 
 .battleButton {
     position: absolute; 
-    bottom: 20px; 
     z-index: 100;
-    width: 100%;
+    margin: auto;
     text-align: center;
+    width: 100px;
+}
+
+.battleButton button {
+    width: 100%;
 }
 
 .hintPanel {
