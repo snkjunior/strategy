@@ -213,7 +213,7 @@ game.components.hexGeom = {
         return movePass;
     },
     
-    getHexInMoveZone: function(moveZone, x, y) {
+    getHexInZone: function(moveZone, x, y) {
         if (moveZone.length) {
             for (var i = 0; i < moveZone.length; i++) {
                 if (moveZone[i].x == x && moveZone[i].y == y) {

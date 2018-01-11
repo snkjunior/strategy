@@ -15,9 +15,15 @@
                 <!--ko if: game.interfaces.battle.getUnitIdInHex(x, y) != null-->
                 <!--ko with: game.interfaces.battle.units[game.interfaces.battle.getUnitIdInHex(x, y)]-->
                 <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '_' + (ownerId == 1 ? 'player' : 'enemy') + '.png', unitId: id}" style="position: absolute; top: -15px; left: 0px; z-index: 10;"/>
-                <!--ko if: game.interfaces.battle.unitsToAction().indexOf(id) != -1 -->
+                <!--ko if: game.interfaces.battle.unitsToAction().indexOf(id) != -1 && ((game.interfaces.battle.actionHexesZone().length && game.components.hexGeom.getHexInZone(game.interfaces.battle.actionHexesZone(), $parent.x, $parent.y)) || !game.interfaces.battle.actionHexesZone().length) -->
                 <img data-bind="attr: {src: 'img/battle/hex_attack.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 4; opacity: 0.5;">
                 <!--/ko-->
+                <!--/ko-->
+                <!--/ko-->
+                
+                <!--ko if: game.interfaces.battle.actionHexesZone().length-->
+                <!--ko if: game.components.hexGeom.getHexInZone(game.interfaces.battle.actionHexesZone(), x, y)-->    
+                <img data-bind="attr: {src: 'img/battle/hex_attack.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 4; opacity: 0.5;">
                 <!--/ko-->
                 <!--/ko-->
                 
@@ -37,8 +43,8 @@
                 <img data-bind="attr: {src: 'img/battle/hex_selected.png'}"  style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.5;">
                 <!--/ko-->
                 
-                <!--ko if: game.interfaces.battle.moveZone().length-->
-                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.moveZone(), x, y)-->                
+                <!--ko if: game.interfaces.battle.moveZone().length && !game.interfaces.battle.actionHexesZone().length-->
+                <!--ko if: game.components.hexGeom.getHexInZone(game.interfaces.battle.moveZone(), x, y)-->                
                 <img data-bind="attr: {src: 'img/battle/hex_selected.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.5;">
                 <!--ko if: game.interfaces.battle.selectedUnit() != null && game.interfaces.battle.getUnitLocationDefenceBonus(x, y, game.interfaces.battle.selectedUnit()) != 0-->
                 <div style='width: 64px; text-align: center; position: absolute; z-index: 15; top: 20px; font-size: 10px;'>
@@ -49,8 +55,9 @@
                 <!--/ko-->
                 <!--/ko-->
                 
-                <!--ko if: game.interfaces.battle.mouseOverMoveZone().length-->
-                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.mouseOverMoveZone(), x, y) -->
+                
+                <!--ko if: game.interfaces.battle.mouseOverMoveZone().length && game.interfaces.battle.mouseOverHex() && game.interfaces.battle.getUnitIdInHex(game.interfaces.battle.mouseOverHex().x, game.interfaces.battle.mouseOverHex().y) != null-->
+                <!--ko if: game.components.hexGeom.getHexInZone(game.interfaces.battle.mouseOverMoveZone(), x, y) -->
 				<img data-bind="attr: {src: 'img/battle/hex_move.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.3;">
                 <!--/ko-->
 				<!--/ko-->
@@ -139,7 +146,7 @@
         
         <!--ko if: game.interfaces.battle.selectedUnit().canAction() && battleStage() == 'battle' && currentPlayerTurn() == 1 -->
         <!--ko foreach: game.data.units[game.interfaces.battle.selectedUnit().unitTypeId].weapons -->
-        <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, click: $parent.clickOnAction" style="z-index: 25;">            
+        <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, click: $parent.clickOnAction, event: {mouseover: $parent.mouseOverAction, mouseout: $parent.mouseOutAction}" style="z-index: 25;">            
             <img data-bind="attr: {src: 'img/battle/action_' + ($data == game.interfaces.battle.selectedAction() ? 'selected' : 'unselected') + '.png'}" style="top: 0px; left: 0px;">            
             <img data-bind="attr: {src: 'img/battle/actions/' + name + '.png'}" style="position: absolute; top: 0px; left: 0px;">
             <!--<span style="position: absolute; top: 5px; left: 5px; font-size: 12px;" data-bind="text: name"></span>

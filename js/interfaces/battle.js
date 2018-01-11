@@ -49,6 +49,7 @@ game.interfaces.battle = {
     unitsToAction: ko.observableArray([]),
     
     mouseOverMoveZone: ko.observableArray([]),
+    actionHexesZone: ko.observableArray([]),
     
     result: null,
     
@@ -367,9 +368,9 @@ game.interfaces.battle = {
 				self.unselectUnit();
 			}
 			if (self.battleStage() == 'battle') {
-				if (self.moveZone().length && game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y)) {
+				if (self.moveZone().length && game.components.hexGeom.getHexInZone(self.moveZone(), currentHex.x, currentHex.y)) {
 					var unit = self.selectedUnit();   
-					var hexToMove = game.components.hexGeom.getHexInMoveZone(self.moveZone(), currentHex.x, currentHex.y);
+					var hexToMove = game.components.hexGeom.getHexInZone(self.moveZone(), currentHex.x, currentHex.y);
 					self.moveZone([]);
 					self.movePass([]);
 					self.unitsToAction([]);
@@ -430,6 +431,17 @@ game.interfaces.battle = {
             self.unitsToAction(self.getUnitsInActionRadius(self.selectedUnit(), self.selectedAction()));
             self.selectedUnit().cAction(action);
         }
+    },
+    
+    mouseOverAction: function(action) {
+        var self = game.interfaces.battle;
+        var hexesInRadius = game.components.hexGeom.getHexesBetweenRadiuses(self.selectedUnit().x(), self.selectedUnit().y(), action.minDistance, action.maxDistance, self.map);        
+        self.actionHexesZone(hexesInRadius);
+    },
+    
+    mouseOutAction: function() {
+        var self = game.interfaces.battle;
+        self.actionHexesZone([]); 
     },
     
     clickEndTurnButton: function() {
