@@ -140,6 +140,8 @@ game.init = function() {
 		{unitType: 'animal_wolf'},
 		{unitType: 'animal_wolf'},
 		{unitType: 'animal_wolf'},
+		{unitType: 'animal_wolf'},
+        {unitType: 'animal_wolf'},
 		{unitType: 'animal_wolf'}
 	]});
 	

@@ -116,10 +116,20 @@ game.interfaces.battle = {
 			var x = 14;
 			var y = squadNum;
 			if (ownerId == 1) {
-				var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit();
+				var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit(self.hexesToPlaceUnits);
 				x = emptyHexToPlace.x;
 				y = emptyHexToPlace.y;
-			}
+			} else {
+                var allMap = [];
+                for (var y = 0; y < self.map.length; y++) {
+                    for (var x = 0; x < self.map[y].length; x++) {
+                        allMap.push(self.map[y][x]);
+                    }
+                }
+                var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit(allMap);
+				x = emptyHexToPlace.x;
+				y = emptyHexToPlace.y;
+            }
 			
 			var squad = {
 				id: Object.keys(self.units).length,
@@ -386,20 +396,20 @@ game.interfaces.battle = {
 		return false;
 	},
 	
-	getRandomEmptyHexToPlaceUnit: function() {
+	getRandomEmptyHexToPlaceUnit: function(hexes) {
 		var self = game.interfaces.battle;
 		var emptyHexes = [];
-		for (var i = 0; i < self.hexesToPlaceUnits.length; i++) {
+		for (var i = 0; i < hexes.length; i++) {
 			var isEmpty = true;
 			for (var unitId in self.units) {
-				if (self.units[unitId].x() == self.hexesToPlaceUnits[i].x && self.units[unitId].y() == self.hexesToPlaceUnits[i].y) {
+				if (self.units[unitId].x() == hexes[i].x && self.units[unitId].y() == hexes[i].y) {
 					isEmpty = false;
 					break;
 				}
 			}
 			
 			if (isEmpty) {
-				emptyHexes.push(self.hexesToPlaceUnits[i]);
+				emptyHexes.push(hexes[i]);
 			}			
 		}
 		return emptyHexes[Math.round(Math.random() * (emptyHexes.length - 1))];
