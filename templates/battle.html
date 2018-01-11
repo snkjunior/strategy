@@ -9,7 +9,7 @@
                 <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[terrain].sprite}">
                 
                 <!--ko if: object != null-->
-                <img data-bind="attr: {src: 'img/battle/objects/' + game.data.battle.objects[object].sprite}" style="position: absolute; top: -5px; left: 0px; z-index: 5;"/>
+                <img data-bind="attr: {src: 'img/battle/objects/' + game.components.other.getRandomSprite(game.data.battle.objects[object].sprite)}" style="position: absolute; top: -5px; left: 0px; z-index: 5;"/>
                 <!--/ko-->
                 
                 <!--ko if: game.interfaces.battle.getUnitIdInHex(x, y) != null-->
@@ -74,14 +74,14 @@
                 <!--/ko-->
                 
                 <!--ko if: game.interfaces.battle.isShowCoordinates()-->
-                <span style="position: absolute; z-index: 20; top: 50; left: 20; font-size: 10px; color: #dddddd;" data-bind="html: x + '-' + y"></span>
+                <span style="position: absolute; z-index: 20; top: 50px; left: 20px; font-size: 10px; color: #dddddd;" data-bind="html: x + '-' + y"></span>
                 <!--/ko-->
                 
                 <!--ko if: game.interfaces.battle.mouseOverHex() == $data && game.interfaces.battle.actionAttackInfo() != null-->
                 <!--ko with: game.interfaces.battle.actionAttackInfo()-->
-                <span style="position: absolute; z-index: 20; top: -10; left: 0; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: unitDamage"></span>
-                <span style="position: absolute; z-index: 20; top: -10; left: 30; width: 4px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;">|</span>
-                <span style="position: absolute; z-index: 20; top: -10; left: 34; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: targetDamage == '0' ? 'no' : targetDamage"></span>
+                <span style="position: absolute; z-index: 20; top: -10px; left: 0px; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: unitDamage"></span>
+                <span style="position: absolute; z-index: 20; top: -10px; left: 30px; width: 4px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;">|</span>
+                <span style="position: absolute; z-index: 20; top: -10px; left: 34px; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: targetDamage == '0' ? 'no' : targetDamage"></span>
                 <!--/ko-->
                 <!--/ko-->
             </div>
@@ -91,7 +91,7 @@
     </div>
     <!--ko if: game.interfaces.battle.selectedUnit() -->
         <!--ko with: game.interfaces.battle.selectedUnit()-->
-        <div class="unitInfo" data-bind="style: {left: 10, top: (game.screen.height - 150)}">
+        <div class="unitInfo" data-bind="style: {left: '10px', top: (game.screen.height - 150) + 'px'}">
             <div class="unitAvatar">
                 <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[game.interfaces.battle.map[y()][x()].terrain].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;">
                 <img src="img/battle/hex_border.png" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>

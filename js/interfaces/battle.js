@@ -57,9 +57,12 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
 		self.battleStage('placeUnits');
 		
+        self.map = self.generateMap(self.width, self.height);
 		for (var x = 0; x < 3; x++) {
 			for (var y = 0; y < self.height; y++) {
-				self.hexesToPlaceUnits.push({x: x, y:y});
+                if (self.map[y][x].object == null || game.data.battle.objects[self.map[y][x].object].isPassable == true) {
+                    self.hexesToPlaceUnits.push({x: x, y:y});
+                }
 			}
 		}
         
@@ -70,14 +73,12 @@ game.interfaces.battle = {
 			}
 		}
 		
-        self.map = self.generateMap(self.width, self.height);
+        
         self.generateSquadsFromUnits(units, 1);
         self.generateSquadsFromUnits(params.enemies, 2);
         
         self.result = params.result;
 		
-		
-        
         callback();
     },
     
@@ -94,7 +95,7 @@ game.interfaces.battle = {
                     y: y,
                     cCoord: game.components.hexGeom.getHexCasterianCoord({x: x, y: y}),
                     terrain: 'grass',
-                    object: (Math.round(Math.random() * 100) % 5 === 1 ? "forest" : null),
+                    object: (Math.round(Math.random() * 100) % 5 === 1 ? (Math.round(Math.random() * 100) % 5 === 2 ? "mountain" : "forest") : null),
                 };
             }
         }
@@ -128,7 +129,8 @@ game.interfaces.battle = {
 				cAction: ko.observable(unitType.weapons[0]),
 				canMove: ko.observable(true),
 				canAction: ko.observable(true),
-				lightWounded: ko.observable(0)
+				lightWounded: ko.observable(0),
+                hasCounterAttack: ko.observable(true)
 			};
 			self.units[squad.id] = squad;
 			squadNum++;            
@@ -264,7 +266,7 @@ game.interfaces.battle = {
 								var damageToTarget = self.getActionDamageToTarget(self.selectedUnit(), self.units[unitId], true);
 								var damageToUnit = 0;
 								if (game.components.hexGeom.isCanAttackUnit(self.units[unitId], self.units[unitId].cAction(), self.selectedUnit(), self.map)) {
-									damageToUnit = self.getActionDamageToTarget(self.units[unitId], self.selectedUnit());
+									damageToUnit = self.getActionDamageToTarget(self.units[unitId], self.selectedUnit(), true, true);
 								}
 								self.actionAttackInfo({
 									unitDamage: damageToTarget,
@@ -525,16 +527,17 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
         
         var damageToTarget = self.getActionDamageToTarget(actionUnit, targetUnit);
-        var damageToUnit = 0;
+        var damageToUnit = false;
         if (game.components.hexGeom.isCanAttackUnit(targetUnit, targetUnit.cAction(), actionUnit, self.map)) {
-            damageToUnit = self.getActionDamageToTarget(targetUnit, actionUnit, false);
+            damageToUnit = self.getActionDamageToTarget(targetUnit, actionUnit, false, true);
         }
         
         var targetWounded = self.processDamageToUnit(damageToTarget, targetUnit);
         self.template_showSquadDamage(targetUnit, damageToTarget, targetWounded.light + targetWounded.heavy);
-        if (damageToUnit != 0) {
+        if (damageToUnit !== false) {
             var unitWounded = self.processDamageToUnit(damageToUnit, actionUnit);
             self.template_showSquadDamage(actionUnit, damageToUnit, unitWounded.light + unitWounded.heavy);
+            targetUnit.hasCounterAttack(false);
         }
         
         actionUnit.canAction(false);
@@ -550,11 +553,7 @@ game.interfaces.battle = {
         return damage;
     },
     
-    getActionDamageToTarget: function(unit, target, checkSkills) {
-        if (checkSkills == null) {
-            checkSkills = true;
-        }
-        
+    getActionDamageToTarget: function(unit, target, checkSkills = true, isTarget = false) {
         var self = game.interfaces.battle;
         
         var damage = 0;
@@ -570,6 +569,10 @@ game.interfaces.battle = {
         }
         damage *= 1 + bonuses / 100;
         damage *= unit.cCount() / game.data.units[unit.unitTypeId].unitsInSquad;
+        
+        if (isTarget && !unit.hasCounterAttack()) {
+            damage /= 2;            
+        }
         
         damage = parseFloat(damage.toFixed(2));
         
@@ -612,7 +615,7 @@ game.interfaces.battle = {
         var self = game.interfaces.battle;
         
         if (units.length === 0) {
-            self.currentPlayerTurn(self.players[self.currentPlayerTurn()].nextPlayerTurn);
+            self.currentPlayerTurn(self.players[self.currentPlayerTurn()].nextPlayerTurn);            
             if (self.currentPlayerTurn() !== 1) {
                 self.processEnemyTurn();
             } else {
@@ -643,6 +646,7 @@ game.interfaces.battle = {
 
     processEnemyTurn: function() {
         var self = game.interfaces.battle;
+        self.updatePlayerUnitsActions(self.currentPlayerTurn());
         var unitsToAction = [];
         for (var unitId in self.units) {
             var unit = self.units[unitId];
@@ -659,6 +663,7 @@ game.interfaces.battle = {
             if (self.units[unitId].ownerId == playerId) {
                 self.units[unitId].canMove(true);
                 self.units[unitId].canAction(true);
+                self.units[unitId].hasCounterAttack(true);
             }
         }
     },

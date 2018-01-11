@@ -8,7 +8,7 @@
         "isPassable": true,
         "defenceBonus": 10,
         "moveMod": 1.5,
-        "sprite": "forest.png"
+        "sprite": ["forest.png"]
     },
     "hills": {
         "isPassable": true,
@@ -18,7 +18,8 @@
     "mountain": {
         "isPassable": false,
         "defenceBonus": 0,
-        "moveMod": 1
+        "moveMod": 100,
+        "sprite": ["mountain2.png", "mountain3.png", "mountain4.png"]
     },
     "water": {
         "isPassable": false,
