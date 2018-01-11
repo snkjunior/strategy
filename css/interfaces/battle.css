@@ -62,3 +62,26 @@
 .squadHp {
     background-color: #fd5c5e;
 }
+
+.battleButton {
+    position: absolute; 
+    bottom: 20px; 
+    z-index: 100;
+    width: 100%;
+    text-align: center;
+}
+
+.hintPanel {
+    width: 100%; 
+    height: 20px; 
+    position: absolute; 
+    top: 0px; 
+    left: 0px; 
+    display: block; 
+    text-align: center; 
+    font-size: 14px; 
+    color: black; 
+    background-color: #eee; 
+    opacity: 0.8; 
+    z-index: 100;    
+}

@@ -38,8 +38,14 @@
                 <!--/ko-->
                 
                 <!--ko if: game.interfaces.battle.moveZone().length-->
-                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.moveZone(), x, y) -->
+                <!--ko if: game.components.hexGeom.getHexInMoveZone(game.interfaces.battle.moveZone(), x, y)-->                
                 <img data-bind="attr: {src: 'img/battle/hex_selected.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 3; opacity: 0.5;">
+                <!--ko if: game.interfaces.battle.selectedUnit() != null && game.interfaces.battle.getUnitLocationDefenceBonus(x, y, game.interfaces.battle.selectedUnit()) != 0-->
+                <div style='width: 64px; text-align: center; position: absolute; z-index: 15; top: 20px; font-size: 10px;'>
+                    <img src='img/battle/protection.png' style='width: 14px; height: 14px; position: absolute; left: 10px;'/>
+                    <span style='position: absolute; left: 25px; top: 1px; text-decoration: bold; color: white;' data-bind='text: "+" + game.interfaces.battle.getUnitLocationDefenceBonus(x, y, game.interfaces.battle.selectedUnit()) + "%"'></span>
+                </div>    
+                <!--/ko-->                
                 <!--/ko-->
                 <!--/ko-->
                 
@@ -84,6 +90,8 @@
                 <span style="position: absolute; z-index: 20; top: -10px; left: 34px; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: targetDamage == '0' ? 'no' : targetDamage"></span>
                 <!--/ko-->
                 <!--/ko-->
+                
+                <span class="js-click-hex" style='position: absolute; width: 100%; height: 100%; top: 0px; left: 0px; z-index: 21; background-color: black; opacity: 0;'></span>
             </div>
             <!--/ko-->
             <!--/ko-->
@@ -184,10 +192,10 @@
     
 	
 	<!--ko if: battleStage() == 'placeUnits'-->
-	<div style='position: absolute; top: 20px; left:20px; z-index: 10;'><button data-bind="click: clickStartBattle">Начать сражение</button></div>
+	<div class="battleButton"><button data-bind="click: clickStartBattle">Start battle</button></div>
 	<!--/ko-->	
-	<!--ko if: battleStage() == 'battle'-->
-    <div style='position: absolute; top: 20px; left:20px; z-index: 10;'><button data-bind="click: clickEndTurnButton">Передать ход</button></div>
+	<!--ko if: battleStage() == 'battle' && currentPlayerTurn() == 1 -->
+    <div class="battleButton"><button data-bind="click: clickEndTurnButton">End turn</button></div>
 	<!--/ko-->	
 </div>
 
@@ -195,3 +203,7 @@
     <span class='textRed'></span>
     <span class='textYellow'></span>
 </div>
+
+<!--ko if: hint() != null-->
+<div id='hintPanel' class='hintPanel' data-bind="text: hint"></div>
+<!--/ko-->

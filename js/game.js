@@ -208,7 +208,7 @@ game.loadData = function() {
     
     
     for (var skillId in game.data.skills) {
-        game.data.skills[skillId].condition = new Function('unit, target', game.data.skills[skillId].condition);
+        game.data.skills[skillId].condition = new Function('unit, target, hex', game.data.skills[skillId].condition);
     }
 };
 

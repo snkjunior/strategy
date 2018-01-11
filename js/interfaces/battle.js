@@ -30,6 +30,7 @@ game.interfaces.battle = {
     
     //Dynamic data
 	battleStage: ko.observable(null),
+    hint: ko.observable(null),
 	
     units: {},
     
@@ -55,7 +56,9 @@ game.interfaces.battle = {
     
     init: function(callback, params) {
         var self = game.interfaces.battle;
+        
 		self.battleStage('placeUnits');
+        self.hint('Place your units on yellow hexes and click button "Start battle"');
 		
         self.map = self.generateMap(self.width, self.height);
 		for (var x = 0; x < 3; x++) {
@@ -220,9 +223,18 @@ game.interfaces.battle = {
         var minHex = null;
 
         var targetElement = $(e.target);
-        if (targetElement.prop('tagName') == "IMG") {
-            targetElement = targetElement.parent();
+        if (!targetElement.hasClass('hex')) {
+            for (var i = 0; i <= 2; i++) {
+                targetElement = targetElement.parent();
+                if (targetElement.hasClass('hex')) {
+                    break;
+                }
+            }
         }
+        
+        // if (targetElement.prop('tagName') == "IMG") {
+            // targetElement = targetElement.parent();
+        // }
         if (targetElement.hasClass('hex')) {
             var currentHex = self.map[targetElement.attr("y")][targetElement.attr("x")];
             var hexesToCheck = game.components.hexGeom.getNeighborHexes(currentHex.x, currentHex.y, self.map);
@@ -285,10 +297,11 @@ game.interfaces.battle = {
 	clickStartBattle: function() {
 		var self = game.interfaces.battle;
 		self.selectedUnit(null);
-		self.battleStage('battle');		
+		self.battleStage('battle');
+        self.hint('Your turn');
 	},
 	
-    clickOnHex: function() {
+    clickOnHex: function() {        
         var self = game.interfaces.battle;
         
         if (self.isAnimate)
@@ -617,9 +630,10 @@ game.interfaces.battle = {
         if (units.length === 0) {
             self.currentPlayerTurn(self.players[self.currentPlayerTurn()].nextPlayerTurn);            
             if (self.currentPlayerTurn() !== 1) {
-                self.processEnemyTurn();
+                self.processEnemyTurn();                
             } else {
                 self.updatePlayerUnitsActions(1);
+                self.hint('Your turn');
             }
             return;
         }
@@ -646,6 +660,7 @@ game.interfaces.battle = {
 
     processEnemyTurn: function() {
         var self = game.interfaces.battle;
+        self.hint('Enemy turn');
         self.updatePlayerUnitsActions(self.currentPlayerTurn());
         var unitsToAction = [];
         for (var unitId in self.units) {
@@ -701,6 +716,12 @@ game.interfaces.battle = {
         return bonus;
     },
     
+    getUnitLocationDefenceBonus: function(x, y, unit) {
+        var self = game.interfaces.battle;        
+        var bonus = self.getLocationDefenceBonus(x, y) - self.getUnitSkillBonuses(unit, null, 'defence', 'damage', self.map[y][x]);        
+        return bonus;
+    },
+    
     getChanceToAttack: function(unit, target) {
         var self = game.interfaces.battle;
         var chance = 0;
@@ -721,12 +742,12 @@ game.interfaces.battle = {
         };
     },
     
-    getUnitSkillBonuses: function(unit, target, type, param) {
+    getUnitSkillBonuses: function(unit, target, type, param = null, hex = null) {
         var bonuses = {};
         for (var i = 0; i < game.data.units[unit.unitTypeId].skills.length; i++) {
             var skill = game.data.skills[game.data.units[unit.unitTypeId].skills[i]];
             if (skill.type == type) {
-                if (skill.condition(unit, target)) {
+                if (skill.condition(unit, target, hex)) {
                     for (var bonusName in skill.bonuses) {
                         if (bonuses[bonusName] != null) {
                             bonuses[bonusName] += skill.bonuses[bonusName];
