@@ -10,7 +10,7 @@
     "forestWalker": {
         "type": "defence",
         "params": ["accuracy"],
-        "condition": "return (unit.x() == hex.x && unit.y() == hex.y && game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest') || (hex != null && hex.object == 'forest')",
+        "condition": "return (hex == null && game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest') || (hex != null && (unit.x() == hex.x && unit.y() == hex.y && game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest') || (hex != null && hex.object == 'forest'))",
         "bonuses": {
             "damage": -5
         }
