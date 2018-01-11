@@ -1,6 +1,8 @@
 {
     "human_hunter": {
         "sprite": "human_hunter",
+        "avatar": "avatar_human_hunter",
+        "avatarBg": "avatar_bg_village",
         "name": "Hunter",
         "race": "human",
         "unitsInSquad": 14,
@@ -43,6 +45,8 @@
     },
     "human_militiaman": {
         "sprite": "human_militiaman",
+        "avatar": "avatar_human_militiaman",
+        "avatarBg": "avatar_bg_village",
         "name": "Militiaman",
         "race": "human",
         "unitsInSquad": 16,
@@ -72,6 +76,8 @@
     },
     "animal_wolf": {
         "sprite": "animal_wolf",
+        "avatar": "avatar_animal_wolf",
+        "avatarBg": "avatar_bg_forest",
         "name": "Wolf",
         "race": "animal",
         "unitsInSquad": 20,

@@ -101,15 +101,19 @@
         <!--ko with: game.interfaces.battle.selectedUnit()-->
         <div class="unitInfo" data-bind="style: {left: '10px', top: (game.screen.height - 150) + 'px'}">
             <div class="unitAvatar">
+                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatarBg + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5; opacity: 0.7"/>
+                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatar + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5;"/>
+                <!--ko if: false-->
                 <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[game.interfaces.battle.map[y()][x()].terrain].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;">
                 <img src="img/battle/hex_border.png" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
                 <!--ko if: game.interfaces.battle.map[y()][x()].object != null -->
                 <img data-bind="attr: {src: 'img/battle/objects/' + game.data.battle.objects[game.interfaces.battle.map[y()][x()].object].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
                 <!--/ko-->
                 <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '_' + (ownerId == 1 ? 'player' : 'enemy') + '.png'}" style="position: absolute; top: 5px; left: 18px; z-index: 5;"/>
+                <!--/ko-->
             </div>
             <!--ko with: game.interfaces.battle.map[y()][x()]-->
-                <!--ko if: object != null -->
+                <!--ko if: object != null && false -->
                 <div class='unitPanelBonus' style='top: 90px;'>
                     <img src='img/battle/protection.png' style='width: 14px; height: 14px; position: absolute; left: 30px;'/>
                     <span style='position: absolute; left: 45px; top: 1px;' data-bind='text: "+" + game.data.battle.objects[object].defenceBonus + "%"'></span>
@@ -156,15 +160,19 @@
             <!--ko with: game.interfaces.battle.units[game.interfaces.battle.getUnitIdInHex(x, y)]-->
             <div class="unitInfo" data-bind="style: {left: game.screen.width - 100 - 10, top: (game.screen.height - 150)}">
                 <div class="unitAvatar">
-                <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[game.interfaces.battle.map[y()][x()].terrain].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;">
-                <img src="img/battle/hex_border.png" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
-                <!--ko if: game.interfaces.battle.map[y()][x()].object != null -->
-                <img data-bind="attr: {src: 'img/battle/objects/' + game.data.battle.objects[game.interfaces.battle.map[y()][x()].object].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
-                <!--/ko-->
-                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '_' + (ownerId == 1 ? 'player' : 'enemy') + '.png'}" style="position: absolute; top: 5px; left: 18px; z-index: 5;"/>
-            </div>
+                    <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatarBg + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5; opacity: 0.7"/>
+                    <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].avatar + '.png'}" style="position: absolute; top: 0px; left: 0px; width:100%; height: 110px; z-index: 5; transform: scale(-1, 1)"/>
+                    <!--ko if: false-->
+                    <img data-bind="attr: {src: 'img/battle/terrains/' + game.data.battle.terrains[game.interfaces.battle.map[y()][x()].terrain].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;">
+                    <img src="img/battle/hex_border.png" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
+                    <!--ko if: game.interfaces.battle.map[y()][x()].object != null -->
+                    <img data-bind="attr: {src: 'img/battle/objects/' + game.data.battle.objects[game.interfaces.battle.map[y()][x()].object].sprite}" style="position: absolute; top: 20px; left: 18px; z-index: 5;"/>
+                    <!--/ko-->
+                    <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '_' + (ownerId == 1 ? 'player' : 'enemy') + '.png'}" style="position: absolute; top: 5px; left: 18px; z-index: 5;"/>
+                    <!--/ko-->
+                </div>
                 <!--ko with: game.interfaces.battle.map[y()][x()]-->
-                <!--ko if: object != null -->
+                <!--ko if: object != null && false -->
                 <div class='unitPanelBonus' style='top: 90px;'>
                     <img src='img/battle/protection.png' style='width: 14px; height: 14px; position: absolute; left: 30px;'/>
                     <span style='position: absolute; left: 45px; top: 1px;' data-bind='text: "+" + game.data.battle.objects[object].defenceBonus + "%"'></span>
