@@ -1,6 +1,8 @@
 {
     "trackingAnimals": {
-        "type": "offence",
+        "sprite": "damage",
+        "description": "Unit deals 10% more damage to animals.",
+        "type": "offence",       
         "params": ["accuracy"],
         "condition": "return game.data.units[target.unitTypeId].race == 'animal'",
         "bonuses": {
@@ -8,6 +10,8 @@
         }
     },
     "forestWalker": {
+        "sprite": "damage",
+        "description": "Unit takes 5% less damage in forest location.",
         "type": "defence",
         "params": ["accuracy"],
         "condition": "return (hex == null && game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest') || (hex != null && (unit.x() == hex.x && unit.y() == hex.y && game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest') || (hex != null && hex.object == 'forest'))",
@@ -16,6 +20,8 @@
         }
     },
     "forestInhabitant": {
+        "sprite": "damage",
+        "description": "Unit takes 20% less damage in forest location.",
         "type": "defence",
         "params": ["accuracy"],
         "condition": "return game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest' || (hex != null && hex.object == 'forest')",
