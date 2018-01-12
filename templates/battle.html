@@ -153,7 +153,7 @@
         
         <!--ko if: game.interfaces.battle.selectedUnit().canAction() && battleStage() == 'battle' && currentPlayerTurn() == 1 -->
         <!--ko foreach: game.data.units[game.interfaces.battle.selectedUnit().unitTypeId].weapons -->
-        <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, click: $parent.clickOnAction, event: {mouseover: $parent.mouseOverAction, mouseout: $parent.mouseOutAction}" style="z-index: 25;">            
+        <div class="unitActionUI" data-bind="style: {left: 120 + ($index() * 74) + 'px', top: (game.screen.height - 74) + 'px'}, attr: {title: $parent.getActionDamageString($data)}, click: $parent.clickOnAction, event: {mouseover: $parent.mouseOverAction, mouseout: $parent.mouseOutAction}" style="z-index: 25;">            
             <img data-bind="attr: {src: 'img/battle/action_' + ($data == game.interfaces.battle.selectedAction() ? 'selected' : 'unselected') + '.png'}" style="top: 0px; left: 0px;">            
             <img data-bind="attr: {src: 'img/battle/actions/' + name + '.png'}" style="position: absolute; top: 0px; left: 0px;">
             <!--<span style="position: absolute; top: 5px; left: 5px; font-size: 12px;" data-bind="text: name"></span>

@@ -729,6 +729,14 @@ game.interfaces.battle = {
         );
     },
     
+    getActionDamageString: function(action) {
+        var damageString = [];
+        for (var damageType in action.damages) {
+            damageString.push(damageType + ': ' + action.damages[damageType]);            
+        }
+        return damageString.join(', ');
+    },
+    
     getLocationDefenceBonus: function(x, y) {
         var self = game.interfaces.battle;
         var bonus = 0;
