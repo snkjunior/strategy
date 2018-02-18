@@ -195,6 +195,7 @@ game.interfaces.map = {
         game.components.actions.processActions(location.actions);
         self.selectedLocation(location);
         self.currentHeroLocation(location);
+        game.hero.locationId = self.currentHeroLocation().id;
     },
     
     travelToLocation: function() {
