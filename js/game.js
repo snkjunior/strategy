@@ -91,7 +91,8 @@ game.init = function() {
    
 	this.loadData();    
     this.initTemplates();
-    game.initEventWindow();
+    this.initEventWindow();
+    this.initMenu();
 
     this.cMission = game.missions.GameCoreTest;
     this.cMap = this.cMission.maps[this.cMission.startMap];
@@ -124,6 +125,15 @@ game.init = function() {
 	//this.components.infoBlock.show('test', {testText: 123});
 };
 
+game.initMenu = function() {
+    $('.navMenuButton').on('click', function() {
+        var interfaceName = $(this).attr('data-interface');
+        $('.navMenuButton').removeClass('active');
+        $(this).addClass('active');
+        game.showInterface(interfaceName);
+    });
+}
+
 game.getCurrentScreenHeight = function() {
 	if ($("#navMenu").is(':visible')) {
 		return game.screen.height - game.menuHeight;
@@ -134,13 +144,7 @@ game.getCurrentScreenHeight = function() {
 game.setMenuVisible = function(isShowMenu) {
 	$("#interfaceContent").css('height', (!isShowMenu ? game.screen.height : game.screen.height - game.menuHeight));  	
 	if (isShowMenu) {
-		$("#navMenu").show();
-		$('.navMenuButton').on('click', function() {
-			var interfaceName = $(this).attr('data-interface');
-			$('.navMenuButton').removeClass('active');
-			$(this).addClass('active');
-			game.showInterface(interfaceName);
-		});
+		$("#navMenu").show();		
 	} else {
 		$("#navMenu").hide();
 	}	
@@ -222,7 +226,7 @@ game.showInterface = function(interfaceName, params) {
             game.currentInterface.onReady();
         }
         $("#interfaceContent").show();
-    }, params);
+    }, params);    
 };
 
 game.hideInterface = function() {
