@@ -33,49 +33,24 @@ var game = {
     },
 	
 	officers: {
-		'sergant': {
-			name: 'Sergant',
-			sprite: '',
-			unitsSlots: 2
+		mainHero: {
+			name: 'Hero',
+			avatar: 'avatar_human_militiaman',
+			unitsSlots: 1
 		}		
 	},
     
-    hero: {
-        exp: 0,
-        class: 'scout',
-        locationId: 'roadToKingdom',
-		officers: [
-			'sergant',
-		],
-		army: [
-			{
-				officer: 'sergant',
-				units: [
-					{unitType: 'human_militiaman'},
-					{unitType: 'human_militiaman'},
-                    {unitType: 'human_militiaman'},
-					{unitType: 'human_hunter'},
-                    {unitType: 'human_hunter'},
-                    {unitType: 'human_hunter'}
-				]
-			}			
-		],
-        unitsInReserve: [			
-        ],
-        knownLocations: {
-            //"westRegion": ["forestTrail"]
-        }
-    },
+    hero: null,
     resources: {
         wood: 0
     },
     equipment: [],
     quests: {
-        invasion: {
-            isFinished: false,
-			notes: [1],
-            vars: {}
-        }
+        // pickingBerries: {
+            // isFinished: false,
+			// notes: ["1", "2"],
+            // vars: {}
+        // }
 		// arrival: {
 			// 
 			// vars: {}
@@ -91,15 +66,17 @@ var game = {
 //			  vars: {}
 //        }
     },
+    events: {},
     
     data: {},
     missions: {
-		Act1_Sacrifice: null,
-        goblin_invasion: null
+		// Act1_Sacrifice: null,
+        // goblin_invasion: null,
+        GameCoreTest: null
     },
 
     currentInterface: null,
-    interfaces: {},
+    interfaces: {},    
     components: {},
 	infoBlockTemplates: {
 		'test': '<div id="test"><div data-bind="text: testText"></div></div>'
@@ -114,36 +91,26 @@ game.init = function() {
    
 	this.loadData();    
     this.initTemplates();
-	
-    // this.showInterface('battle', {
-        // units: this.hero.units,
-        // enemies: {
-            // animal_wolf: 4
-        // },
-        // result: [
-            
-        // ]
-    // });
-	
-   // this.cMission = game.missions.Act1_Sacrifice;
-   // this.cMap = game.missions.Act1_Sacrifice.maps.westRegion;
-   // //this.showInterface('map');
-   
-    this.cMission = game.missions.goblin_invasion;
-    this.cMap = game.missions.goblin_invasion.maps.northPartOfKingdom;
-    this.hero.locationId = "woundedPeasant";
+    game.initEventWindow();
+
+    this.cMission = game.missions.GameCoreTest;
+    this.cMap = this.cMission.maps[this.cMission.startMap];
+    this.hero = this.cMission.startHero;
     this.showInterface('map');
-	
-	this.showInterface('battle', {enemies: [
-		{unitType: 'animal_wolf'},
-		{unitType: 'animal_wolf'},
-		{unitType: 'animal_wolf'},
-		{unitType: 'animal_wolf'},
-		{unitType: 'animal_wolf'},
-		{unitType: 'animal_wolf'},
-        {unitType: 'animal_wolf'},
-		{unitType: 'animal_wolf'}
-	]});
+    
+    
+    //game.components.actions.processActions(this.cMission.onload);
+    
+	// this.showInterface('battle', {enemies: [
+		// {unitType: 'animal_wolf'},
+		// {unitType: 'animal_wolf'},
+		// {unitType: 'animal_wolf'},
+		// {unitType: 'animal_wolf'},
+		// {unitType: 'animal_wolf'},
+		// {unitType: 'animal_wolf'},
+        // {unitType: 'animal_wolf'},
+		// {unitType: 'animal_wolf'}
+	// ]});
 	
 	//this.showInterface('quests');
     //this.showInterface('editor');
@@ -179,9 +146,14 @@ game.setMenuVisible = function(isShowMenu) {
 	}	
 };
 
+game.initEventWindow = function() {    
+    $('#eventPopup').html(game.interfaces.event.template);
+    ko.renderTemplate('eventPopup', game.interfaces.event, {}, document.getElementById('eventPopup'));
+};
+
 game.loadData = function() {
     var loadData = function(url) {
-        var response = $.ajax({url: url + "?_=" + new Date().getTime(), async: false});
+        var response = $.ajax({url: url + "?_=" + new Date().getTime(), async: false, dataType: 'json'});
         return response.responseJSON;
     };
 
@@ -201,7 +173,7 @@ game.loadData = function() {
 			game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '/mapInfo.json');
 			if (game.missions[missionName].maps[mapName]) {
 				game.missions[missionName].maps[mapName].locations = loadData('data/missions/' + missionName + '/' + mapName + '/locations.json');
-				game.missions[missionName].maps[mapName].objects = loadData('data/missions/' + missionName + '/' + mapName + '/objects.json');
+				game.missions[missionName].maps[mapName].events = loadData('data/missions/' + missionName + '/' + mapName + '/events.json');
 				game.missions[missionName].maps[mapName].triggers = loadData('data/missions/' + missionName + '/' + mapName + '/triggers.json');
 			}
 		}
@@ -227,6 +199,16 @@ game.initTemplates = function() {
     }
 };
 
+game.showEvent = function(eventId, initState) {
+    var eventData = game.cMap.events[eventId];
+    game.interfaces.event.show(eventData, initState);
+    game.interfaces.event.onReady();
+};
+
+game.hideEvent = function() {
+    game.interfaces.event.hide();
+};
+
 game.showInterface = function(interfaceName, params) {    
     if (game.currentInterface != null) {
         game.currentInterface.onEnd();
@@ -235,7 +217,7 @@ game.showInterface = function(interfaceName, params) {
     game.currentInterface = game.interfaces[interfaceName];
     $("#interfaceContent").html(game.currentInterface.template);
     game.currentInterface.init(function() {
-        ko.renderTemplate('interface', game.currentInterface, {}, document.getElementById('interface'));
+        ko.renderTemplate('interfaceContent', game.currentInterface, {}, document.getElementById('interfaceContent'));
         if (game.currentInterface.onReady != null) {
             game.currentInterface.onReady();
         }

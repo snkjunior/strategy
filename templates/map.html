@@ -10,18 +10,18 @@
         <!--/ko-->
         <!--/ko-->
         
-        <!--ko foreach: game.components.other.objectToArray(locations)-->
-        <!--ko if: $parent.visibleLocations().indexOf($data.id) !== -1-->
-        <img class="location" data-bind="style: {left: x - $parent.locationRadius, top: y - $parent.locationRadius, width: $parent.locationRadius * 2, height: $parent.locationRadius * 2}, attr: {locationId: id, src: 'img/map/locations/' + $parent.getLocationSprite($data)}, click: $parent.clickLocation">
+        <!--ko foreach: locationsArray-->
+        <!--ko if: $parent.isLocationVisible($data)-->
+        <img class="location" data-bind="style: {left: x - $parent.locationRadius, top: y - $parent.locationRadius, width: $parent.locationRadius * 2, height: $parent.locationRadius * 2}, attr: {locationId: id, src: 'img/map/locations/' + $parent.getLocationSprite($data)}, click: $parent.clickAction">
         <div class="locationName" data-bind="text: name, style: {left: x - 50, top: y + $parent.locationRadius}"></div>
-        <!--ko if: $data == $parent.selectedLocation()-->
-        <img class='locationAction' data-bind="attr: {src: 'img/map/' + $parent.getSelectedLocationActionSprite($data)}, style: {left: x + $parent.locationRadius + 30, top: y + $parent.locationRadius - 13}, click: $parent.clickAction"/>
+        <!--ko if: (game.cMap.userRoads && $data == $parent.selectedLocation()) || (!game.cMap.userRoads)-->
+        <!--<img class='locationAction' data-bind="attr: {src: 'img/map/' + $parent.getSelectedLocationActionSprite($data)}, style: {left: x - $parent.actionRadius, top: y - $parent.locationRadius - 2 * $parent.actionRadius - 5}, click: $parent.clickAction"/>-->
         <!--/ko-->
         <!--/ko-->
         <!--/ko-->
         
         <!--ko with: currentHeroLocation-->
-        <img id='heroLocationPointer' src='img/map/hero.png' style='position: absolute; width: 48px; height: 48px; z-index: 5;' data-bind='style: {left: (x - $parent.locationRadius - 55) + "px", top: (y + $parent.locationRadius - 15) + "px"}'/>
+        <!--<img id='heroLocationPointer' src='img/map/hero.png' style='position: absolute; width: 48px; height: 48px; z-index: 5;' data-bind='style: {left: (x - $parent.locationRadius - 55) + "px", top: (y + $parent.locationRadius - 15) + "px"}'/>-->
         <!--/ko-->
     </div>
 </div>

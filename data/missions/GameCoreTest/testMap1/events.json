@@ -1,0 +1,165 @@
+{
+    "startMapEvent": {
+        "id": "startMapEvent",
+        "initState": "1",
+        "states": {
+            "1": {
+                "description": "Добро пожаловать на тестовую карту, в которой вы сможете прогнать возможности движка игры.",
+                "actions": [
+                    {"name": "Далее", "result": [{"type": "setEventState", "stateId": "2"}]}
+                ]
+            },
+            "2": {
+                "description": "Сразу же начинаем с окна событий, в котором вы сейчас находитесь, именно в нем будет происходить все взаимодействие с персонажами и объектами игры.",
+                "actions": [
+                    {"name": "Далее", "result": [{"type": "setEventState", "stateId": "3"}]}
+                ]
+            },
+            "3": {
+                "description": "За это окно отвечает игровой объект 'Событие', которое имеет состояние, между которыми игрок может переходить в зависимости от выбранного действия. Если вы нажмете кнопку назад, то перейдете на шаг назад.",
+                "actions": [
+                    {"name": "Далее", "result": [{"type": "setEventState", "stateId": "4"}]},
+                    {"name": "Вернуться назад", "result": [{"type": "setEventState", "stateId": "2"}]}
+                ]                
+            },
+            "4": {
+                "description": "Данное событие имеет три действия, у каждого действия может быть условие видимости, а так же условия активности. Каждое действие может иметь до нескольких разных последствий. Активируйте действие, выполните условие и перейдите на следующее состояние.",
+                "actions": [
+                    {
+                        "name": "Активировать действие", 
+                        "result": [{"type": "setEventNote", "eventId": "startMapEvent", "note": "activateActionOnStep4", "value": "1"}, {"type": "setEventState", "stateId": "4"}]
+                    },
+                    {
+                        "name": "Применить условие видимости", 
+                        "activeConditions": [{"type": "isEventNoteValue", "eventId": "startMapEvent", "note": "activateActionOnStep4", "value": "1"}],
+                        "result": [{"type": "setEventNote", "eventId": "startMapEvent", "note": "setVisibleActionOnStep4", "value": "1"}, {"type": "setEventState", "stateId": "4"}]
+                    },
+                    {
+                        "name": "Далее", 
+                        "visibleConditions": [{"type": "isEventNoteValue", "eventId": "startMapEvent", "note": "setVisibleActionOnStep4", "value": "1"}],
+                        "result": [{"type": "setEventState", "stateId": "5"}]
+                    }
+                ]                
+            },
+            "5": {
+                "description": "Отлично, теперь перейдем к карте. На ней вы видите локацию 'Первая локация', каждая локация имеет вид взаимодействия",
+                "actions": [
+                    {"name": "Перейти к карте", "result": [{"type": "closeEvent"}]}
+                ]
+            }
+        }      
+    },
+    "dialogWithTestNpc": {
+        "id": "dialogWithTestNpc",
+        "initState": "1",
+        "states": {
+            "1": {
+                "description": "Здравствуй, добрый молодец. Чем могу тебе помочь?",
+                "actions": [
+                    {"name": "Нужна ли помощь какая?", "visibleConditions": [{"type": "!hasQuestNotes", "questId": "pickingBerries", "notes": ["1"]}], "result": [{"type": "setEventState", "stateId": "2"}]},
+                    {"name": "Отдать ягоды", "visibleConditions": [{"type": "!isQuestFinished", "questId": "pickingBerries"}, {"type": "isQuestActive", "questId": "pickingBerries"}], "activeConditions": [{"type": "hasQuestNotes", "questId": "pickingBerries", "notes": ["2"]}], "result": [{"type": "finishQuest", "questId": "pickingBerries"}, {"type": "setEventState", "stateId": "4"}]},
+                    {"name": "Закончить диалог", "result": [{"type": "closeEvent"}]}
+                ]
+            },
+            "2": {
+                "description": "Ну что же, раз уж спросил, то да. Ягоды у меня закончились особые и находятся они только на поляне, что неподалеку. Не мог принести ты мне немного их, и отблагодарю я тебя.",
+                "actions": [
+                    {
+                        "name": "Отправиться за ягодами", 
+                        "result": [                            
+                            {"type": "startQuest", "questId": "pickingBerries"},
+                            {"type": "addQuestNote", "questId": "pickingBerries", "note": "1"},
+                            {"type": "setEventState", "stateId": "3"}
+                        ]
+                    }
+                ]
+            },
+            "3": {
+                "description": "Отлично, тогда жду тебя с хорошими новостями.",
+                "actions": [
+                    {
+                        "name": "Назад", 
+                        "result": [                            
+                            {"type": "setEventState", "stateId": "1"}
+                        ]
+                    }
+                ]
+            },
+            "4": {
+                "description": "Большее тебе спасибо, из этих ягод получается очень вкусное и полезное варенье.<br><br>-- Задание выполнено --",
+                "actions": [
+                    {
+                        "name": "Всегда рад помочь", 
+                        "result": [                            
+                            {"type": "setEventState", "stateId": "1"}
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "pickingBerriesEvent": {
+        "id": "pickingBerriesEvent",
+        "initState": "1",
+        "states": {
+            "1": {
+                "description": "Вы видите перед собой небольшую поляну, в центре который растут кусты с нужными вам ягодами.",
+                "actions": [
+                    {
+                        "name": "Собрать ягоды", 
+                        "visibleConditions": [{"type": "!hasQuestNotes", "questId": "pickingBerries", "notes": ["2"]}], 
+                        "result": [
+                            {"type": "addQuestNote", "questId": "pickingBerries", "note": "1"},
+                            {"type": "setEventState", "stateId": "2"}
+                        ]
+                    },
+                    {"name": "Покинуть поляну", "result": [{"type": "closeEvent"}]}
+                ]
+            },
+            "2": {
+                "description": "Вы уже хотели выйти на поляну, когда заметили какое-то странное движение на ней. Присмотревшись, вы увидели несколько змей, которые грелись на солнышке и практически были невидны на фоне зелени.",
+                "actions": [
+                    {
+                        "name": "Напасть на змей", 
+                        "result": [
+                            {"type": "closeEvent"},
+                            {
+                                "type": "startBattle", 
+                                "enemies": [
+                                    {"unitType": "animal_wolf"}
+                                ],
+                                "result": [
+                                    {"type": "addExp", "exp": 100},
+                                    {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "3"}
+                                ]
+                            }                   
+                        ]
+                    }                    
+                ]
+            },
+            "3": {
+                "description": "Легче простого, теперь вам ничто не мешает собрать ягоды.",
+                "actions": [
+                    {
+                        "name": "Собрать ягоды",
+                        "result": [
+                            {"type": "addQuestNote", "questId": "pickingBerries", "note": "2"},
+                            {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "4"}
+                        ]
+                    }
+                ]
+            },
+            "4": {
+                "description": "Ягоды у вас, пора возвращаться к старику",
+                "actions": [
+                    {
+                        "name": "Покинуть поляну",
+                        "result": [
+                            {"type": "closeEvent"}
+                        ]
+                    }
+                ]
+            }
+        }
+    }
+}

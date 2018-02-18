@@ -1,0 +1,8 @@
+{
+    "id": "testMap1",
+    "name": "Карта для прогона возможностей ядра игры",
+    "width": 1200,
+    "height": 800,
+    "useRoads": false,    
+    "roads": []
+}

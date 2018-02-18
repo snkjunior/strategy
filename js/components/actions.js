@@ -60,6 +60,14 @@ game.components.actions = {
         return false;
     },
     
+    setEventNote: function(action) {
+        if (!game.events[action.eventId]) {
+            game.events[action.eventId] = {};
+        }
+        game.events[action.eventId][action.note] = action.value;
+        return true;
+    },
+    
     changeResource: function(action) {
         game.resources[action.resource] += action.count;
         return true;
@@ -74,7 +82,6 @@ game.components.actions = {
     },
     
     addKnownLocation: function(action) {
-        console.log(action);
         if (!game.hero.knownLocations[action.mapId]) {
             game.hero.knownLocations[action.mapId] = [];
         }
@@ -82,5 +89,21 @@ game.components.actions = {
             game.hero.knownLocations[action.mapId].push(action.locationId);
         }
         return true;
+    },
+    
+    showEvent: function(action) {
+        var initState = null;
+        if (action.initState) {
+            initState = action.initState;
+        }
+        game.showEvent(action.eventId, initState);
+    },
+    
+    setEventState: function(action) {
+        game.interfaces.event.setState(action.stateId);
+    },
+    
+    closeEvent: function(action) {
+        game.hideEvent();
     }
 };

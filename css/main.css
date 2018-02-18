@@ -26,7 +26,7 @@ body {
     background-color: #ddd;
 	height: 100px;
 	width: 100%;	
-	z-index: 1000;
+	z-index: 500;
 	text-align: center;
 }
 

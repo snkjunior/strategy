@@ -18,6 +18,10 @@ game.components.conditions = {
         return true;
     },
     
+    isEventNoteValue: function(condition) {
+        return game.events[condition.eventId] && game.events[condition.eventId][condition.note] && game.events[condition.eventId][condition.note] == condition.value;
+    },
+    
     hasNotQuestNotes: function(condition) {
         if (!game.quests[condition.questId]) {
             return true;

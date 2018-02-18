@@ -1,0 +1,27 @@
+{
+    "startDescription": "",
+    "startMap": "testMap1",
+    "startLocation": "location1",    
+    "startHero": {
+        "exp": 0,
+        "class": "scout",
+        "locationId": "location1",
+		"officers": ["mainHero"],
+		"army": [
+			{
+				"officer": "mainHero",
+				"units": [
+					{"unitType": "mainHero"}					
+				]
+			}			
+		],
+        "unitsInReserve": [],
+        "knownLocations": {}
+    },
+    "maps": {
+        "testMap1": null        
+    },
+    "onload": [
+        {"type": "showEvent", "eventId": "startMapEvent"}
+    ]
+}

@@ -1,0 +1,24 @@
+<link href="css/interfaces/event.css" rel="stylesheet">
+
+<!--ko if: isShow-->
+<div class="eventPopupBG">
+</div>
+<!--ko with: currentState-->
+<div class="eventPopup borderBox" data-bind="style: {width: game.screen.width - 200 + 'px', height: game.screen.height - 100 + 'px', left: '100px', top: '50px'}">
+    <div class='eventDescription' data-bind="html: description, style: {height: (parseInt($('.eventPopup').css('height')) - 150) + 'px'}"></div>
+    
+    <div class='eventActions'>
+        <!--ko foreach: actions-->        
+        <!--ko if: typeof(visibleConditions) == "undefined" || game.components.conditions.isVisible(visibleConditions)-->
+            <!--ko if: typeof(activeConditions) == "undefined" || game.components.conditions.isVisible(activeConditions)-->
+            <div class='eventAction' data-bind='text: name, click: game.interfaces.event.clickAction'></div>
+            <!--/ko-->
+            <!--ko if: typeof(activeConditions) != "undefined" && !game.components.conditions.isVisible(activeConditions)-->
+            <div class='eventAction eventActionNotActive' data-bind='text: name'></div>
+            <!--/ko-->
+        <!--/ko-->
+        <!--/ko-->
+    </div>
+</div>
+<!--/ko-->
+<!--/ko-->

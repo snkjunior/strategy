@@ -58,6 +58,8 @@ game.interfaces.battle = {
     init: function(callback, params) {
         var self = game.interfaces.battle;
         
+        self.units = {};
+        self.map = [];
 		self.battleStage('placeUnits');
         self.hint('Place your units on yellow hexes and click button "Start battle"');
 		
@@ -609,7 +611,7 @@ game.interfaces.battle = {
             damage /= 2;            
         }
         
-        damage = parseFloat(damage.toFixed(2));
+        damage = Math.floor(damage);
         
         return damage;
     },
@@ -815,12 +817,13 @@ game.interfaces.battle = {
         }
         
         if (!players[1]) {
-            game.showInterface('dialog', {msg: "Вы проиграли сражение."});
+            game.components.actions.processActions(self.failed);
+            game.showInterface('map');            
         }
         
         if (!players[2]) {
-            var resultDescription = game.components.actions.processActions(self.result);
-            game.showInterface('dialog', {msg: resultDescription});
+            game.components.actions.processActions(self.result);
+            game.showInterface('map');            
         }
     }
 };

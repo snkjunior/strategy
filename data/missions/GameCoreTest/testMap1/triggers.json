@@ -1,0 +1,15 @@
+{
+    /*"showLocation_forestTrail": {
+        "id": "showLocation_forestTrail",
+        "type": "onLocationArrival",
+        "isActive": true,
+        "isRepeat": false,
+        "actions": [
+            {
+                "type": "addKnownLocation",
+                "mapId": "westRegion",
+                "locationId": "forestTrail"
+            }
+        ]
+    }*/
+}

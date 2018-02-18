@@ -7,7 +7,7 @@
         "race": "human",
         "unitsInSquad": 14,
         "speed": 3,
-        "unitHp": 4,
+        "unitHp": 400,
         "protection": {
             "melee": 0,
             "range": 20,
@@ -21,7 +21,7 @@
                 "name": "bow",
                 "isDefault": true,
                 "damages": {
-                    "range": 18
+                    "range": 1800
                 },
                 "minDistance": 2,
                 "maxDistance": 3,
@@ -31,7 +31,7 @@
                 "name": "knife",
                 "isDefault": false,
                 "damages": {
-                    "melee": 12
+                    "melee": 1200
                 },
                 "minDistance": 1,
                 "maxDistance": 1,
@@ -51,7 +51,7 @@
         "race": "human",
         "unitsInSquad": 16,
         "speed": 3,
-        "unitHp": 4,
+        "unitHp": 400,
         "protection": {
             "melee": 20,
             "range": 0,
@@ -65,7 +65,7 @@
                 "name": "pitchfork",                
                 "isDefault": true,
                 "damages": {
-                    "melee": 20
+                    "melee": 2000
                 },
                 "minDistance": 1,
                 "maxDistance": 1,
@@ -82,7 +82,7 @@
         "race": "animal",
         "unitsInSquad": 20,
         "speed": 4,
-        "unitHp": 3,
+        "unitHp": 300,
         "protection": {
             "melee": 0,
             "range": 0,
@@ -96,7 +96,7 @@
                 "name": "bite",
                 "isDefault": true,
                 "damages": {
-                    "melee": 22
+                    "melee": 2200
                 },
                 "minDistance": 1,
                 "maxDistance": 1,
@@ -106,5 +106,36 @@
         "skills": [
             "forestInhabitant"
         ]
+    },
+    "mainHero": {
+        "sprite": "human_militiaman",
+        "avatar": "avatar_human_militiaman",
+        "avatarBg": "avatar_bg_village",
+        "name": "Hero",
+        "race": "human",
+        "unitsInSquad": 1,
+        "speed": 3,
+        "unitHp": 5000,
+        "protection": {
+            "melee": 0,
+            "range": 0,
+            "elemental": 0,
+            "mind": 0,
+            "life": 0,
+            "death": 0
+        },
+        "weapons": [
+            {
+                "name": "knife",                
+                "isDefault": true,
+                "damages": {
+                    "melee": 5000
+                },
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 100
+            }
+        ],
+        "skills": []
     }
 }

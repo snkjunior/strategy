@@ -1,6 +1,7 @@
 game.interfaces.map = {
     template: "",
     
+    actionRadius: 16,
     locationRadius: 32,
     
     width: null,
@@ -8,15 +9,15 @@ game.interfaces.map = {
     
     locations: {},
     roads: [],
-    visibleLocations: ko.observableArray([]),
+    locationsArray: ko.observableArray([]),
     
     currentHeroLocation: ko.observable(null),
     mouseOverLocation: ko.observable(null),
     selectedLocation: ko.observable(null),
     
     init: function(callback, params) {
-        var self = game.interfaces.map;
-		var map = game.cMap;
+        var self = game.interfaces.map;		
+        var map = game.cMap;
         if (map != null) {
             self.width = map.width;
             self.height = map.height;        
@@ -24,10 +25,12 @@ game.interfaces.map = {
             self.roads = map.roads;
         }
         
+        self.locationsArray(game.components.other.objectToArray(self.locations));
+        
         self.currentHeroLocation(self.locations[game.hero.locationId]);
         self.selectedLocation(self.currentHeroLocation());
         
-        self.updateVisibleLocations();
+        //self.updateVisibleLocations();
 		
 		
         
@@ -131,16 +134,23 @@ game.interfaces.map = {
         self.mouseOverLocation(null);
     },
     
-    updateVisibleLocations: function() {
+    updateMap: function() {
         var self = game.interfaces.map;
-        var visibleLocations = [];
-        for (var locationId in self.locations) {
-            if (self.isLocationVisible(self.locations[locationId])) {
-                visibleLocations.push(locationId);
-            }
-        }
-        self.visibleLocations(visibleLocations);
+        var locations = self.locationsArray();
+        self.locationsArray([]);
+        self.locationsArray(locations);
     },
+    
+    // updateVisibleLocations: function() {
+        // var self = game.interfaces.map;
+        // var visibleLocations = [];
+        // for (var locationId in self.locations) {
+            // if (self.isLocationVisible(self.locations[locationId])) {
+                // visibleLocations.push(locationId);
+            // }
+        // }
+        // self.visibleLocations(visibleLocations);
+    // },
     
     isLocationVisible: function(location) {
         return (location.isVisible || (game.hero.knownLocations[game.cMap.id] && game.hero.knownLocations[game.cMap.id].indexOf(location.id) !== -1)) && game.components.conditions.isVisible(location.visibleConditions);
@@ -182,11 +192,9 @@ game.interfaces.map = {
     
     clickAction: function(location) {
         var self = game.interfaces.map;
-        if (self.currentHeroLocation() === location) {
-            self.enterLocation();
-        } else {
-            self.travelToLocation();
-        }
+        game.components.actions.processActions(location.actions);
+        self.selectedLocation(location);
+        self.currentHeroLocation(location);
     },
     
     travelToLocation: function() {

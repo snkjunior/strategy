@@ -1,0 +1,35 @@
+{    
+    "location1": {
+        "id": "location1",
+        "x": 100,
+        "y": 200,
+        "sprite": null,
+        "name": "Какой-то старик",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "dialogWithTestNpc"}
+        ],
+        "triggers": []
+    },
+    "location2": {
+        "id": "location2",
+        "x": 250,
+        "y": 250,
+        "sprite": null,
+        "name": "Ягодная поляна",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "isQuestActive", "questId": "pickingBerries"}
+        ],
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "pickingBerriesEvent"}
+        ],
+        "triggers": []
+    }
+    
+}
