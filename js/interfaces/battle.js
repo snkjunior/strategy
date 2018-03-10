@@ -18,15 +18,21 @@ game.interfaces.battle = {
             nextPlayerTurn: 1
         }
     },
+    
     width: 16,
     height: 8,
+    generateObjectParams: {
+        mountain: 0,
+        forest: 0
+    },
+    
 	offset: 200,
     map: [],
 	hexesToPlaceUnits: [],
     
     // Settings    
     isShowBorder: ko.observable(true),
-    isShowCoordinates: ko.observable(false),
+    isShowCoordinates: ko.observable(true),
     
     //Dynamic data
 	battleStage: ko.observable(null),
@@ -62,15 +68,30 @@ game.interfaces.battle = {
         self.map = [];
 		self.battleStage('placeUnits');
         self.hint('Place your units on yellow hexes and click button "Start battle"');
-		
+        
+        self.width = params.battlefield.width;
+        self.height = params.battlefield.height;
+        if (params.battlefield.generateParams) {
+            self.generateObjectParams = params.settings.generateParams;            
+        }
+        
         self.map = self.generateMap(self.width, self.height);
-		for (var x = 0; x < 3; x++) {
-			for (var y = 0; y < self.height; y++) {
-                if (self.map[y][x].object == null || game.data.battle.objects[self.map[y][x].object].isPassable == true) {
-                    self.hexesToPlaceUnits.push({x: x, y:y});
-                }
-			}
-		}
+        
+        if (params.battlefield.objects) {
+            params.battlefield.objects.map(function(obj) {
+                self.map[obj.y][obj.x].object = obj.id;
+            });
+        }
+        
+        self.hexesToPlaceUnits = params.battlefield.hexesToPlaceUnits;
+        
+		// for (var x = 0; x < 3; x++) {
+			// for (var y = 0; y < self.height; y++) {
+                // if (self.map[y][x].object == null || game.data.battle.objects[self.map[y][x].object].isPassable == true) {
+                    // self.hexesToPlaceUnits.push({x: x, y:y});
+                // }
+			// }
+		// }
         
 		var units = [];
 		for (var i = 0; i < game.hero.army.length; i++) {
@@ -89,6 +110,8 @@ game.interfaces.battle = {
     },
     
     generateMap: function(width, height) {
+        var self = game.interfaces.battle;
+        
         var map = [];
         for (var y = 0; y < height; y++) {
             if (map[y] == null) {
@@ -101,11 +124,35 @@ game.interfaces.battle = {
                     y: y,
                     cCoord: game.components.hexGeom.getHexCasterianCoord({x: x, y: y}),
                     terrain: 'grass',
-                    object: (Math.round(Math.random() * 100) % 5 === 1 ? (Math.round(Math.random() * 100) % 5 === 2 ? "mountain" : "forest") : null),
+                    object: self.generateObject(),
                 };
             }
         }
         return map;
+    },
+    
+    generateObject: function() {
+        var self = game.interfaces.battle;       
+        
+        var lastObjectPercent = 0;
+        var objectPercents = [];
+        for (var objectId in self.generateObjectParams) {
+            objectPercents.push({
+               id: objectId,
+               from: lastObjectPercent,
+               to: lastObjectPercent + self.generateObjectParams[objectId]
+            });
+            lastObjectPercent += self.generateObjectParams[objectId];
+        }
+        
+        var rand = Math.round(Math.random() * 100);
+        for (var i = 0; i < objectPercents.length; i++) {
+            if (objectPercents[i].from >= rand && rand <= objectPercents[i].to) {
+                return objectPercents[i].id;
+            }
+        }
+        
+        return null;        
     },
     
     generateSquadsFromUnits: function(units, ownerId) {
@@ -123,15 +170,20 @@ game.interfaces.battle = {
 				x = emptyHexToPlace.x;
 				y = emptyHexToPlace.y;
 			} else {
-                var allMap = [];
-                for (var y = 0; y < self.map.length; y++) {
-                    for (var x = 0; x < self.map[y].length; x++) {
-                        allMap.push(self.map[y][x]);
+                if (units[i].x && units[i].y) {
+                    x = units[i].x;
+                    y = units[i].y;
+                } else {
+                    var allMap = [];
+                    for (var y = 0; y < self.map.length; y++) {
+                        for (var x = 0; x < self.map[y].length; x++) {
+                            allMap.push(self.map[y][x]);
+                        }
                     }
+                    var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit(allMap);
+                    x = emptyHexToPlace.x;
+                    y = emptyHexToPlace.y;
                 }
-                var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit(allMap);
-				x = emptyHexToPlace.x;
-				y = emptyHexToPlace.y;
             }
 			
 			var squad = {
@@ -817,12 +869,12 @@ game.interfaces.battle = {
         }
         
         if (!players[1]) {
-            game.components.actions.processActions(self.failed);
+            game.components.actions.processActions(self.result.failed);
             game.showInterface('map');            
         }
         
         if (!players[2]) {
-            game.components.actions.processActions(self.result);
+            game.components.actions.processActions(self.result.success);
             game.showInterface('map');            
         }
     }

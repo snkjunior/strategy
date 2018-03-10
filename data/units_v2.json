@@ -129,7 +129,38 @@
                 "name": "knife",                
                 "isDefault": true,
                 "damages": {
-                    "melee": 5000
+                    "melee": 2000
+                },
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 100
+            }
+        ],
+        "skills": []
+    },
+    "animal_snake": {
+        "sprite": "animal_snake",
+        "avatar": "avatar_animal_snake",
+        "avatarBg": "avatar_bg_forest",
+        "name": "Snake",
+        "race": "animal",
+        "unitsInSquad": 1,
+        "speed": 3,
+        "unitHp": 9000,
+        "protection": {
+            "melee": 0,
+            "range": 0,
+            "elemental": 0,
+            "mind": 0,
+            "life": 0,
+            "death": 0
+        },
+        "weapons": [
+            {
+                "name": "bite",                
+                "isDefault": true,
+                "damages": {
+                    "melee": 1500
                 },
                 "minDistance": 1,
                 "maxDistance": 1,

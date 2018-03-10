@@ -10,7 +10,7 @@ game.components.actions = {
     },
     
     startBattle: function(action) {
-        game.startBattle(action.enemies, action.result);
+        game.startBattle(action.enemies, action.battlefield, action.result);
     },
     
     msg: function(action) {

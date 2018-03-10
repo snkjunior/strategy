@@ -57,7 +57,7 @@
                 "description": "Здравствуй, добрый молодец. Чем могу тебе помочь?",
                 "actions": [
                     {"name": "Нужна ли помощь какая?", "visibleConditions": [{"type": "!hasQuestNotes", "questId": "pickingBerries", "notes": ["1"]}], "result": [{"type": "setEventState", "stateId": "2"}]},
-                    {"name": "Отдать ягоды", "visibleConditions": [{"type": "!isQuestFinished", "questId": "pickingBerries"}, {"type": "isQuestActive", "questId": "pickingBerries"}], "activeConditions": [{"type": "hasQuestNotes", "questId": "pickingBerries", "notes": ["2"]}], "result": [{"type": "finishQuest", "questId": "pickingBerries"}, {"type": "setEventState", "stateId": "4"}]},
+                    {"name": "Отдать ягоды", "visibleConditions": [{"type": "!isQuestFinished", "questId": "pickingBerries"}, {"type": "isQuestActive", "questId": "pickingBerries"}], "activeConditions": [{"type": "hasQuestNotes", "questId": "pickingBerries", "notes": ["4"]}], "result": [{"type": "finishQuest", "questId": "pickingBerries"}, {"type": "setEventState", "stateId": "4"}]},
                     {"name": "Закончить диалог", "result": [{"type": "closeEvent"}]}
                 ]
             },
@@ -107,9 +107,8 @@
                 "actions": [
                     {
                         "name": "Собрать ягоды", 
-                        "visibleConditions": [{"type": "!hasQuestNotes", "questId": "pickingBerries", "notes": ["2"]}], 
+                        "visibleConditions": [{"type": "!hasQuestNotes", "questId": "pickingBerries", "notes": ["4"]}], 
                         "result": [
-                            {"type": "addQuestNote", "questId": "pickingBerries", "note": "1"},
                             {"type": "setEventState", "stateId": "2"}
                         ]
                     },
@@ -126,12 +125,31 @@
                             {
                                 "type": "startBattle", 
                                 "enemies": [
-                                    {"unitType": "animal_wolf"}
+                                    {"unitType": "animal_snake", "x": 4, "y": 2}
                                 ],
-                                "result": [
-                                    {"type": "addExp", "exp": 100},
-                                    {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "3"}
-                                ]
+                                "battlefield": {
+                                    "width": 5,
+                                    "height": 5,
+                                    "objects": [
+                                        {"x": 1, "y": 1, "id": "forest"},
+                                        {"x": 2, "y": 2, "id": "forest"},
+                                        {"x": 0, "y": 0, "id": "mountain"}
+                                    ],
+                                    "hexesToPlaceUnits": [
+                                        {"x": 0, "y": 2}
+                                    ]                                    
+                                },
+                                "result": {
+                                    "success": [
+                                        {"type": "addExp", "exp": 100},
+                                        {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "3"},
+                                        {"type": "addQuestNote", "questId": "pickingBerries", "note": "3"}
+                                    ],
+                                    "failed": [
+                                        {"type": "addQuestNote", "questId": "pickingBerries", "note": "2"},
+                                        {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "loseToSnake"}
+                                    ]
+                                }
                             }                   
                         ]
                     }                    
@@ -143,7 +161,7 @@
                     {
                         "name": "Собрать ягоды",
                         "result": [
-                            {"type": "addQuestNote", "questId": "pickingBerries", "note": "2"},
+                            {"type": "addQuestNote", "questId": "pickingBerries", "note": "4"},
                             {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "4"}
                         ]
                     }
@@ -151,6 +169,17 @@
             },
             "4": {
                 "description": "Ягоды у вас, пора возвращаться к старику",
+                "actions": [
+                    {
+                        "name": "Покинуть поляну",
+                        "result": [
+                            {"type": "closeEvent"}
+                        ]
+                    }
+                ]
+            },
+            "loseToSnake": {
+                "description": "Вы с честью бежали с поля боя, а змея снова свернулась комочком и продолжила греться на солнышке",
                 "actions": [
                     {
                         "name": "Покинуть поляну",

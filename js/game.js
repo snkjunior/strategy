@@ -123,6 +123,8 @@ game.init = function() {
     //this.showInterface('dialog', game.cMap.objects["craftsman"]);
 	
 	//this.components.infoBlock.show('test', {testText: 123});
+    
+    
 };
 
 game.initMenu = function() {
@@ -241,9 +243,10 @@ game.animateFrame = function() {
     game.pixi.renderer.render(game.pixi.stage);
 };
 
-game.startBattle = function(enemies, result) {
+game.startBattle = function(enemies, battlefield, result) {
     var battleData = {
         units: this.hero.units,
+        battlefield: battlefield,
         enemies: enemies,
         result: result
     };
