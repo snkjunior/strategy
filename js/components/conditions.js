@@ -68,7 +68,16 @@ game.components.conditions = {
     
     heroClass: function(condition) {
         return game.hero.class === condition.class;
-    }
+    },
+    
+    hasItem: function(condition) {
+        for (var i = 0; i < game.items.length; i++) {
+            if (game.items[i].id == condition.itemId) {
+                return game.items[i].count >= condition.count;
+            }
+        }
+        return false;
+    }    
 };
 
 

@@ -1,0 +1,10 @@
+<link href="css/interfaces/inventory.css" rel="stylesheet">
+
+<div class="inventoryInterface"> 
+    <!--ko foreach: items-->
+    <div class='inventoryItem' data-bind="attr: {title: game.cMission.items[id].name + '\n' + game.cMission.items[id].description + (count > 1 ? '\nКоличество: ' + count : '')}">
+        <img data-bind="attr: {src: 'img/items/' + game.cMission.items[id].sprite}"/>
+        <div class="itemCount" data-bind="text: (count > 1 ? count : '')"></div>            
+    </div>
+    <!--/ko-->	
+</div>

@@ -44,7 +44,12 @@ var game = {
     resources: {
         wood: 0
     },
-    equipment: [],
+    items: [
+        // {'id': 'slingshot', 'count': 1},
+        // {'id': 'sling', 'count': 1},
+        // {'id': 'wood', 'count': 4},
+        // {'id': 'berries', 'count': 5}
+    ],
     quests: {
         // pickingBerries: {
             // isFinished: false,
@@ -175,6 +180,8 @@ game.loadData = function() {
     for (var missionName in game.missions) {
         game.missions[missionName] = loadData('data/missions/' + missionName + '/description.json');	   
         game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
+        game.missions[missionName].items = loadData('data/missions/' + missionName + '/items.json');
+        console.log(game.missions[missionName].items);
         for (var mapName in game.missions[missionName].maps) {
 			game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '/mapInfo.json');
 			if (game.missions[missionName].maps[mapName]) {

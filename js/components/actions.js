@@ -105,5 +105,37 @@ game.components.actions = {
     
     closeEvent: function(action) {
         game.hideEvent();
+    },
+    
+    addItem: function(action) {
+        if (game.cMission.items[action.itemId]) {
+            for (var i = 0; i < game.items.length; i++) {
+                if (game.items[i].id == action.itemId) {
+                    game.items[i].count += action.count;
+                    return;
+                }
+            }
+            game.items.push({
+                id: action.itemId,
+                count: action.count
+            });            
+        }
+    },
+    
+    removeItem: function(action) {
+        if (game.cMission.items[action.itemId]) {
+           for (var i = 0; i < game.items.length; i++) {
+                if (game.items[i].id == action.itemId) {
+                    if (action.count == 'all') {
+                        delete game.items[i];                        
+                    } else {
+                        game.items[i].count -= action.count;
+                        if (game.items[i].count <= 0) {
+                            delete game.items[i];                        
+                        }
+                    }
+                }
+           }               
+        }
     }
 };

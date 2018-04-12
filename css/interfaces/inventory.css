@@ -1,0 +1,30 @@
+.inventoryInterface {
+    margin-left: 15px;
+}
+
+.inventoryItem {
+    width: 128px;
+    height: 128px;
+    display: inline-block;
+    border: 2px solid #111;
+    margin: 5px;
+    background-color: #bbb;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.inventoryItem img {
+    position: relative;
+    top: -2px;
+    left: -2px;
+}
+
+.itemCount {
+    position: relative;
+    bottom: 25px;
+    right: 5px;
+    font-size: 14px;
+    color: black;
+    text-align: right;
+    text-decoration: bold;
+}
