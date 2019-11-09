@@ -1,0 +1,47 @@
+{   
+    "ВыходИзЛесопилки": {
+        "id": "ВыходИзЛесопилки",
+        "x": 300,
+        "y": 350,
+        "sprite": null,
+        "name": "Выход из лесопилки",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "changeMap", "mapId": "forest", "locationId": "ЗаброшеннаяЛесопилка"}
+        ],
+        "triggers": []
+    },
+    "Склад": {
+        "id": "Склад",
+        "x": 300,
+        "y": 100,
+        "sprite": null,
+        "name": "Склад",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [],
+        "triggers": []
+    },
+    "Лазарет": {
+        "id": "Лазарет",
+        "x": 500,
+        "y": 150,
+        "sprite": null,
+        "name": "Лазарет",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [],
+        "triggers": []
+    }
+    
+}

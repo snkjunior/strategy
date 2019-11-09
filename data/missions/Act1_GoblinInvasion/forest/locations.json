@@ -1,0 +1,106 @@
+{    
+    "МестоОхоты": {
+        "id": "МестоОхоты",
+        "x": 100,
+        "y": 200,
+        "sprite": null,
+        "name": "Место охоты",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [],
+        "triggers": []
+    },    
+    "ОхотничийЛагерь": {
+        "id": "ОхотничийЛагерь",
+        "x": 180,
+        "y": 320,
+        "sprite": null,
+        "name": "Охотничий лагерь",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "ОхотничийЛагерь"}
+        ],
+        "triggers": []
+    },
+    "ЗаброшеннаяЛесопилка": {
+        "id": "ЗаброшеннаяЛесопилка",
+        "x": 520,
+        "y": 150,
+        "sprite": null,
+        "name": "Заброшенная лесопилка",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "changeMap", "mapId": "sawmill", "locationId": "ВыходИзЛесопилки"}
+        ],
+        "triggers": []
+    },
+    "ДорогаНаЛесопилку": {
+        "id": "ДорогаНаЛесопилку",
+        "x": 600,
+        "y": 370,
+        "sprite": null,
+        "name": "",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "!isQuestActive", "questId": "123"}
+        ],
+        "isRoadLocation": true,
+        "type": "dialog",
+        "actions": [],
+        "triggers": []
+    },
+    "РуиныДревнегоХрама": {
+        "id": "РуиныДревнегоХрама",
+        "x": 200,
+        "y": 650,
+        "sprite": null,
+        "name": "Руины древнего храма",
+        "description": "",
+        "isVisible": false,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [],
+        "triggers": []
+    },
+    "РазвалиныЗамка": {
+        "id": "РазвалиныЗамка",
+        "x": 800,
+        "y": 500,
+        "sprite": null,
+        "name": "Развалины замка",
+        "description": "",
+        "isVisible": false,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [],
+        "triggers": []
+    },
+    "ГномьиШахты": {
+        "id": "ГномьиШахты",
+        "x": 400,
+        "y": 900,
+        "sprite": null,
+        "name": "Гномьи шахты",
+        "description": "",
+        "isVisible": false,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [],
+        "triggers": []
+    }
+}

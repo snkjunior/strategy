@@ -24,7 +24,7 @@ body {
     bottom: 0px; 
 	border-top: 2px black solid; 
     background-color: #ddd;
-	height: 100px;
+	height: 64px;
 	width: 100%;	
 	z-index: 500;
 	text-align: center;
@@ -32,8 +32,8 @@ body {
 
 .navMenuButton {
 	cursor: pointer;
-	width: 100px;
-	height: 100px;
+	width: 64px;
+	height: 64px;
 	border-left: 2px black solid;
 	border-right: 2px black solid;
 	border-bottom: 2px black solid;
@@ -57,8 +57,8 @@ body {
 .navMenuButton img {
 	margin-top: -2px;
 	margin-left: -2px;
-	width: 100px;
-	height: 100px;
+	width: 64px;
+	height: 64px;
 }
 
 .borderBox {
@@ -73,5 +73,19 @@ body {
 
 .textYellow {
     color: yellow;
+}
+
+.infoBlock {
+    position: absolute;
+    z-index: 1001;
+}
+
+.infoBlockBg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.5;
+    z-index: 1000;
 }
 

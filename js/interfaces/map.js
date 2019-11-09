@@ -1,8 +1,17 @@
 game.interfaces.map = {
     template: "",
     
+    defaultSettings: {
+        showLocationName: ko.observable(true),
+    },
+    
+    settings: {
+        
+    },
+    
     actionRadius: 16,
-    locationRadius: 32,
+    locationRadius: 16,
+    roadLocationRadius: 8,
     
     width: null,
     height: null,
@@ -22,7 +31,17 @@ game.interfaces.map = {
             self.width = map.width;
             self.height = map.height;        
             self.locations = map.locations;
-            self.roads = map.roads;
+            if (map.useRoads) {
+                self.roads = map.roads;
+            }
+            self.settings = self.defaultSettings;
+            if (map.settings) {
+                for (var settingName in map.settings) {
+                    if (self.settings[settingName]) {
+                        self.settings[settingName](map.settings[settingName]);
+                    }
+                }
+            }
         }
         
         self.locationsArray(game.components.other.objectToArray(self.locations));
@@ -126,7 +145,7 @@ game.interfaces.map = {
             var location = self.locations[$(e.target).attr('locationId')];
 
             var distance = game.components.geom.getDistanceBetweenPoints(mx, my, location.x + cameraDx, location.y + cameraDy);
-            if (distance <= self.locationRadius) {
+            if (distance <= self.locationRadius && !location.isRoadLocation) {
                 self.mouseOverLocation(location);
                 return;
             }
@@ -153,22 +172,26 @@ game.interfaces.map = {
     // },
     
     isLocationVisible: function(location) {
-        return (location.isVisible || (game.hero.knownLocations[game.cMap.id] && game.hero.knownLocations[game.cMap.id].indexOf(location.id) !== -1)) && game.components.conditions.isVisible(location.visibleConditions);
+        return (
+            location.isVisible || 
+            (
+                game.hero.knownLocations[game.cMap.id] 
+                && game.hero.knownLocations[game.cMap.id].indexOf(location.id) !== -1
+            )
+        ) && game.components.conditions.isVisible(location.visibleConditions);
     },
     
     getLocationSprite: function(location) {
         var self = game.interfaces.map;
         var sprite = location.sprite;
         if (sprite === null) {
-            sprite = "sign_post.png";
+            sprite = "location.png";
         }
         
-        if (self.mouseOverLocation() === location) {
+        if (self.selectedLocation() === location) {
+            sprite = "selected_" + sprite;
+        } else if (self.mouseOverLocation() === location) {
             sprite = "hover_" + sprite;
-        } else {
-            if (self.selectedLocation() === location) {
-                sprite = "selected_" + sprite;
-            }
         }
         
         return sprite;
@@ -185,17 +208,19 @@ game.interfaces.map = {
     
     clickLocation: function() {
         var self = game.interfaces.map;
-        if (self.mouseOverLocation() != null) {
+        if (self.mouseOverLocation() != null && self.mouseOverLocation().isRoadLocation) {
             self.selectedLocation(self.mouseOverLocation());
         }
     },   
     
     clickAction: function(location) {
         var self = game.interfaces.map;
-        game.components.actions.processActions(location.actions);
-        self.selectedLocation(location);
-        self.currentHeroLocation(location);
-        game.hero.locationId = self.currentHeroLocation().id;
+        if (!location.isRoadLocation) {
+            game.components.actions.processActions(location.actions);
+            self.selectedLocation(location);
+            self.currentHeroLocation(location);
+            game.hero.locationId = self.currentHeroLocation().id;
+        }
     },
     
     travelToLocation: function() {
@@ -222,24 +247,46 @@ game.interfaces.map = {
     },
     
     getRoadCsvInfo: function(road) {
-        var self = game.interfaces.map;
+        var self = game.interfaces.map,
+            location1 = self.locations[road.locations[0]],
+            location2 = self.locations[road.locations[1]];
         
-        if (self.visibleLocations().indexOf(road.locations[0]) === -1 || self.visibleLocations().indexOf(road.locations[1]) === -1) {
+        if (!location1 || !location2 || !self.isLocationVisible(location1) || !self.isLocationVisible(location2)) {
             return null;
         }
         
-        var left = self.locations[road.locations[0]].x < self.locations[road.locations[1]].x ? self.locations[road.locations[0]].x : self.locations[road.locations[1]].x; 
-        var top = self.locations[road.locations[0]].y < self.locations[road.locations[1]].y ? self.locations[road.locations[0]].y : self.locations[road.locations[1]].y; 
+        var left = location1.x < self.locations[road.locations[1]].x ? location1.x : location2.x; 
+        var top = location1.y < self.locations[road.locations[1]].y ? location1.y : location2.y; 
         
         return {
             left: left,
             top: top,
-            width: Math.abs(self.locations[road.locations[0]].x - self.locations[road.locations[1]].x),
-            height: Math.abs(self.locations[road.locations[0]].y - self.locations[road.locations[1]].y) + 16,
-            x1: self.locations[road.locations[0]].x - left,
-            x2: self.locations[road.locations[1]].x - left,
-            y1: self.locations[road.locations[0]].y - top + 16,
-            y2: self.locations[road.locations[1]].y - top + 16
+            width: Math.abs(location1.x - location2.x),
+            height: Math.abs(location1.y - location2.y),
+            x1: location1.x - left,
+            x2: location2.x - left,
+            y1: location1.y - top,
+            y2: location2.y - top
         };
+    },
+    
+    getLocationLeft: function(location) {
+        var self = game.interfaces.map;
+        return location.x - (location.isRoadLocation ? self.roadLocationRadius : self.locationRadius);
+    },
+    
+    getLocationTop: function(location) {
+        var self = game.interfaces.map;
+        return location.y - (location.isRoadLocation ? self.roadLocationRadius : self.locationRadius);
+    },
+    
+    getLocationWH: function(location) {
+        var self = game.interfaces.map;
+        return (location.isRoadLocation ? self.roadLocationRadius : self.locationRadius) * 2;
+    },
+    
+    getLocationCursor: function(location) {
+        var self = game.interfaces.map;
+        return (location.isRoadLocation ? 'default' : 'pointer');
     }
 };

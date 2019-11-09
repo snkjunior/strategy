@@ -1,7 +1,7 @@
 {
     "startDescription": "",
-    "startMap": "testMap1",
-    "startLocation": "location1",
+    "startMap": "forest",
+    "startLocation": "МестоОхоты",
     "startTime": {
         "day": 1,
         "hours": 8,
@@ -10,13 +10,13 @@
     "startHero": {
         "exp": 0,
         "class": "scout",
-        "locationId": "location1",
+        "locationId": "МестоОхоты",
 		"officers": ["mainHero"],
 		"army": [
 			{
 				"officer": "mainHero",
 				"units": [
-					{"unitType": "mainHero"}					
+					{"unitType": "human_hunter"}					
 				]
 			}			
 		],
@@ -24,13 +24,12 @@
         "knownLocations": {}
     },
     "startInventory": [
-        {"id": "recruits", "count": 0},
-        {"id": "gold", "count": 1000}
     ],
     "maps": {
-        "testMap1": null        
+        "forest": null,
+        "sawmill": null
     },
     "onload": [
-        {"type": "showEvent", "eventId": "startMapEvent"}
+        {"type": "showEvent", "eventId": "началоИгры"}
     ]
 }

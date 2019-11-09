@@ -56,9 +56,43 @@
             "1": {
                 "description": "Здравствуй, добрый молодец. Чем могу тебе помочь?",
                 "actions": [
-                    {"name": "Нужна ли помощь какая?", "visibleConditions": [{"type": "!hasQuestNotes", "questId": "pickingBerries", "notes": ["1"]}], "result": [{"type": "setEventState", "stateId": "2"}]},
-                    {"name": "Отдать ягоды", "visibleConditions": [{"type": "!isQuestFinished", "questId": "pickingBerries"}, {"type": "isQuestActive", "questId": "pickingBerries"}], "activeConditions": [{"type": "hasQuestNotes", "questId": "pickingBerries", "notes": ["4"]}], "result": [{"type": "finishQuest", "questId": "pickingBerries"}, {"type": "setEventState", "stateId": "4"}]},
-                    {"name": "Закончить диалог", "result": [{"type": "closeEvent"}]}
+                    {
+                        "name": "Нужна ли помощь какая?", 
+                        "visibleConditions": [
+                            {"type": "!hasQuestNotes", "questId": "pickingBerries", "notes": ["1"]}
+                        ], 
+                        "result": [
+                            {"type": "setEventState", "stateId": "2"}
+                        ]
+                    },
+                    {
+                        "name": "Отдать ягоды", 
+                        "visibleConditions": [
+                            {"type": "!isQuestFinished", "questId": "pickingBerries"}, 
+                            {"type": "isQuestActive", "questId": "pickingBerries"}
+                        ], 
+                        "activeConditions": [
+                            {"type": "hasQuestNotes", "questId": "pickingBerries", "notes": ["4"]}
+                        ], 
+                        "result": [
+                            {"type": "finishQuest", "questId": "pickingBerries"}, 
+                            {"type": "setEventState", "stateId": "4"}
+                        ]
+                    },
+                    {
+                        "name": "Что делать со змеями?",
+                        "visibleConditions": [
+                            {"type": "hasQuestNotes", "questId": "pickingBerries", "notes": ["2"]}
+                        ],
+                        "result": [
+                            {"type": "setEventState", "stateId": "helpWithSnake"},
+                            {"type": "setEventState", "stateId": "helpWithSnake"}
+                        ]
+                    },
+                    {
+                        "name": "Закончить диалог", 
+                        "result": [{"type": "closeEvent"}]
+                    }
                 ]
             },
             "2": {

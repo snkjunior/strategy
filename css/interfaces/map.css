@@ -29,18 +29,20 @@
 }
 
 .locationName {
-    font-size: 10px;
+    font-size: 12px;
     position: absolute;
     text-align: center;
-    border: 2px rgb(50,50,50) solid;
-    background-color: #ddd;
+    #border: 2px rgb(50,50,50) solid;
+    #background-color: #ddd;
     padding-top: 3px;
 	padding-bottom: 3px;
-    width: 100px;
+    width: 200px;
     cursor: default;
-	box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
+    font-weight: 600;
+    z-index: 2;
+	#box-sizing: border-box;
+    #-moz-box-sizing: border-box;
+    #-webkit-box-sizing: border-box;
 }
 
 .selectedLocation {

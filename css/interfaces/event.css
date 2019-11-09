@@ -19,17 +19,15 @@
 }
 
 .eventDescription {
-    position: absolute;
-    width: 100%;
+    width: 90%;
     top: 0px;
     font-size: 14px;
-    margin: 10 10 10 10;
+    margin: 10 auto;
     color: #000;
 }
 
 .eventActions {
-    position: absolute;
-    height: 200px;
+    height: 150px;
     width: 100%;
     bottom: 0px;
     border-top: 1px black solid;    
@@ -41,6 +39,7 @@
     cursor: pointer;
     color: #000;
     text-decoration: bold;
+    text-align: center;
 }
 
 .eventActionNotActive {

@@ -1,8 +1,0 @@
-{
-    "id": "northPartOfKingdom",
-    "name": "Северный регион королевства",
-    "width": 1200,
-    "height": 800,
-    "useRoads": false,    
-    "roads": []
-}

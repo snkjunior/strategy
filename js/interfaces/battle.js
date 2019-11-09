@@ -869,13 +869,23 @@ game.interfaces.battle = {
         }
         
         if (!players[1]) {
-            game.components.actions.processActions(self.result.failed);
-            game.showInterface('map');            
+            self.battleStage('endFailed');
         }
         
         if (!players[2]) {
-            game.components.actions.processActions(self.result.success);
-            game.showInterface('map');            
+            self.battleStage('endSuccess');
         }
+    },
+    
+    processBattleResult: function() {        
+        var self = game.interfaces.battle;
+        if (self.battleStage() == 'endSuccess') {
+            game.components.actions.processActions(self.result.success);
+        }
+        if (self.battleStage() == 'endFailed') {
+            game.components.actions.processActions(self.result.failed);
+        }
+        self.battleStage('');
+        game.showInterface('map');
     }
 };

@@ -28,5 +28,15 @@
         "bonuses": {
             "damage": -20
         }
+    },
+    "scout": {
+        "sprite": "damage",
+        "name": "Разведчик",
+        "description": "Получает на 15% меньше урона дальнего боя",
+        "type": "defence",
+        "condition": "return target.cAction().damages.range != 'undefined'",
+        "bonuses": {
+            "damage": -10
+        }
     }
 }

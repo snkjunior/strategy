@@ -5,7 +5,7 @@
         "avatarBg": "avatar_bg_village",
         "name": "Hunter",
         "race": "human",
-        "unitsInSquad": 14,
+        "unitsInSquad": 10,
         "speed": 3,
         "unitHp": 400,
         "protection": {
@@ -161,6 +161,37 @@
                 "isDefault": true,
                 "damages": {
                     "melee": 1500
+                },
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 100
+            }
+        ],
+        "skills": []
+    },
+    "goblin_scout": {
+        "sprite": "",
+        "avatar": "",
+        "avatarBg": "",
+        "name": "Гоблин-разведчик",
+        "race": "goblin",
+        "unitsInSquad": 16,
+        "speed": 2,
+        "unitHp": 300,
+        "protection": {
+            "melee": 0,
+            "range": 20,
+            "elemental": 0,
+            "mind": 0,
+            "life": 0,
+            "death": 0
+        },
+        "weapons": [
+            {
+                "name": "knife",                
+                "isDefault": true,
+                "damages": {
+                    "melee": 1600
                 },
                 "minDistance": 1,
                 "maxDistance": 1,

@@ -1,4 +1,5 @@
 <link href="css/interfaces/battle.css" rel="stylesheet">
+<link href="css/interfaces/event.css" rel="stylesheet">
 
 <div id="battleInterface">
     <div id="map" data-bind="style: {width: 48 * width + (width % 2 == 0 ? 0 : 16) + 'px', height: 64 * height + 32 + 'px', position: 'absolute'}">
@@ -87,7 +88,7 @@
                 <!--/ko-->
                 
                 <!--ko if: game.interfaces.battle.isShowCoordinates()-->
-                <span style="position: absolute; z-index: 20; top: 50px; left: 20px; font-size: 10px; color: #dddddd;" data-bind="html: x + '-' + y"></span>
+                <span style="position: absolute; z-index: 10; top: 50px; left: 20px; font-size: 10px; color: #dddddd;" data-bind="html: x + '-' + y"></span>
                 <!--/ko-->
                 
                 <!--ko if: game.interfaces.battle.mouseOverHex() == $data && game.interfaces.battle.actionAttackInfo() != null-->
@@ -237,4 +238,13 @@
 
 <!--ko if: hint() != null-->
 <div id='hintPanel' class='hintPanel' data-bind="text: hint"></div>
+<!--/ko-->
+
+<!--ko if: battleStage() == 'endFailed' || battleStage() == 'endSuccess'-->
+<div class='battleResultPanel borderBox' data-bind="style: {width: game.screen.width - 500 + 'px', height: game.screen.height - 400 + 'px', left: '250px', top: '200px'}">
+    <div class='battleResultText eventDescription' data-bind="text: battleStage() == 'endSuccess' ? 'Победа' : 'Поражение'"></div>
+    <div class="eventActions" style="height: 50px;">
+        <div class="eventAction" data-bind="click: processBattleResult">Вернуться на карту</div>
+    </div>
+</div>
 <!--/ko-->

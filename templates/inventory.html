@@ -2,9 +2,11 @@
 
 <div class="inventoryInterface"> 
     <!--ko foreach: items-->
-    <div class='inventoryItem' data-bind="attr: {title: game.cMission.items[id].name + '\n' + game.cMission.items[id].description + (count > 1 ? '\nКоличество: ' + count : '')}">
-        <img data-bind="attr: {src: 'img/items/' + game.cMission.items[id].sprite}"/>
-        <div class="itemCount" data-bind="text: (count > 1 ? count : '')"></div>            
+    <!--ko with: $parent.getItem(id)-->
+    <div class='inventoryItem' data-bind="attr: {title: name + '\n' + description + ($parent.count > 1 ? '\nКоличество: ' + $parent.count : '')}">
+        <img data-bind="attr: {src: 'img/items/' + sprite}"/>
+        <div class="itemCount" data-bind="text: ($parent.count > 1 ? $parent.count : '')"></div>            
     </div>
-    <!--/ko-->	
+    <!--/ko-->
+    <!--/ko-->
 </div>

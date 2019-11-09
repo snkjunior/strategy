@@ -89,3 +89,17 @@
     opacity: 0.8; 
     z-index: 100;    
 }
+
+.battleResultPanel {
+    position: relative;
+    background-color: #91794f;
+    border: 1px black solid;
+    z-index: 999;
+}
+
+.battleResultText {
+    margin: 40 auto !important; 
+    text-align: center;
+    font-size: 50px !important;
+    
+}

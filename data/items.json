@@ -1,0 +1,14 @@
+{
+    "gold": {
+        "id": "gold",
+        "name": "Золото",
+        "description": "Основная валюта",
+        "sprite": "slingshot.png"
+    },
+    "recruits": {
+        "id": "recruits",
+        "name": "Рекруты",
+        "description": "Ваши рекруты",
+        "sprite": "slingshot.png"
+    }
+}

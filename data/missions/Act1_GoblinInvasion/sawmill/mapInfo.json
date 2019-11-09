@@ -1,0 +1,8 @@
+{
+    "id": "sawmill",
+    "name": "Лесопилка",
+    "width": 600,
+    "height": 400,
+    "useRoads": false,
+    "roads": []
+}

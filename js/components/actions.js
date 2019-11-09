@@ -21,7 +21,7 @@ game.components.actions = {
         if (game.quests[action.questId] == null) {
             game.quests[action.questId] = {
                 isFinished: false,
-                notes: []
+                notes: [1]
             };
             return true;
         }
@@ -53,7 +53,7 @@ game.components.actions = {
     },
     
     addQuestNote: function(action) {
-        if (game.quests[action.questId].notes.indexOf(action.note) === -1) {
+        if (game.quests[action.questId] && game.quests[action.questId].notes.indexOf(action.note) === -1) {
             game.quests[action.questId].notes.push(action.note);
             return true;
         }
