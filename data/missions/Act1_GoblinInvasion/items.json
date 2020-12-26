@@ -1,0 +1,26 @@
+{
+    "slingshot": {
+        "id": "slingshot",
+        "name": "Рогатка",
+        "description": "Простая самодельная рогатка",
+        "sprite": "slingshot.png"
+    },
+    "sling": {
+        "id": "sling",
+        "name": "Праща",
+        "description": "Самая обыкновенная праща",
+        "sprite": "sling.png"
+    },
+    "wood": {
+        "id": "wood",
+        "name": "Древесина",
+        "description": "Небольшое количество древесины",
+        "sprite": "wood.png"
+    },
+    "berries": {
+        "id": "berries",
+        "name": "Ягоды",
+        "description": "Ягоды для старика",
+        "sprite": "berries.png"
+    }
+}

@@ -1,5 +1,6 @@
 var game = {
     playerId: 1,
+	lang: "ru",
     screen: {
         width: 1024,
         height: 600
@@ -60,13 +61,18 @@ var game = {
 		mainHero: {
 			name: 'Hero',
 			avatar: 'avatar_human_militiaman',
-			unitsSlots: 1
+			unitsSlots: 5
 		}		
 	},
     
     hero: null,
     inventory: [],
     quests: {
+        "ОкончаниеОхоты": {
+            isFinished: false,
+            notes: ["1"],
+            vars: {}
+        }
         // pickingBerries: {
             // isFinished: false,
 			// notes: ["1", "2"],
@@ -87,6 +93,7 @@ var game = {
 //			  vars: {}
 //        }
     },
+    states: [],
     events: {},
     
     data: {},
@@ -126,6 +133,7 @@ game.init = function() {
     if (this.cMission.startTime) {
         this.time.setTime(this.cMission.startTime);
     }
+    
     this.showInterface('map');
     
     //game.components.actions.processActions(this.cMission.onload);
@@ -206,7 +214,7 @@ game.initEventWindow = function() {
 game.loadData = function() {
     var loadData = function(url) {
         var response = $.ajax({url: url + "?_=" + new Date().getTime(), async: false, dataType: 'json'});
-        return typeof(response.responseJSON) != 'undefined' ? response.responseJSON : [];
+		return typeof(response.responseJSON) != 'undefined' ? response.responseJSON : [];
     };
 
     game.data = {
@@ -216,23 +224,27 @@ game.loadData = function() {
         },
         units: loadData('data/units_v2.json'),
         skills: loadData('data/skills_v2.json'),
-        items: loadData('data/items.json')
+        items: loadData('data/items.json'),
+		lang: loadData('data/lang/' + game.lang + '.json')
     };
     
     for (var missionName in game.missions) {
         game.missions[missionName] = loadData('data/missions/' + missionName + '/description.json');	   
         game.missions[missionName].quests = loadData('data/missions/' + missionName + '/quests.json');
         game.missions[missionName].items = loadData('data/missions/' + missionName + '/items.json');
+		game.missions[missionName].lang = loadData('data/missions/' + missionName + '/lang/' + game.lang + '.json');
         for (var mapName in game.missions[missionName].maps) {
 			game.missions[missionName].maps[mapName] = loadData('data/missions/' + missionName + '/' + mapName + '/mapInfo.json');
 			if (game.missions[missionName].maps[mapName]) {
 				game.missions[missionName].maps[mapName].locations = loadData('data/missions/' + missionName + '/' + mapName + '/locations.json');
 				game.missions[missionName].maps[mapName].events = loadData('data/missions/' + missionName + '/' + mapName + '/events.json');
 				game.missions[missionName].maps[mapName].triggers = loadData('data/missions/' + missionName + '/' + mapName + '/triggers.json');
+				game.missions[missionName].maps[mapName].lang = loadData('data/missions/' + missionName + '/' + mapName + '/lang/' + game.lang + '.json');
 			}
 		}
     }
     
+	console.log(game.missions);
     
     
     for (var skillId in game.data.skills) {

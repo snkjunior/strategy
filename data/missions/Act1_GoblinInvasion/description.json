@@ -11,21 +11,28 @@
         "exp": 0,
         "class": "scout",
         "locationId": "МестоОхоты",
-		"officers": ["mainHero"],
+		"officers": ["mainHero", "mainHero2"],
 		"army": [
 			{
 				"officer": "mainHero",
 				"units": [
-					{"unitType": "human_hunter"}					
+					{"unitType": "human_hunter", "count": 5, "wounded": 0},
+                    {"unitType": "human_hunter", "count": 5, "wounded": 0}
 				]
-			}			
+			}				
 		],
+		"skills": {
+			"perception": 1,
+			"traps": 1,
+			"stealth": 1
+		},
         "unitsInReserve": [],
         "knownLocations": {}
     },
     "startInventory": [
     ],
     "maps": {
+        "1_hunting_camp": null,
         "forest": null,
         "sawmill": null
     },

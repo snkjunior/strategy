@@ -21,7 +21,8 @@ game.components.actions = {
         if (game.quests[action.questId] == null) {
             game.quests[action.questId] = {
                 isFinished: false,
-                notes: [1]
+                notes: ["1"],
+                vars: {}
             };
             return true;
         }
@@ -60,12 +61,12 @@ game.components.actions = {
         return false;
     },
     
-    setEventNote: function(action) {
-        if (!game.events[action.eventId]) {
-            game.events[action.eventId] = {};
+    setQuestVar: function(action) {
+        if (game.quests[action.questId] && action.varId && action.value) {
+            game.quests[action.questId].vars[action.varId] = action.value;
+            return true;
         }
-        game.events[action.eventId][action.note] = action.value;
-        return true;
+        return false;
     },
     
     changeResource: function(action) {
@@ -103,8 +104,29 @@ game.components.actions = {
         game.interfaces.event.setState(action.stateId);
     },
     
+    setEventNote: function(action) {
+        if (!game.events[action.eventId]) {
+            game.events[action.eventId] = {};
+        }
+        game.events[action.eventId][action.note] = action.value;
+        return true;
+    },
+    
     closeEvent: function(action) {
         game.hideEvent();
+    },
+    
+    setHeroState: function(action) {
+        if (action.stateId) {
+            for (var i = 0; i < game.states.length; i++) {
+                if (game.states[i] == action.stateId) {
+                    return false;
+                }
+            }
+            game.states.push(action.stateId);
+            return true;
+        }
+        return false;
     },
     
     addItem: function(action) {

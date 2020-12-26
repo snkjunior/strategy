@@ -15,12 +15,12 @@
                 <img class="location" data-bind="style: {left: $parent.getLocationLeft($data), top: $parent.getLocationTop($data), width: $parent.getLocationWH($data), height: $parent.getLocationWH($data), cursor: $parent.getLocationCursor($data)}, attr: {locationId: id, src: 'img/map/locations/' + $parent.getLocationSprite($data)}, click: $parent.clickAction">
                 
                 <!--ko if: $parent.settings.showLocationName-->
-                <div class="locationName" data-bind="text: name, style: {left: x - 100, top: y + $parent.locationRadius + 2}"></div>
+                <div class="locationName" data-bind="text: game.components.lang.get(name), style: {left: x - 100, top: y + $parent.locationRadius + 2}"></div>
                 <!--/ko-->
                 
                 <!--ko if: (game.cMap.userRoads && $data == $parent.selectedLocation()) || (!game.cMap.userRoads)-->
                 <!--<img class='locationAction' data-bind="attr: {src: 'img/map/' + $parent.getSelectedLocationActionSprite($data)}, style: {left: x - $parent.actionRadius, top: y - $parent.locationRadius - 2 * $parent.actionRadius - 5}, click: $parent.clickAction"/>-->
-                <!--/ko-->        
+                <!--/ko-->
             <!--/ko-->
         <!--/ko-->
         

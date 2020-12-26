@@ -1,0 +1,113 @@
+{   
+    "ВернутьсяНаКартуМира": {
+        "id": "ВернутьсяНаКартуМира",
+        "x": 50,
+        "y": 350,
+        "sprite": null,
+        "name": "К карте",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["5"]}
+        ],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "changeMap", "mapId": "forest", "locationId": "ОхотничийЛагерь"}
+        ],
+        "triggers": []
+    },
+    "Возвышенность": {
+        "id": "Возвышенность",
+        "x": 150,
+        "y": 180,
+        "sprite": null,
+        "name": "LOCATION__HILL__NAME",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "!hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["2"]}
+        ],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "крайУтеса"}
+        ],
+        "triggers": []
+    },
+    "Утес": {
+        "id": "Утес",
+        "x": 200,
+        "y": 80,
+        "sprite": null,
+        "name": "Утес",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["2"]},
+            {"type": "!hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["3.1", "3.2"]}
+        ],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "спускСУтеса"}
+        ],
+        "triggers": []
+    },
+    "Дорога": {
+        "id": "Дорога",
+        "x": 220,
+        "y": 350,
+        "sprite": null,
+        "name": "Дорога",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["2"]},
+            {"type": "!hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["3.1", "3.2"]}
+        ],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "разведчикиНаДороге"}
+        ],
+        "triggers": []
+    },
+    "ОтрядГоблинов": {
+        "id": "ОтрядГоблинов",
+        "x": 450,
+        "y": 180,
+        "sprite": null,
+        "name": "Отряд гоблинов",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["3.1", "3.2"]},
+			{"type": "!hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["4"]}
+        ],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "гоблиныВозлеДома"}
+        ],
+        "triggers": []
+    },
+	"ОхотничийДомик": {
+        "id": "ОхотничийДомик",
+        "x": 470,
+        "y": 160,
+        "sprite": null,
+        "name": "Охотничий домик",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [
+            {"type": "hasQuestNotes", "questId": "ОкончаниеОхоты", "notes": ["4"]}
+        ],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+            {"type": "showEvent", "eventId": "ОхотничийДомик"}
+        ],
+        "triggers": []
+    }
+}

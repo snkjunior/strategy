@@ -1,0 +1,8 @@
+{
+    "id": "1_hunting_camp",
+    "name": "Охотничий домик",
+    "width": 600,
+    "height": 400,
+    "useRoads": false,
+    "roads": []
+}

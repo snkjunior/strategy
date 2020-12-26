@@ -1,0 +1,292 @@
+{
+    "крайУтеса": {
+        "id": "крайУтеса",
+        "initState": "1",
+        "states": {
+            "1": {
+                "description": "EVENT__EDGE_OF_CLIFF__STATE_1__DESCRIPTION",
+                "actions": [
+                    {"name": "EVENT__EDGE_OF_CLIFF__STATE_1__ACTION__LOOK_AROUND", "result": [
+                        {"type": "addQuestNote", "questId": "ОкончаниеОхоты", "note": "2"},
+                        {"type": "setEventState", "stateId": "2"}
+                    ]}
+                ]
+            },
+            "2": {
+                "description": "EVENT__EDGE_OF_CLIFF__STATE_2__DESCRIPTION",
+                "actions": [
+                    {"name": "EVENT__EDGE_OF_CLIFF__STATE_2__ACTION__BACK", "result": [
+                        {"type": "closeEvent"}
+                    ]}
+                ]
+            }
+        }
+    },
+    "спускСУтеса": {
+        "id": "спускСУтеса",
+        "initState": "1",
+        "states": {
+            "1": {
+                "description": "Вы стоите у края утеса - только тут можно достаточно безопасно спуститься вниз.",
+				"actions": [
+					{
+						"name": "Спуститься с утеса",
+						"type": "skillcheck",
+						"skill": "perception",
+						"skillDifficult": 2,
+						"default": [
+							{"type": "setQuestVar", "questId": "ОкончаниеОхоты", "varId": "pathToGoal", "value": "cliff"},
+							{"type": "addQuestNote", "questId": "ОкончаниеОхоты", "note": "3.1"}
+						],
+						"success": [
+							{"type": "setEventState", "stateId": "2"}
+						],
+						"fail": [
+							{"type": "setEventState", "stateId": "3"}
+						]
+					}
+				]
+            },
+			"2": {
+                "description": "Благодаря хорошей наблюдательности вы достаточно быстро смогли найти удобный спуск по горам и продолжить путь.",
+                "actions": [
+                    {"name": "Продолжить путь", "result": [
+                        {"type": "closeEvent"}
+                    ]}
+                ]
+            },
+            "3": {
+                "description": "Спуск был очень долгим и тяжелом, он отнял много силы и ваши люди немного устали.<br><br><i>На отряд наложен эффект 'Усталость'</i>",
+                "actions": [
+                    {"name": "Продолжить путь", "result": [
+						{"type": "setHeroState", "stateId": "усталость"},
+                        {"type": "closeEvent"}
+                    ]}
+                ]
+            }
+        }
+    },
+    "разведчикиНаДороге": {
+        "id": "разведчикиНаДороге",
+        "initState": "1",
+        "states": {
+            "1": {
+                "description": "На дороге, ведущей к дому, вы видите небольшой отряд. Мимо него вы никак не пройдете, поэтому вам или прийдется сражаться или же искать другой путь",
+                "actions": [
+                    {"name": "Напасть", "result": [
+                        {"type": "closeEvent"},
+                        {
+                            "type": "startBattle", 
+                            "enemies": [
+                                {"unitType": "goblin_scout", "x": 4, "y": 2, "count": 5}
+                            ],
+                            "battlefield": {
+                                "width": 5,
+                                "height": 5,
+                                "objects": [
+                                    {"x": 1, "y": 1, "id": "forest"},
+                                    {"x": 2, "y": 2, "id": "forest"},
+                                    {"x": 0, "y": 0, "id": "mountain"}
+                                ],
+                                "hexesToPlaceUnits": [
+                                    {"x": 0, "y": 1},
+                                    {"x": 0, "y": 2},
+                                    {"x": 0, "y": 3}
+                                ]                                    
+                            },
+                            "result": {
+                                "success": [
+                                    {"type": "addExp", "exp": 100},                                        
+                                    {"type": "addQuestNote", "questId": "ОкончаниеОхоты", "note": "3.2"},
+                                    {"type": "showEvent", "eventId": "разведчикиНаДороге", "initState": "победа"}
+                                ],
+                                "failed": [
+                                    {"type": "showEvent", "eventId": "разведчикиНаДороге", "initState": "поражение"}
+                                ]
+                            }
+                        }
+                    ]},
+                    {"name": "Поискать другой путь", "result": [
+                        {"type": "closeEvent"}
+                    ]}
+                ]
+            },
+            "победа": {
+                "description": "Разведчики уничтожены, остался только основной отряд, окруживший дом",
+                "actions": [
+                    {"name": "Вперед", "result": [
+                        {"type": "closeEvent"}
+                    ]}
+                ]
+            },
+            "поражение": {
+                "description": "Вы не смогли справиться даже с развед отрядом гоблинов, так не пойдет, ведь впереди вас ждет еще много подвигов и сражений. Попробуйте еще раз.",
+                "actions": [
+                    {"name": "Попробовать еще раз", "result": [
+                        {"setEventState": "1"}
+                    ]}
+                ]
+            }
+        }
+    },
+    "гоблиныВозлеДома": {
+        "id": "гоблиныВозлеДома",
+        "initState": "1",
+        "states": {
+            "1": {
+                "description": "Вы подошли к дому, гоблины заняты тем, что готовят самодельный таран, чтобы вломиться в дом. Они так заняты этим, что пока еще не замечают вас.",
+                "actions": [
+                    {"name": "Напасть в лоб", "result": [
+                        {"type": "closeEvent"},
+                        {
+                            "type": "startBattle", 
+                            "enemies": [
+                                {"unitType": "goblin_scout", "x": 4, "y": 2, "count": 5}
+                            ],
+                            "battlefield": {
+                                "width": 5,
+                                "height": 5,
+                                "objects": [
+                                    {"x": 1, "y": 1, "id": "forest"},
+                                    {"x": 2, "y": 2, "id": "forest"},
+                                    {"x": 0, "y": 0, "id": "mountain"}
+                                ],
+                                "hexesToPlaceUnits": [
+                                    {"x": 0, "y": 1},
+                                    {"x": 0, "y": 2},
+                                    {"x": 0, "y": 3}
+                                ]                                    
+                            },
+                            "result": {
+                                "success": [
+                                    {"type": "addExp", "exp": 100},                                        
+                                    {"type": "addQuestNote", "questId": "ОкончаниеОхоты", "note": "4"},
+                                    {"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "победа"}
+                                ],
+                                "failed": [
+                                    {"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "поражение"}
+                                ]
+                            }
+                        }
+                    ]},
+                    {
+                        "name": "Незаметно подкрасться к гоблинам",
+						"type": "skillcheck",
+                        "visibleConditions": [],
+						"skill": "stealth",
+						"skillDifficult": 2,
+                        "success": [
+                            {"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "успешноПодкрался"}
+                        ],
+						"fail": [
+							{"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "неуспешноПодкрался"}
+						]
+                    }
+                ]
+            },
+			"успешноПодкрался": {
+				"description": "Вы успешно подкрались к гоблинам и выстрелами смогли устранить двух гоблинов, прежде чем они заметили вас и бросились в атаку.",
+				"actions": [
+					{"name": "Начать сражение", "result": [
+						{"type": "closeEvent"},
+						{
+							"type": "startBattle", 
+							"enemies": [
+								{"unitType": "goblin_scout", "x": 4, "y": 2, "count": 4},
+								{"unitType": "goblin_scout", "x": 4, "y": 3, "count": 4}
+							],
+							"battlefield": {
+								"width": 5,
+								"height": 5,
+								"objects": [
+									{"x": 1, "y": 1, "id": "forest"},
+									{"x": 2, "y": 2, "id": "forest"},
+									{"x": 0, "y": 0, "id": "mountain"}
+								],
+								"hexesToPlaceUnits": [
+									{"x": 0, "y": 1},
+									{"x": 0, "y": 2},
+									{"x": 0, "y": 3}
+								]                                    
+							},
+							"result": {
+								"success": [
+									{"type": "addExp", "exp": 100},                                        
+									{"type": "addQuestNote", "questId": "ОкончаниеОхоты", "note": "4"},
+									{"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "победа"}
+								],
+								"failed": [
+									{"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "поражение"}
+								]
+							}
+						}
+					]}
+				]
+			},
+			"неуспешноПодкрался": {
+				"description": "Когда вы подкрадывались к гоблинам, один из ваших людей случайно наступил на хвост лисице, пробегавшей мимо, которая вскринув от боли, привлекла внимание гоблинов.<br>А план был так хорош.<br>Вам не остается ничего другого, как открыто напасть на врагов.",
+				"actions": [
+					{"name": "Начать сражение", "result": [
+						{"type": "closeEvent"},
+						{
+							"type": "startBattle", 
+							"enemies": [
+								{"unitType": "goblin_scout", "x": 4, "y": 2, "count": 5},
+								{"unitType": "goblin_scout", "x": 4, "y": 3, "count": 5}
+							],
+							"battlefield": {
+								"width": 5,
+								"height": 5,
+								"objects": [
+									{"x": 1, "y": 1, "id": "forest"},
+									{"x": 2, "y": 2, "id": "forest"},
+									{"x": 0, "y": 0, "id": "mountain"}
+								],
+								"hexesToPlaceUnits": [
+									{"x": 0, "y": 1},
+									{"x": 0, "y": 2},
+									{"x": 0, "y": 3}
+								]                                    
+							},
+							"result": {
+								"success": [
+									{"type": "addExp", "exp": 100},                                        
+									{"type": "addQuestNote", "questId": "ОкончаниеОхоты", "note": "4"},
+									{"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "победа"}
+								],
+								"failed": [
+									{"type": "showEvent", "eventId": "гоблиныВозлеДома", "initState": "поражение"}
+								]
+							}
+						}
+					]}
+				]
+			},
+			"победа": {
+				"description": "Вы успешно разгромили гоблинов.",
+				"actions": [
+                    {"name": "Вернуться на карту", "result": [
+                        {"type": "closeEvent"}
+					]}
+				]
+			},
+			"поражение": {
+				"description": "Вы проиграли, но так как это обучение, попробуйте подраться еще раз.",
+				"actions": [
+                    {"name": "Вернуться на карту", "result": [
+                        {"type": "closeEvent"}
+					]}
+				]
+			}
+        }
+    },
+	"ОхотничийДомик": {
+		"id": "ОхотничийДомик",
+        "initState": "1",
+        "states": {
+			"1": {
+				"description": "Достаточно просторная хижина, где охотники устраивают привал, а так же занимаются освежеваниеим и разделкой добычи."
+			}
+		}
+	}
+}

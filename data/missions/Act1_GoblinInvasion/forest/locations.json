@@ -18,14 +18,14 @@
         "x": 180,
         "y": 320,
         "sprite": null,
-        "name": "Охотничий лагерь",
+        "name": "LOCATION__HUNTING_CAMP__NAME",
         "description": "",
         "isVisible": true,
         "visibleConditions": [],
         "isRoadLocation": false,
         "type": "dialog",
         "actions": [
-            {"type": "showEvent", "eventId": "ОхотничийЛагерь"}
+            {"type": "changeMap", "mapId": "1_hunting_camp", "locationId": "ВернутьсяНаКартуМира"}
         ],
         "triggers": []
     },

@@ -95,13 +95,9 @@ game.interfaces.battle = {
         
 		var units = [];
 		for (var i = 0; i < game.hero.army.length; i++) {
-			for (var j = 0; j < game.hero.army[i].units.length; j++) {
-				units.push(game.hero.army[i].units[j]);
-			}
+            self.generateSquadsFromUnits(game.hero.army[i].units, 1, game.hero.army[i].officer);
 		}
-		
         
-        self.generateSquadsFromUnits(units, 1);
         self.generateSquadsFromUnits(params.enemies, 2);
         
         self.result = params.result;
@@ -152,10 +148,10 @@ game.interfaces.battle = {
             }
         }
         
-        return null;        
+        return null;
     },
     
-    generateSquadsFromUnits: function(units, ownerId) {
+    generateSquadsFromUnits: function(units, ownerId, officer = false) {
         var self = game.interfaces.battle;
         
         var squadNum = 1;
@@ -166,7 +162,7 @@ game.interfaces.battle = {
 			var x = 14;
 			var y = squadNum;
 			if (ownerId == 1) {
-				var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit(self.hexesToPlaceUnits);
+                var emptyHexToPlace = self.getRandomEmptyHexToPlaceUnit(self.hexesToPlaceUnits);
 				x = emptyHexToPlace.x;
 				y = emptyHexToPlace.y;
 			} else {
@@ -185,20 +181,32 @@ game.interfaces.battle = {
                     y = emptyHexToPlace.y;
                 }
             }
+            
+            wounded = 0;
+            if (units[i].wounded) {
+                wounded = units[i].wounded;
+            }
+            
+            count = unitType.unitsInSquad;
+            if (units[i].count) {
+                count = units[i].count;
+            }
 			
 			var squad = {
 				id: Object.keys(self.units).length,
 				ownerId: ownerId,
 				unitTypeId: unitTypeId,
+                officer: officer,
 				x: ko.observable(x),
 				y: ko.observable(y),
 				cHp: ko.observable(unitType.unitHp),
-				cCount: ko.observable(unitType.unitsInSquad),
+				cCount: ko.observable(count),
 				cAction: ko.observable(unitType.weapons[0]),
 				canMove: ko.observable(true),
 				canAction: ko.observable(true),
-				lightWounded: ko.observable(0),
+				lightWounded: ko.observable(wounded),
                 hasCounterAttack: ko.observable(true)
+                
 			};
 			self.units[squad.id] = squad;
 			squadNum++;            
@@ -880,6 +888,7 @@ game.interfaces.battle = {
     processBattleResult: function() {        
         var self = game.interfaces.battle;
         if (self.battleStage() == 'endSuccess') {
+            self.saveUnitsState();
             game.components.actions.processActions(self.result.success);
         }
         if (self.battleStage() == 'endFailed') {
@@ -887,5 +896,41 @@ game.interfaces.battle = {
         }
         self.battleStage('');
         game.showInterface('map');
+    },
+    
+    saveUnitsState: function() {
+        game.hero.army = [];    
+
+        var self = game.interfaces.battle;
+        for (var unitId in self.units) {
+            if (self.units[unitId].ownerId == 1) {
+                console.log([game.hero.army, self.units[unitId].officer]);
+                officerNum = false;
+                for (var i = 0; i < game.hero.army.length; i++) {
+                    if (game.hero.army[i].officer == self.units[unitId].officer) {
+                        officerNum = i;
+                    }
+                }
+                
+                if (officerNum === false) {
+                    game.hero.army.push({
+                        officer: self.units[unitId].officer,
+                        units: [
+                            {
+                                unitType: self.units[unitId].unitTypeId,
+                                count: self.units[unitId].cCount(),
+                                wounded: self.units[unitId].lightWounded()
+                            }
+                        ]
+                    });
+                } else {
+                    game.hero.army[officerNum].units.push({
+                        unitType: self.units[unitId].unitTypeId,
+                        count: self.units[unitId].cCount(),
+                        wounded: self.units[unitId].lightWounded()
+                    });
+                }
+            }
+        }
     }
 };
