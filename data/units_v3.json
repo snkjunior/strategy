@@ -1,16 +1,17 @@
 {
     "human_hunter": {
-        "sprite": "human_hunter",
+        "sprite": "human_hunter_player",
         "avatar": "avatar_human_hunter",
         "avatarBg": "avatar_bg_village",
         "name": "Hunter",
         "race": "human",
-        "unitsInSquad": 10,
+		"leadership": 25,
         "speed": 3,
-        "unitHp": 400,
+        "unitHp": 10,
+		"maxCount": 8,
         "protection": {
             "melee": 0,
-            "range": 20,
+            "range": 0,
             "elemental": 0,
             "mind": 0,
             "life": 0,
@@ -20,8 +21,12 @@
             {
                 "name": "bow",
                 "isDefault": true,
+				"isCanMove": false,
                 "damages": {
-                    "range": 1800
+                    "range": {
+						"min": 2,
+						"max": 4
+					}
                 },
                 "minDistance": 2,
                 "maxDistance": 3,
@@ -30,8 +35,12 @@
             {
                 "name": "knife",
                 "isDefault": false,
+				"isCanMove": true,
                 "damages": {
-                    "melee": 1200
+                    "melee": {
+						"min": 1,
+						"max": 3
+					}
                 },
                 "minDistance": 1,
                 "maxDistance": 1,
@@ -43,17 +52,55 @@
             "forestWalker"
         ]
     },
+	"human_pikeman": {
+        "sprite": "human_pikeman",
+        "avatar": "avatar_human_pikeman",
+        "avatarBg": "avatar_bg_village",
+        "name": "Pikeman",
+        "race": "human",
+		"leadership": 70,
+        "speed": 3,
+        "unitHp": 25,
+		"maxCount": 6,
+        "protection": {
+            "melee": 15,
+            "range": 10,
+            "elemental": 0,
+            "mind": 0,
+            "life": 0,
+            "death": 0
+        },
+        "weapons": [
+           {
+                "name": "Pike",
+                "isDefault": false,
+				"isCanMove": true,
+                "damages": {
+                    "melee": {
+						"min": 3,
+						"max": 9
+					}
+                },
+                "minDistance": 1,
+                "maxDistance": 1,
+                "accuracy": 100
+            }
+        ],
+        "skills": [
+        ]
+    },
     "human_militiaman": {
-        "sprite": "human_militiaman",
+        "sprite": "human_militiaman_player",
         "avatar": "avatar_human_militiaman",
         "avatarBg": "avatar_bg_village",
         "name": "Militiaman",
         "race": "human",
-        "unitsInSquad": 16,
+		"leadership": 15,
         "speed": 3,
-        "unitHp": 400,
+        "unitHp": 10,
+		"maxCount": 10,
         "protection": {
-            "melee": 20,
+            "melee": 0,
             "range": 0,
             "elemental": 0,
             "mind": 0,
@@ -65,7 +112,10 @@
                 "name": "pitchfork",                
                 "isDefault": true,
                 "damages": {
-                    "melee": 2000
+                    "melee": {
+						"min": 1,
+						"max": 2
+					}
                 },
                 "minDistance": 1,
                 "maxDistance": 1,
@@ -75,18 +125,19 @@
         "skills": []
     },
     "animal_wolf": {
-        "sprite": "animal_wolf",
+        "sprite": "animal_wolf_enemy",
         "avatar": "avatar_animal_wolf",
         "avatarBg": "avatar_bg_forest",
         "name": "Wolf",
         "race": "animal",
-        "unitsInSquad": 20,
-        "speed": 4,
-        "unitHp": 300,
+        "leadership": 8,
+		"speed": 4,
+        "unitHp": 4,
+		"maxCount": 8,
         "protection": {
             "melee": 0,
             "range": 0,
-            "elemental": 30,
+            "elemental": 0,
             "mind": 0,
             "life": 0,
             "death": 0
@@ -96,7 +147,10 @@
                 "name": "bite",
                 "isDefault": true,
                 "damages": {
-                    "melee": 2200
+                    "melee": {
+						"min": 1,
+						"max": 3
+					}
                 },
                 "minDistance": 1,
                 "maxDistance": 1,
@@ -107,80 +161,19 @@
             "forestInhabitant"
         ]
     },
-    "mainHero": {
-        "sprite": "human_militiaman",
-        "avatar": "avatar_human_militiaman",
-        "avatarBg": "avatar_bg_village",
-        "name": "Hero",
-        "race": "human",
-        "unitsInSquad": 1,
-        "speed": 3,
-        "unitHp": 5000,
-        "protection": {
-            "melee": 0,
-            "range": 0,
-            "elemental": 0,
-            "mind": 0,
-            "life": 0,
-            "death": 0
-        },
-        "weapons": [
-            {
-                "name": "knife",                
-                "isDefault": true,
-                "damages": {
-                    "melee": 2000
-                },
-                "minDistance": 1,
-                "maxDistance": 1,
-                "accuracy": 100
-            }
-        ],
-        "skills": []
-    },
-    "animal_snake": {
-        "sprite": "animal_snake",
-        "avatar": "avatar_animal_snake",
-        "avatarBg": "avatar_bg_forest",
-        "name": "Snake",
-        "race": "animal",
-        "unitsInSquad": 1,
-        "speed": 3,
-        "unitHp": 9000,
-        "protection": {
-            "melee": 0,
-            "range": 0,
-            "elemental": 0,
-            "mind": 0,
-            "life": 0,
-            "death": 0
-        },
-        "weapons": [
-            {
-                "name": "bite",                
-                "isDefault": true,
-                "damages": {
-                    "melee": 1500
-                },
-                "minDistance": 1,
-                "maxDistance": 1,
-                "accuracy": 100
-            }
-        ],
-        "skills": []
-    },
     "goblin_scout": {
         "sprite": "goblin",
         "avatar": "goblin",
         "avatarBg": "avatar_bg_cave",
         "name": "Гоблин-разведчик",
         "race": "goblin",
-        "unitsInSquad": 16,
+		"leadership": 8,
         "speed": 2,
-        "unitHp": 300,
+        "unitHp": 8,
+		"maxCount": 14,
         "protection": {
             "melee": 0,
-            "range": 20,
+            "range": 0,
             "elemental": 0,
             "mind": 0,
             "life": 0,
@@ -191,7 +184,10 @@
                 "name": "knife",                
                 "isDefault": true,
                 "damages": {
-                    "melee": 1600
+                    "melee": {
+						"min": 1,
+						"max": 3
+					}
                 },
                 "minDistance": 1,
                 "maxDistance": 1,

@@ -12,15 +12,18 @@
         "class": "scout",
         "locationId": "МестоОхоты",
 		"officers": ["mainHero", "mainHero2"],
+		"armySlots": 3,
 		"army": [
-			{
-				"officer": "mainHero",
-				"units": [
-					{"unitType": "human_hunter", "count": 5, "wounded": 0},
-                    {"unitType": "human_hunter", "count": 5, "wounded": 0}
-				]
-			}				
+			{"unitType": "human_hunter", "count": 10},
+			{"unitType": "goblin_scout", "count": 10}
 		],
+		"reserve": {
+			"human_hunter": 6,
+			"goblin_scout": 3
+		},
+		"wounded": {
+			"human_hunter": 3
+		},
 		"skills": {
 			"perception": 1,
 			"traps": 1,

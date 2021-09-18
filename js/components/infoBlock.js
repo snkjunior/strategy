@@ -5,9 +5,8 @@ game.components.infoBlock = {
 		if (game.infoBlockTemplates[infoBlockTemplateId]) {
             this.templateId = infoBlockTemplateId;
             var template = game.infoBlockTemplates[infoBlockTemplateId];
-            console.log(template);
-            console.log(1);
-            $('#interface').append("<div class='infoBlock' style='"+this.formBlockStyles(template)+"' id='template_" + infoBlockTemplateId + "'>" + template.html + "</div>");
+            
+			$('#interface').append("<div class='infoBlock' style='"+this.formBlockStyles(template)+"' id='template_" + infoBlockTemplateId + "'>" + template.html + "</div>");
             ko.renderTemplate("template_" + infoBlockTemplateId, data, {}, document.getElementById("template_" + infoBlockTemplateId));		
             
             if (isAddDisabledBg) {

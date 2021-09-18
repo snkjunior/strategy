@@ -1,53 +1,38 @@
 <link href="css/interfaces/army.css" rel="stylesheet">
 
-<div id='armyInterface'>	
-	<div class='allArmy'>
-		<div class='armyImage'>
-			<img src='/img/interfaces/army/army_camp.png'/>
-		</div>
-		
-		<div class='unitsTypesBlock'>
-			<div class='unitsTypeButton'></div>
-			<div class='unitsTypeButton'></div>
-			<div class='unitsTypeButton'></div>
-			<div class='unitsTypeButton'></div>
-			<div class='unitsTypeButton'></div>
-		</div>
-		
-		<div class='unitsList' id="unitsList">
-			<!--ko foreach: getUnitsByType()-->			 
-			<div class='unit' data-bind='css: {selected: $data == $parent.selectedUnit()}, click: $parent.clickOnUnit'>
-				<img style="width: 64px; height: 64px; margin-top: -1px; margin-left: -1px;" data-bind="attr: {src: 'img/battle/units/' + game.data.units[unitType].avatar + '.png'}"/>
-			</div>			
-			<!--/ko-->			
+<div class="armyInterface"> 
+	<div class="row">
+		<div class="col-xs-12 unitListTitle">
+			Ваша армия
 		</div>
 	</div>
-	
-	<div class='activeArmy'>
-		<div class='armyImage'>
-			<img src='/img/interfaces/army/current_army.jpg'/>
-		</div>
-		
-		<div class='officersList' id="officersList">
-			<!--ko foreach: army()-->
-			<div class='officerBlock'>
-				<div class='officer'>
-					<img style='width: 100px; height: 100px; margin-top: -1px; margin-left: -1px;' data-bind="attr: {src: 'img/battle/units/' + game.officers[officer].avatar + '.png'}"/>
+	<div class="row">
+		<div class="col-xs-12 unitList">
+			<!--ko foreach: army-->
+				<!--ko if: $data != null-->
+				<div data-bind="attr: {onclick: 'game.interfaces.army.clickOnUnitInArmySlot('+$index()+')', class:'unitSlot unitArmySlot withUnit' + (game.interfaces.army.isSlotActive($index()) ? ' active' : '') + ($parent.selectedUnitInArmy() == $index() ? ' selected' : '')}">
+					<img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitType].avatar + '.png'}"/>
+					<div class="buttonRemove" data-bind="attr: {onclick: 'game.interfaces.army.removeUnitFromArmy('+$index()+')'}">x</div>
 				</div>
-				<div class='officerUnitsList'>
-					<!--ko foreach: units-->	
-					<div class='officerUnit' data-bind='css: {canPlace: game.interfaces.army.selectedUnit() != null}, click: function(data, event) {game.interfaces.army.clickOnSlot($parent, $data)}'>
-						<div class='remove' data-bind='click: function(data, event) {game.interfaces.army.clickRemoveUnit($parent, $data)}'>x</div>
-						<img data-bind="attr: {src: 'img/battle/units/' + game.data.units[unitType].avatar + '.png'}"/>					
-					</div>
-					<!--/ko-->					
-					<!--ko foreach: $parent.getDiffUnitsWithSlots($data)-->
-					<div class='officerUnit' data-bind='css: {canPlace: game.interfaces.army.selectedUnit() != null}, click: function(data, event) {game.interfaces.army.clickOnSlot($parent, null)}'>					
-					</div>
-					<!--/ko-->
-				</div>
-			</div>
-			<!--/ko-->					
+				<!--/ko-->
+				<!--ko if: $data == null-->
+				<div data-bind="attr: {onclick: 'game.interfaces.army.clickOnUnitInArmySlot('+$index()+')', class:'unitSlot unitArmySlot' + (game.interfaces.army.isSlotActive($index()) ? ' active' : '')}"></div>
+				<!--/ko-->
+			<!--/ko-->
 		</div>
 	</div>
+	<div class="row">
+		<div class="col-xs-12 unitListTitle">
+		Ваш резерв
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 unitList">
+			<!--ko foreach: getReserveAsArray()-->
+				<div data-bind="click: $parent.clickOnUnitInReserve, attr: {class:'unitSlot unitArmySlot withUnit' + ($parent.selectedUnitInReserve() == unitType ? ' active selected' : '')}">
+					<img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitType].avatar + '.png'}"/>
+				</div>
+			<!--/ko-->
+		</div>
+	</div>	
 </div>

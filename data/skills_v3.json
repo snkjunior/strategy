@@ -1,0 +1,42 @@
+{
+    "trackingAnimals": {
+        "sprite": "damage",
+        "description": "Unit deals 20% more damage to animals.",
+        "type": "offence",       
+        "params": ["accuracy"],
+        "condition": "return game.data.units[target.unitTypeId].race == 'animal'",
+        "bonuses": {
+            "damage": 20        
+        }
+    },
+    "forestWalker": {
+        "sprite": "damage",
+        "description": "Unit takes 5% less damage in forest location.",
+        "type": "defence",
+        "params": ["accuracy"],
+        "condition": "return (hex == null && game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest') || (hex != null && (unit.x() == hex.x && unit.y() == hex.y && game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest') || (hex != null && hex.object == 'forest'))",
+        "bonuses": {
+            "damage": -5
+        }
+    },
+    "forestInhabitant": {
+        "sprite": "damage",
+        "description": "Unit takes 15% less damage in forest location.",
+        "type": "defence",
+        "params": ["accuracy"],
+        "condition": "return game.interfaces.battle.map[unit.y()][unit.x()].object == 'forest' || (hex != null && hex.object == 'forest')",
+        "bonuses": {
+            "damage": -15
+        }
+    },
+    "scout": {
+        "sprite": "damage",
+        "name": "Разведчик",
+        "description": "Получает на 10% меньше урона дальнего боя",
+        "type": "defence",
+        "condition": "return target.cAction().damages.range != 'undefined'",
+        "bonuses": {
+            "damage": -10
+        }
+    }
+}

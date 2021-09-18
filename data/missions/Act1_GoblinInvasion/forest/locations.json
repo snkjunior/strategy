@@ -12,7 +12,77 @@
         "type": "dialog",
         "actions": [],
         "triggers": []
-    },    
+    },
+    "Тестовая битва": {
+        "id": "МестоОхоты",
+        "x": 100,
+        "y": 100,
+        "sprite": null,
+        "name": "Тестовая битва",
+        "description": "",
+        "isVisible": true,
+        "visibleConditions": [],
+        "isRoadLocation": false,
+        "type": "dialog",
+        "actions": [
+			{
+				"type": "startBattle", 
+				"units": [
+					{"unitType": "human_hunter"},
+					{"unitType": "human_hunter"},
+					{"unitType": "human_pikeman"},
+					{"unitType": "human_militiaman"}
+				],
+				"enemies": [
+					{"unitType": "goblin_scout"},
+					{"unitType": "goblin_scout"},
+					{"unitType": "goblin_scout"},
+					{"unitType": "goblin_scout"},
+					{"unitType": "animal_wolf"},
+					{"unitType": "animal_wolf"}
+				],
+				"battlefield": {
+					"width": 10,
+					"height": 7,
+					"hexesToPlaceUnits": {
+						"1": [
+							{"x": 0, "y": 0},
+							{"x": 0, "y": 1},
+							{"x": 1, "y": 0},
+							{"x": 1, "y": 1}
+						],
+						"2": [
+							{"x": 8, "y": 2},
+							{"x": 8, "y": 3},
+							{"x": 8, "y": 4},
+							{"x": 8, "y": 5},
+							{"x": 8, "y": 6},
+							{"x": 9, "y": 2},
+							{"x": 9, "y": 3},
+							{"x": 9, "y": 4},
+							{"x": 9, "y": 5},
+							{"x": 9, "y": 6}
+						]
+					},
+					"generateParams": {
+						"forest": 20,
+						"mountain": 20
+					}
+				},
+				"result": {
+					"success": [
+						{"type": "addExp", "exp": 100},                                        
+						{"type": "addQuestNote", "questId": "ОкончаниеОхоты", "note": "3.2"},
+						{"type": "showEvent", "eventId": "разведчикиНаДороге", "initState": "победа"}
+					],
+					"failed": [
+						{"type": "showEvent", "eventId": "разведчикиНаДороге", "initState": "поражение"}
+					]
+				}
+			}
+		],
+        "triggers": []
+    },  
     "ОхотничийЛагерь": {
         "id": "ОхотничийЛагерь",
         "x": 180,

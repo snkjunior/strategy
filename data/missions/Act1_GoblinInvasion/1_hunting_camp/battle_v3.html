@@ -15,7 +15,7 @@
                 
                 <!--ko if: game.interfaces.battle.getUnitIdInHex(x, y) != null-->
                 <!--ko with: game.interfaces.battle.units[game.interfaces.battle.getUnitIdInHex(x, y)]-->
-                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '.png', unitId: id}" style="position: absolute; top: -15px; left: 0px; z-index: 10; width: 64px; height: 64px;"/>
+                <img data-bind="attr: {src: 'img/battle/units/' +  game.data.units[unitTypeId].sprite + '.png', unitId: id}" style="position: absolute; top: -15px; left: 0px; z-index: 10;"/>
                 <!--ko if: game.interfaces.battle.unitsToAction().indexOf(id) != -1 && ((game.interfaces.battle.actionHexesZone().length && game.components.hexGeom.getHexInZone(game.interfaces.battle.actionHexesZone(), $parent.x, $parent.y)) || !game.interfaces.battle.actionHexesZone().length) -->
                 <img data-bind="attr: {src: 'img/battle/hex_attack.png'}," style="position: absolute; top: 0px; left: 0px; z-index: 4; opacity: 0.5;">
                 <!--/ko-->
@@ -36,7 +36,7 @@
                 <img data-bind="attr: {src: 'img/battle/hex_over.png'}"  style="position: absolute; top: 0px; left: 0px; z-index: 4;">
                 <!--/ko-->
                 
-				<!--ko if: $root.battleStage() == 'placeUnits' && $root.isHexInHexesToPlaceUnits($data, 1)-->
+				<!--ko if: $root.battleStage() == 'placeUnits' && $root.isHexInHexesToPlaceUnits($data)-->
 				<img data-bind="attr: {src: 'img/battle/hex_place.png'}, style: {opacity: $root.selectedUnit() == null ? 0.5 : 0.8}" style="position: absolute; top: 0px; left: 0px; z-index: 3;">                
 				<!--/ko-->
 				
@@ -93,9 +93,9 @@
                 
                 <!--ko if: game.interfaces.battle.mouseOverHex() == $data && game.interfaces.battle.actionAttackInfo() != null-->
                 <!--ko with: game.interfaces.battle.actionAttackInfo()-->
-                <span style="position: absolute; z-index: 20; top: -10px; left: 34px; width: 50px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: targetDamage.max == '0' ? 'no' : targetDamage.min + ' - ' + targetDamage.max"></span>
-                <span style="position: absolute; z-index: 20; top: -10px; left: 32px; width: 4px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;">|</span>
-				<span style="position: absolute; z-index: 20; top: -10px; left: -20px; width: 50px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: unitDamage.min + ' - ' + unitDamage.max"></span>
+                <span style="position: absolute; z-index: 20; top: -10px; left: 0px; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: unitDamage"></span>
+                <span style="position: absolute; z-index: 20; top: -10px; left: 30px; width: 4px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;">|</span>
+                <span style="position: absolute; z-index: 20; top: -10px; left: 34px; width: 30px; font-size: 12px; color: #ddd; text-align: center; font-weight: bold;" data-bind="text: targetDamage == '0' ? 'no' : targetDamage"></span>
                 <!--/ko-->
                 <!--/ko-->
                 
@@ -143,11 +143,11 @@
             </div>
             <div class='unitPanel squadCount' style='top: 125px;'>
             </div>
-            <div class='unitPanel squadHp' style='top: 125px;' data-bind='style: {width: 100 * (cCount() + lightWounded()) / startCount + "px"}'>
+            <div class='unitPanel squadHp' style='top: 125px;' data-bind='style: {width: 100 * (cCount() + lightWounded()) / game.data.units[unitTypeId].unitsInSquad + "px"}'>
             </div>
-            <div class='unitPanel squadCCount' style='top: 125px;' data-bind='style: {width: 100 * cCount() / startCount + "px"}'>
+            <div class='unitPanel squadCCount' style='top: 125px;' data-bind='style: {width: 100 * cCount() / game.data.units[unitTypeId].unitsInSquad + "px"}'>
             </div>
-            <div class='unitPanel' style='top: 125px;' data-bind="text: cCount() + '/' + startCount">
+            <div class='unitPanel' style='top: 125px;' data-bind="text: cCount() + '/' + game.data.units[unitTypeId].unitsInSquad">
             </div>
         </div>
         <!--/ko-->
@@ -210,11 +210,11 @@
                 </div>
                 <div class='unitPanel squadCount' style='top: 125px;'>
                 </div>
-                <div class='unitPanel squadHp' style='top: 125px;' data-bind='style: {width: 100 * (cCount() + lightWounded()) / startCount + "px"}'>
+                <div class='unitPanel squadHp' style='top: 125px;' data-bind='style: {width: 100 * (cCount() + lightWounded()) / game.data.units[unitTypeId].unitsInSquad + "px"}'>
                 </div>
-                <div class='unitPanel squadCCount' style='top: 125px;' data-bind='style: {width: 100 * cCount() / startCount + "px"}'>
+                <div class='unitPanel squadCCount' style='top: 125px;' data-bind='style: {width: 100 * cCount() / game.data.units[unitTypeId].unitsInSquad + "px"}'>
                 </div>
-                <div class='unitPanel' style='top: 125px;' data-bind="text: cCount() + '/' + startCount">
+                <div class='unitPanel' style='top: 125px;' data-bind="text: cCount() + '/' + game.data.units[unitTypeId].unitsInSquad">
                 </div>
                 </div>
             <!--/ko-->

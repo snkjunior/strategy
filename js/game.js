@@ -108,7 +108,7 @@ var game = {
     components: {},
 	infoBlockTemplates: {
 		test: {
-            html: '<div style="background-color: red"><div data-bind="text: testText"></div></div>',
+            html: '<div style="background-color: red; width: 100%; height: 100%"><div data-bind="text: testText"></div></div>',
             width: 200,
             height: 300
         }            
@@ -118,7 +118,7 @@ var game = {
 game.init = function() {
 	$("#interface").css('width', game.screen.width);
 	$("#interface").css('height', game.screen.height);   
-	$("#interfaceContent").css('width', game.screen.width - 4);
+	$("#interfaceContent").css('width', game.screen.width);
 	$("#interfaceContent").css('height', game.screen.height);	
    
 	this.loadData();
@@ -135,37 +135,9 @@ game.init = function() {
     }
     
     this.showInterface('map');
+	
+	//game.components.actions.processActions(this.cMission.onload);
     
-    //game.components.actions.processActions(this.cMission.onload);
-    
-	// this.startBattle(
-        // [
-            // {"unitType": "animal_snake", "x": 4, "y": 2}
-        // ],
-        // {
-            // "width": 5,
-            // "height": 5,
-            // "objects": [
-                // {"x": 1, "y": 1, "id": "forest"},
-                // {"x": 2, "y": 2, "id": "forest"},
-                // {"x": 0, "y": 0, "id": "mountain"}
-            // ],
-            // "hexesToPlaceUnits": [
-                // {"x": 0, "y": 2}
-            // ]                                    
-        // },
-        // {
-            // "success": [
-                // {"type": "addExp", "exp": 100},
-                // {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "3"},
-                // {"type": "addQuestNote", "questId": "pickingBerries", "note": "3"}
-            // ],
-            // "failed": [
-                // {"type": "addQuestNote", "questId": "pickingBerries", "note": "2"},
-                // {"type": "showEvent", "eventId": "pickingBerriesEvent", "initState": "loseToSnake"}
-            // ]
-        // }
-    // );
 	
 	//this.showInterface('quests');
     //this.showInterface('editor');
@@ -222,8 +194,8 @@ game.loadData = function() {
             objects: loadData('data/battle/objects.json'),
             terrains: loadData('data/battle/terrains.json')
         },
-        units: loadData('data/units_v2.json'),
-        skills: loadData('data/skills_v2.json'),
+        units: loadData('data/units_v3.json'),
+        skills: loadData('data/skills_v3.json'),
         items: loadData('data/items.json'),
 		lang: loadData('data/lang/' + game.lang + '.json')
     };
@@ -309,9 +281,13 @@ game.animateFrame = function() {
     game.pixi.renderer.render(game.pixi.stage);
 };
 
-game.startBattle = function(enemies, battlefield, result) {
+game.startBattle = function(enemies, battlefield, result, units = null) {
+	if (units == null) {
+		units = this.hero.units;
+	}
+	
     var battleData = {
-        units: this.hero.units,
+        units: units,
         battlefield: battlefield,
         enemies: enemies,
         result: result

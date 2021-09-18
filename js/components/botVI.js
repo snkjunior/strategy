@@ -155,13 +155,13 @@ game.components.botVI = {
             var targets = actionsTargets[i].targets;
             for (var j = 0; j < targets.length; j++) {
                 var target = targets[j];
-                var averageDmgToTarget = game.interfaces.battle.getActionDamageToTarget(unit, target.unit);
+                var averageDmgToTarget = game.interfaces.battle.getActionDamageToTargetFinal(unit, target.unit, true, false);
                 var targetActionHexes = game.components.hexGeom.getHexesBetweenRadiuses(target.unit.x(), target.unit.y(), target.unit.cAction().minDistance, target.unit.cAction().maxDistance, hexMap);
                 for (var k = 0; k < target.hexesToAttack.length; k++) {
                     var averageDmgToUnit = 0;
                     var hex = target.hexesToAttack[k];
                     if (targetActionHexes.indexOf(hex) !== -1) {
-                        averageDmgToUnit = game.interfaces.battle.getActionDamageToTarget(unit, target.unit, false);
+                        averageDmgToUnit = game.interfaces.battle.getActionDamageToTargetFinal(unit, target.unit, true, true);
                     }
                     targetsPriority.push({
                         target: target.unit,
@@ -173,7 +173,7 @@ game.components.botVI = {
                 }
             }
         }
-        
+		
 		if (targetsPriority.length == 0) {
 			return null;
 		}

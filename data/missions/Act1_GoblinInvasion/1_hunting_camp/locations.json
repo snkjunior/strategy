@@ -92,12 +92,12 @@
         ],
         "triggers": []
     },
-	"ОхотничийДомик": {
-        "id": "ОхотничийДомик",
+	"СельскиеДетишки": {
+        "id": "СельскиеДетишки",
         "x": 470,
         "y": 160,
         "sprite": null,
-        "name": "Охотничий домик",
+        "name": "Сельские детишки",
         "description": "",
         "isVisible": true,
         "visibleConditions": [
@@ -106,7 +106,7 @@
         "isRoadLocation": false,
         "type": "dialog",
         "actions": [
-            {"type": "showEvent", "eventId": "ОхотничийДомик"}
+            {"type": "showEvent", "eventId": "СельскиеДетишки"}
         ],
         "triggers": []
     }

@@ -44,15 +44,24 @@
 						"fail": [
 							{"type": "setEventState", "stateId": "3"}
 						]
+					},
+					{
+						"name": "Отойти от утеса",
+						"result": [
+							{"type": "closeEvent"}
+						]
 					}
 				]
             },
 			"2": {
                 "description": "Благодаря хорошей наблюдательности вы достаточно быстро смогли найти удобный спуск по горам и продолжить путь.",
                 "actions": [
-                    {"name": "Продолжить путь", "result": [
-                        {"type": "closeEvent"}
-                    ]}
+                    {
+						"name": "Продолжить путь", 
+						"result": [
+							{"type": "closeEvent"}
+						]
+					}
                 ]
             },
             "3": {
@@ -91,7 +100,10 @@
                                 "hexesToPlaceUnits": [
                                     {"x": 0, "y": 1},
                                     {"x": 0, "y": 2},
-                                    {"x": 0, "y": 3}
+                                    {"x": 0, "y": 3},
+									{"x": 1, "y": 1},
+                                    {"x": 1, "y": 2},
+                                    {"x": 1, "y": 3}
                                 ]                                    
                             },
                             "result": {
@@ -154,7 +166,10 @@
                                 "hexesToPlaceUnits": [
                                     {"x": 0, "y": 1},
                                     {"x": 0, "y": 2},
-                                    {"x": 0, "y": 3}
+                                    {"x": 0, "y": 3},
+									{"x": 1, "y": 1},
+                                    {"x": 1, "y": 2},
+                                    {"x": 1, "y": 3}
                                 ]                                    
                             },
                             "result": {
@@ -192,8 +207,7 @@
 						{
 							"type": "startBattle", 
 							"enemies": [
-								{"unitType": "goblin_scout", "x": 4, "y": 2, "count": 4},
-								{"unitType": "goblin_scout", "x": 4, "y": 3, "count": 4}
+								{"unitType": "goblin_scout", "x": 4, "y": 2, "count": 11}
 							],
 							"battlefield": {
 								"width": 5,
@@ -231,8 +245,7 @@
 						{
 							"type": "startBattle", 
 							"enemies": [
-								{"unitType": "goblin_scout", "x": 4, "y": 2, "count": 5},
-								{"unitType": "goblin_scout", "x": 4, "y": 3, "count": 5}
+								{"unitType": "goblin_scout", "x": 4, "y": 2, "count": 15}
 							],
 							"battlefield": {
 								"width": 5,
@@ -280,8 +293,8 @@
 			}
         }
     },
-	"ОхотничийДомик": {
-		"id": "ОхотничийДомик",
+	"СельскиеДетишки": {
+		"id": "СельскиеДетишки",
         "initState": "1",
         "states": {
 			"1": {
